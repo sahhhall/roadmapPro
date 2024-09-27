@@ -1,6 +1,7 @@
 import { User } from "../../domain/entities/User";
 import { IUserRepository } from "../../domain/interfaces/IUserRepository";
 import { Auth } from "../database";
+import { Password } from "../services/password";
 
 
 
@@ -19,5 +20,23 @@ export class UserRepository implements IUserRepository {
     }
     async update(user: any): Promise<void> {
         await Auth.findByIdAndUpdate(user.id, user);
+    }
+
+    async login(email: string, password: string): Promise<User | null> {
+        const existingUser = await Auth.findOne({ email });
+        if (existingUser) {
+            const passwordMatches = await Password.compare(
+                password,
+                existingUser.password
+            )
+            if (passwordMatches) {
+                return existingUser;
+            }
+            else {
+                return null
+            }
+        } else {
+            return null
+        }
     }
 }

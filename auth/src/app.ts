@@ -2,7 +2,7 @@ import express from 'express';
 import { authRoutes } from './presentation/routes/authRoutes';
 import { connectDB } from './config/database';
 import dotenv from 'dotenv';
-
+import cookieParser from 'cookie-parser'
 class App {
     private readonly app: express.Application;
 
@@ -15,6 +15,7 @@ class App {
 
     };
     private config() {
+        this.app.use(cookieParser())
         this.app.use(express.urlencoded());
         this.app.use(express.json());
     };

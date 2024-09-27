@@ -10,6 +10,7 @@ export class SignUpController {
         const dto = Object.assign(new CreateUserDto(), req.body);
         const errors = await validate(dto);
         if (errors.length > 0) {
+            //here common package error comes
             return res.status(400).json({ errors });
         }
 
@@ -24,6 +25,7 @@ export class SignUpController {
             res.status(200).json(user)
         } catch (error) {
             console.log(error)
+            //here next function comes to pass error
         }
     }
 }

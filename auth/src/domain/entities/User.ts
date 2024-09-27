@@ -7,6 +7,8 @@ export class User {
       public avatar?: string,     
       public isAdmin: boolean = false,  
       public isActive: boolean = true,  
+      public id?:string,
+      public role?:string
     ) {}
   }
   

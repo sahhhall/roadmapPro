@@ -15,8 +15,7 @@ export class Password {
     }
     static async compare(password: string, hashPassword: string) {
         try {
-            const compare = await bcrypt.compare(password, hashPassword);
-            return compare;
+            return await bcrypt.compare(password, hashPassword);
         } catch (error) {
             console.log(error);
             return false
