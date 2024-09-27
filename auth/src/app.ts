@@ -1,10 +1,13 @@
 import express from 'express';
 import { authRoutes } from './presentation/routes/authRoutes';
 import { connectDB } from './config/database';
+import dotenv from 'dotenv';
+
 class App {
     private readonly app: express.Application;
 
     constructor() {
+        dotenv.config();
         this.app = express();
         this.config();
         this.registerRoutes();

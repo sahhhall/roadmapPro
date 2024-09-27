@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { CreateUserDto } from "../../dto/CreateUserDto";
 import { validate } from 'class-validator';
-import { DIContainer } from "../../../infrastructure/DIContainer";
+import { DIContainer } from "../../../infrastructure/di/DIContainer";
 
 
 export class SignUpController {
@@ -14,12 +14,12 @@ export class SignUpController {
         }
 
         try {
-            const { name, email, password, role } = req.body;
+            const { name, email, password, avatar } = req.body;
             const user = await this.signupUser.execute({
                 name,
                 email,
                 password,
-                role
+                avatar
             })
             res.status(200).json(user)
         } catch (error) {

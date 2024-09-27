@@ -1,5 +1,5 @@
-import { RegisterUser } from "../application/usecases/RegisterUser";
-import { UserRepository } from "./repositories/UserRepository";
+import { RegisterUser } from "../../application/usecases/RegisterUser";
+import { UserRepository } from "../repositories/UserRepository";
 
 
 class DIContainer {
