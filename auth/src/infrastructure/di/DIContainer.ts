@@ -1,11 +1,14 @@
 import { OTPService } from "../../application/services/OTPService";
 import { GetUser } from "../../application/usecases/user/GetUser";
 import { LoginUser } from "../../application/usecases/user/LoginUser";
+import { OtpVerification } from "../../application/usecases/user/OtpVerfication";
 import { RegisterUser } from "../../application/usecases/user/RegisterUser";
 import { RegisterUserTemporarily } from "../../application/usecases/user/RegisterUserTemporarily";
+import { SendOtpEmailUseCase } from "../../application/usecases/user/SendOtpEmail";
 import { RedisUserRepository } from "../repositories/RedisUserRepository";
 import { UserRepository } from "../repositories/UserRepository";
 import { JwtService } from "../services/JwtService";
+import { NodeMailerService } from "../services/NodeMailerService";
 
 
 class DIContainer {
@@ -13,7 +16,7 @@ class DIContainer {
     private static _jwtService = new JwtService();
     private static _rediseService = new RedisUserRepository();
     private static _otpService = new OTPService()
-
+    private static _nodeMailerService = new NodeMailerService()
     static getAuthRepositary() {
         return this._authRepository;
     }
@@ -32,6 +35,14 @@ class DIContainer {
 
     static getTemporaryStorUseCase() {
         return new RegisterUserTemporarily(this._rediseService, this._otpService)
+    }
+
+    static getEmailServiceUseCase() {
+        return new SendOtpEmailUseCase(this._nodeMailerService)
+    }
+
+    static verifyUserUserCase() {
+        return new OtpVerification(this._rediseService, this._authRepository)
     }
 }
 

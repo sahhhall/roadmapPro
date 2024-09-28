@@ -23,4 +23,9 @@ export class RedisUserRepository implements IRedisRepository {
     async storeOtp(email: string, otp: string): Promise<void> {
         await this.redisClient.set(`otp:${email}`, otp, { 'EX': 60 })
     }
+
+    async getOtp(email: string): Promise<string | null> {
+        const result = await this.redisClient.get(`otp:${email}`)
+        return result ? result : null;
+    };
 }

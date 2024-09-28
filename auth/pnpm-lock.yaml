@@ -35,6 +35,9 @@ importers:
       mongoose:
         specifier: ^8.6.3
         version: 8.6.3
+      nodemailer:
+        specifier: ^6.9.15
+        version: 6.9.15
       redis:
         specifier: ^4.7.0
         version: 4.7.0
@@ -54,6 +57,9 @@ importers:
       '@types/node':
         specifier: ^22.7.2
         version: 22.7.2
+      '@types/nodemailer':
+        specifier: ^6.4.16
+        version: 6.4.16
       eslint:
         specifier: ^9.11.1
         version: 9.11.1
@@ -234,6 +240,9 @@ packages:
 
   '@types/node@22.7.2':
     resolution: {integrity: sha512-866lXSrpGpgyHBZUa2m9YNWqHDjjM0aBTJlNtYaGEw4rqY/dcD7deRVTbBBAJelfA7oaGDbNftXF/TL/A6RgoA==}
+
+  '@types/nodemailer@6.4.16':
+    resolution: {integrity: sha512-uz6hN6Pp0upXMcilM61CoKyjT7sskBoOWpptkjjJp8jIMlTdc3xG01U7proKkXzruMS4hS0zqtHNkNPFB20rKQ==}
 
   '@types/qs@6.9.16':
     resolution: {integrity: sha512-7i+zxXdPD0T4cKDuxCUXJ4wHcsJLwENa6Z3dCu8cfCK743OGy5Nu1RmAGqDPsoTDINVEcdXKRvR/zre+P2Ku1A==}
@@ -978,6 +987,10 @@ packages:
       encoding:
         optional: true
 
+  nodemailer@6.9.15:
+    resolution: {integrity: sha512-AHf04ySLC6CIfuRtRiEYtGEXgRfa6INgWGluDhnxTZhHSKvrBu7lc1VVchQ0d8nPc4cFaZoPq8vkyNoZr0TpGQ==}
+    engines: {node: '>=6.0.0'}
+
   nopt@5.0.0:
     resolution: {integrity: sha512-Tbj67rffqceeLpcRXrT7vKAN8CwfPeIBgM7E6iBkmKLV7bEMwpGgYLGv0jACUsECaa/vuxP0IjEont6umdMgtQ==}
     engines: {node: '>=6'}
@@ -1546,6 +1559,10 @@ snapshots:
   '@types/node@22.7.2':
     dependencies:
       undici-types: 6.19.8
+
+  '@types/nodemailer@6.4.16':
+    dependencies:
+      '@types/node': 22.7.2
 
   '@types/qs@6.9.16': {}
 
@@ -2266,6 +2283,8 @@ snapshots:
   node-fetch@2.7.0:
     dependencies:
       whatwg-url: 5.0.0
+
+  nodemailer@6.9.15: {}
 
   nopt@5.0.0:
     dependencies:

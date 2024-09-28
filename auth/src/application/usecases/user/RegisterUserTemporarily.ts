@@ -1,5 +1,6 @@
 import { User } from "../../../domain/entities/User";
 import { IRedisRepository } from "../../../domain/interfaces/IRedisRepository";
+import { Password } from "../../../infrastructure/services/password";
 import { IOtpService } from "../../interfaces/IOtpService";
 
 
@@ -10,8 +11,12 @@ export class RegisterUserTemporarily {
 
     async execute(user: Pick<User, 'avatar' | 'email' | 'name' | 'password'>): Promise<string | void> {
         try {
-            await this.redisRepository.saveUnverifiedUser(user.email, user);
-            const otp =await this.otpService.generateOtp();
+            let hashedPassword = await Password.toHash(user.password) as string;
+            await this.redisRepository.saveUnverifiedUser(user.email, {
+                ...user,
+                password: hashedPassword
+            });
+            const otp = await this.otpService.generateOtp();
             await this.redisRepository.storeOtp(user.email, otp);
             return otp;
         } catch (error) {
