@@ -1,7 +1,7 @@
 import { User } from "../../domain/entities/User";
 import { IUserRepository } from "../../domain/interfaces/IUserRepository";
 import { Auth } from "../database";
-import { Password } from "../services/password";
+import { Password } from "../../application/services/PasswordHash";
 
 
 

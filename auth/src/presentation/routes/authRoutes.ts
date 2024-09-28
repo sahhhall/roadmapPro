@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { SignUpController } from '../controllers/auth/SIgnUpController';
-import { LoginController } from '../controllers/auth/LoginController';
-import { LogoutController } from '../controllers/auth/LogoutController';
-import { OtpVerifyController } from '../controllers/auth/OtpVerifyController';
-import { ResendOtpController } from '../controllers/auth/ResentOtpController';
+import { SignUpController } from '../controllers/auth/SignUpController';
+import { LoginController } from '../controllers/auth/LoginUserController';
+import { LogoutController } from '../controllers/auth/LogoutUserController';
+import { OtpVerifyController } from '../controllers/auth/VerifyUserController';
+import { ResendOtpController } from '../controllers/auth/ResendOTPController';
 
 const router = Router();
 const signUpController = new SignUpController();

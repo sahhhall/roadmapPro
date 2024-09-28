@@ -8,6 +8,7 @@ export class ResendOtpController {
     private resendOtpUseCase = DIContainer.getResendOtpUseCase();
 
     async resendOtp(req: Request, res: Response): Promise<Response> {
+      
         const dto = Object.assign(new ResentOtpDTO(), req.body);
         console.log(dto,"dto")
         const validationErrors = await validate(dto);

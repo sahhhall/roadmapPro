@@ -1,7 +1,7 @@
 import { User } from "../../../domain/entities/User";
 import { ITokenService } from "../../../domain/interfaces/ITokenService";
 import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
-import { Password } from "../../../infrastructure/services/password";
+import { Password } from "../../services/PasswordHash";
 
 
 export interface LoginResponse {

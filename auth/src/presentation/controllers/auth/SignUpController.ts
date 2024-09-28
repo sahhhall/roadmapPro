@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { CreateUserDto } from "../../dto/CreateUserDto";
 import { validate } from 'class-validator';
 import { DIContainer } from "../../../infrastructure/di/DIContainer";
-import { Password } from "../../../infrastructure/services/password";
+import { Password } from "../../../application/services/PasswordHash";
 
 
 export class SignUpController {

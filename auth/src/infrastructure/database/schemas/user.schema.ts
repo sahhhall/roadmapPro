@@ -1,5 +1,5 @@
 import mongoose, { Mongoose } from "mongoose";
-import { Password } from "../../services/password";
+import { Password } from "../../../application/services/PasswordHash";
 
 interface AuthAttr {
   name: string;

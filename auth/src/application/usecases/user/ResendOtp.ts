@@ -10,6 +10,11 @@ export class ResendOTP {
 
     async execute(user: Pick<User,  'email' >): Promise<string | void> {
         try {
+            const isUnverified = await this.redisRepository.getUnverifiedUser(user.email);
+            if(!isUnverified) {
+                //common error here
+                throw new Error("Email not found ");
+            }
             const otp = await this.otpService.generateOtp();
             await this.redisRepository.storeOtp(user.email, otp);
             return otp;
