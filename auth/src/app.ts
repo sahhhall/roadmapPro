@@ -3,6 +3,7 @@ import { authRoutes } from './presentation/routes/authRoutes';
 import { connectDB } from './config/database';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser'
+import { redisClientInstance } from './infrastructure/redis/ RedisClient';
 class App {
     private readonly app: express.Application;
 
@@ -26,6 +27,7 @@ class App {
     private async startServer() {
         try {
             await connectDB();
+            await redisClientInstance.connect();
             const PORT: number = 3000;
             this.app.listen(process.env.PORT || PORT, () => {
                 console.log(`App listening on port ===> http://localhost:${PORT}/`);
