@@ -26,7 +26,6 @@ export class LoginController {
                 // here common error  badreq
                 throw new Error("bad req")
             };
-
             res.cookie(`user_accessToken`, user.accessToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV !== "development",
