@@ -4,6 +4,7 @@ import { LoginUser } from "../../application/usecases/user/LoginUser";
 import { OtpVerification } from "../../application/usecases/user/OtpVerfication";
 import { RegisterUser } from "../../application/usecases/user/RegisterUser";
 import { RegisterUserTemporarily } from "../../application/usecases/user/RegisterUserTemporarily";
+import { ResendOTP } from "../../application/usecases/user/ResentOtp";
 import { SendOtpEmailUseCase } from "../../application/usecases/user/SendOtpEmail";
 import { RedisUserRepository } from "../repositories/RedisUserRepository";
 import { UserRepository } from "../repositories/UserRepository";
@@ -25,8 +26,8 @@ class DIContainer {
         return new RegisterUser(this._authRepository);
     }
 
-    static getLoginUserUseCase () {
-        return new LoginUser(this._authRepository, this._jwtService )
+    static getLoginUserUseCase() {
+        return new LoginUser(this._authRepository, this._jwtService)
     }
 
     static getUserUseCase() {
@@ -40,7 +41,9 @@ class DIContainer {
     static getEmailServiceUseCase() {
         return new SendOtpEmailUseCase(this._nodeMailerService)
     }
-
+    static getResendOtpUseCase() {
+        return new ResendOTP(this._rediseService, this._otpService)
+    }
     static verifyUserUserCase() {
         return new OtpVerification(this._rediseService, this._authRepository)
     }

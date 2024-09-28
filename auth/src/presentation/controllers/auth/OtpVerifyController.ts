@@ -15,12 +15,11 @@ export class OtpVerifyController {
         }
 
         try {
-            const userVerified = await this.verifyUser.execute(dto);
-            if (userVerified) {
-                
-                return res.status(200).json({ userVerified });
+            const response = await this.verifyUser.execute(dto);
+            if (response.success) {
+                return res.status(200).json({ userVerified: response.user });
             } else {
-                return res.status(400).json({ message: "Invalid OTP." });
+                return res.status(400).json({ message: response.message });
             }
         } catch (error) {
             console.error("Error in OTP verification controller:", error);

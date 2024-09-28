@@ -7,8 +7,8 @@ import { Password } from "../../../infrastructure/services/password";
 
 export class SignUpController {
     private getUser = DIContainer.getUserUseCase();
-    private tempStoreAndOtp = DIContainer.getTemporaryStorUseCase();
-    private sentOtpEmail = DIContainer.getEmailServiceUseCase();
+    private temporaryStoreAndOtpUseCase = DIContainer.getTemporaryStorUseCase();
+    private sendOtpEmailUseCase = DIContainer.getEmailServiceUseCase();
     async signup(req: Request, res: Response) {
         const dto = Object.assign(new CreateUserDto(), req.body);
         const errors = await validate(dto);
@@ -24,9 +24,9 @@ export class SignUpController {
                 // here common error comes 
                 return res.status(409).json({ message: "user already exist with this email " })
             }
-            const otp = await this.tempStoreAndOtp.execute({ name, email, password, avatar }) as string;
+            const otp = await this.temporaryStoreAndOtpUseCase.execute({ name, email, password, avatar }) as string;
             console.log(otp, "otp");
-            const sentMail = await this.sentOtpEmail.execute({ email, name, otp })
+            await this.sendOtpEmailUseCase.execute({ email, name, otp })
             res.status(200).json({ message: "OTP sent to email.", email });
         } catch (error) {
             console.log(error)
