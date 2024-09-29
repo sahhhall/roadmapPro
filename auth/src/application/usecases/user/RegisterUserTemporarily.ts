@@ -1,5 +1,5 @@
 import { User } from "../../../domain/entities/User";
-import { IRedisRepository } from "../../../domain/interfaces/IRedisRepository";
+import { IRedisRepository } from "../../../domain/interfaces/ICacheUserRepo";
 import { Password } from "../../services/PasswordHash";
 import { IOtpService } from "../../interfaces/IOtpService";
 

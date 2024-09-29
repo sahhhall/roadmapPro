@@ -1,6 +1,6 @@
 import { User } from "../../domain/entities/User";
-import { IRedisRepository } from "../../domain/interfaces/IRedisRepository";
-import { redisClientInstance } from "../redis/ RedisClient";
+import { IRedisRepository } from "../../domain/interfaces/ICacheUserRepo";
+import { redisClientInstance } from "../database/redis/connection";
 import { RedisClientType } from 'redis'
 
 
@@ -28,4 +28,19 @@ export class RedisUserRepository implements IRedisRepository {
         const result = await this.redisClient.get(`otp:${email}`)
         return result ? result : null;
     };
+
+    //for store token forget password
+
+    async storeToken(token: string, userId: string): Promise<void> {
+        const tokenKey = `password-reset:${token}`;
+        await this.redisClient.set(tokenKey, userId, { EX: 900 })
+    }
+    async verifyToken(token: string): Promise<any> {
+        const tokenKey = `password-reset:${token}`;
+        return await this.redisClient.get(tokenKey);
+    }
+    async deleteToken(token: string): Promise<void> {
+        const tokenKey = `password-reset:${token}`;
+        await this.redisClient.del(tokenKey);
+    }
 }

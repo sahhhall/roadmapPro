@@ -6,10 +6,10 @@ import { RegisterUser } from "../../application/usecases/user/RegisterUser";
 import { RegisterUserTemporarily } from "../../application/usecases/user/RegisterUserTemporarily";
 import { ResendOTP } from "../../application/usecases/user/ResendOtp";
 import { SendOtpEmailUseCase } from "../../application/usecases/user/SendOtpEmail";
-import { RedisUserRepository } from "../repositories/RedisUserRepository";
+import { RedisUserRepository } from "../repositories/CacheUserRepo";
 import { UserRepository } from "../repositories/UserRepository";
-import { JwtService } from "../services/JwtService";
-import { NodeMailerService } from "../services/NodeMailerService";
+import { JwtService } from "../external-services/JwtService";
+import { NodeMailerService } from "../external-services/NodeMailerService";
 
 
 class DIContainer {

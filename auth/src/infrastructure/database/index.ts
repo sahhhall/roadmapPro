@@ -1,4 +1,4 @@
-import { Auth } from "./schemas/user.schema";
+import { Auth } from "./mongodb/schemas/user.schema";
 
 
 

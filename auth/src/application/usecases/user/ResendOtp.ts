@@ -1,5 +1,5 @@
 import { User } from "../../../domain/entities/User";
-import { IRedisRepository } from "../../../domain/interfaces/IRedisRepository";
+import { IRedisRepository } from "../../../domain/interfaces/ICacheUserRepo";
 import { IOtpService } from "../../interfaces/IOtpService";
 
 

@@ -1,9 +1,9 @@
 import express from 'express';
 import { authRoutes } from './presentation/routes/authRoutes';
-import { connectDB } from './config/database';
+import { connectDB } from './infrastructure/database/mongodb/connection';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser'
-import { redisClientInstance } from './infrastructure/redis/ RedisClient';
+import { redisClientInstance } from './infrastructure/database/redis/connection';
 class App {
     private readonly app: express.Application;
 

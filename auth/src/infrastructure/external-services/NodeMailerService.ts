@@ -1,4 +1,4 @@
-import { IEmailService } from "../../domain/interfaces/IEmailService";
+import { IEmailService } from "../../application/interfaces/IEmailService";
 import nodemailer from 'nodemailer';
 
 import dotenv from 'dotenv';

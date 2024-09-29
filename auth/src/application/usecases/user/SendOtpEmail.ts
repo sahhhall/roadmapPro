@@ -1,4 +1,4 @@
-import { IEmailService } from "../../../domain/interfaces/IEmailService";
+import { IEmailService } from "../../interfaces/IEmailService";
 
 interface SendOtpEmailInput {
     email: string;
