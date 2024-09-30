@@ -60,4 +60,66 @@ class DIContainer {
 }
 
 
+// class DIContainer {
+//     private static instance: DIContainer;
+//     private _authRepository: UserRepository;
+//     private _jwtService: JwtService;
+//     private _redisService: RedisUserRepository;
+//     private _otpService: OTPService;
+//     private _nodeMailerService: NodeMailerService;
+
+//     private constructor() {
+//         this._authRepository = new UserRepository();
+//         this._jwtService = new JwtService();
+//         this._redisService = new RedisUserRepository();
+//         this._otpService = new OTPService();
+//         this._nodeMailerService = new NodeMailerService();
+//     }
+
+//     public static getInstance(): DIContainer {
+//         if (!DIContainer.instance) {
+//             DIContainer.instance = new DIContainer();
+//         }
+//         return DIContainer.instance;
+//     }
+
+
+//     public getRegisterUserUseCase(): RegisterUser {
+//         return new RegisterUser(this._authRepository);
+//     }
+
+//     public getLoginUserUseCase(): LoginUser {
+//         return new LoginUser(this._authRepository, this._jwtService);
+//     }
+
+//     public getLoginAdminUseCase(): LoginAdmin {
+//         return new LoginAdmin(this._authRepository, this._jwtService);
+//     }
+
+//     public getUserUseCase(): GetUser {
+//         return new GetUser(this._authRepository);
+//     }
+
+//     public getTemporaryStorageUseCase(): RegisterUserTemporarily {
+//         return new RegisterUserTemporarily(this._redisService, this._otpService);
+//     }
+
+//     public getEmailServiceUseCase(): SendOtpEmailUseCase {
+//         return new SendOtpEmailUseCase(this._nodeMailerService);
+//     }
+
+//     public getResendOtpUseCase(): ResendOTP {
+//         return new ResendOTP(this._redisService, this._otpService);
+//     }
+
+//     public getAllUsersUseCase(): FetchUsers {
+//         return new FetchUsers(this._authRepository);
+//     }
+
+//     public verifyUserUseCase(): OtpVerification {
+//         return new OtpVerification(this._redisService, this._authRepository);
+//     }
+// }
+
+
 export { DIContainer }
