@@ -22,6 +22,10 @@ export class UserRepository implements IUserRepository {
         await Auth.findByIdAndUpdate(user.id, user);
     }
 
+    async fetchUsers(): Promise<User[] | null> {
+        return await Auth.find()
+    }
+
     async login(email: string, password: string): Promise<User | null> {
         const existingUser = await Auth.findOne({ email });
         if (existingUser) {

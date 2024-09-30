@@ -10,6 +10,8 @@ import { RedisUserRepository } from "../repositories/CacheUserRepo";
 import { UserRepository } from "../repositories/UserRepository";
 import { JwtService } from "../external-services/JwtService";
 import { NodeMailerService } from "../external-services/NodeMailerService";
+import { LoginAdmin } from "../../application/usecases/admin/LoginAdmin";
+import { FetchUsers } from "../../application/usecases/admin/FetchUsers";
 
 
 class DIContainer {
@@ -30,6 +32,10 @@ class DIContainer {
         return new LoginUser(this._authRepository, this._jwtService)
     }
 
+    static getLoginAdminUserCase() {
+        return new LoginAdmin(this._authRepository, this._jwtService)
+    }
+
     static getUserUseCase() {
         return new GetUser(this._authRepository)
     }
@@ -46,6 +52,10 @@ class DIContainer {
     }
     static verifyUserUserCase() {
         return new OtpVerification(this._rediseService, this._authRepository)
+    }
+
+    static getAllUsersUseCase() {
+        return new FetchUsers(this._authRepository)
     }
 }
 

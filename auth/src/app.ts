@@ -4,6 +4,7 @@ import { connectDB } from './infrastructure/database/mongodb/connection';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser'
 import { redisClientInstance } from './infrastructure/database/redis/connection';
+import { adminAuthRoutes } from './presentation/routes/adminAuthRoutes';
 class App {
     private readonly app: express.Application;
 
@@ -22,6 +23,7 @@ class App {
     };
     private registerRoutes(): void {
         this.app.use('/api/auth', authRoutes)
+        this.app.use('/api/admin', adminAuthRoutes);
 
     }
     private async startServer() {
