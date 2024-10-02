@@ -11,8 +11,6 @@ import DropDown from "./DropDown";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { getAccessStyle } from "../../util/getAccessStyle";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Search } from "lucide-react";
 import Container from "@/components/Container";
 
 const users = [

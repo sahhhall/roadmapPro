@@ -68,6 +68,7 @@ const SignupForm = () => {
 
   return (
     <Form {...form}>
+      {/* chage should be here to resize to small that fit screen  */}
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3">
         <FormField
           control={form.control}
