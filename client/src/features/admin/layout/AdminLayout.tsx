@@ -10,11 +10,11 @@ const AdminLayout = () => {
       </div>
       <div className="flex-grow flex flex-col">
         <Navbar />
-        <div className="flex-grow p-4">
+        <div className="flex-grow  p-4">
           <Outlet />
         </div>
       </div>
-    </div>
+    </div>  
   );
 };
 
