@@ -1,3 +1,10 @@
+import {
+  AdminDashBoard,
+  AdminLayout,
+  AdminLoginPage,
+  AdminSideBar,
+  UserManagment,
+} from "@/features/admin";
 import { ForgotPassowrdForm, LoginPage, SignupPage } from "@/features/auth";
 import UserLayout from "@/layout/UserLayout";
 import Home from "@/pages/ HomePage";
@@ -15,7 +22,20 @@ const routes = createBrowserRouter([
     ],
   },
   {
-    path: "/admin",
+    path: "/admin/login",
+    // element:<NavBar/>
+    element: <AdminLoginPage />,
+  },
+  {
+    path: "/admin/",
+    element: <AdminLayout />,
+    children: [
+      { path: "/admin/", element: <AdminDashBoard /> },
+      {
+        path: "/admin/user-management",
+        element: <UserManagment />,
+      },
+    ],
   },
 ]);
 
