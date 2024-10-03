@@ -11,7 +11,6 @@ export const authMiddleware = (req: any, res: Response, next: NextFunction) => {
     try {
         const secret = 'hi';
         const decoded = JWT.verify(token, secret) as any;
-
         req.user = {
             id: decoded.id,
             email: decoded.email
@@ -35,7 +34,6 @@ export const adminAuthMiddleware = (req: any, res: Response, next: NextFunction)
     try {
         const secret = 'hi';
         const decoded = JWT.verify(token, secret) as any;
-
         req.admin = {
             id: decoded.id,
             email: decoded.email

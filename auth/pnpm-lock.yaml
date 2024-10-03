@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@sahhhallroadmappro/common':
-        specifier: ^1.0.18
-        version: 1.0.18
+        specifier: ^1.0.21
+        version: 1.0.21
       '@types/bcrypt':
         specifier: ^5.0.2
         version: 5.0.2
@@ -192,8 +192,8 @@ packages:
     peerDependencies:
       '@redis/client': ^1.0.0
 
-  '@sahhhallroadmappro/common@1.0.18':
-    resolution: {integrity: sha512-1oTG2oqY4UYEcexl420yiPwC1FV5j/Ne9LyY+hU56/zh/3j0eNos3DzqHH6fRL6xsN1aIPClUVK7eh5cvQe9Yw==}
+  '@sahhhallroadmappro/common@1.0.21':
+    resolution: {integrity: sha512-qvxHfUgYLlI6HOzeU22Kth/On1Lmc+2/O5x6sW6VDPPLqq6IE3eYkWRgEYdaiN9ZRc/jn4DFkckJuqyj/Z6I5A==}
 
   '@tsconfig/node10@1.0.11':
     resolution: {integrity: sha512-DcRjDCujK/kCk/cUe8Xz8ZSpm8mS3mNNpta+jGCA6USEDfktlNvm1+IuZ9eTcDbNk41BHwpHHeW+N1lKCz4zOw==}
@@ -1498,7 +1498,7 @@ snapshots:
     dependencies:
       '@redis/client': 1.6.0
 
-  '@sahhhallroadmappro/common@1.0.18':
+  '@sahhhallroadmappro/common@1.0.21':
     dependencies:
       class-validator: 0.14.1
       express: 4.21.0

@@ -20,10 +20,24 @@ export const ROUTES = [
         url: '/api/admin/users',
         auth: "admin",
         proxy: {
-            target: "http://localhost:3000/api/admin",
+            target: "http://localhost:3000/api/admin/users",
             changeOrigin: true,
         }
     },
-   
-    
+    {
+        url: '/api/admin/logout',
+        auth: "admin",
+        proxy: {
+            target: "http://localhost:3000/api/admin/logout",
+            changeOrigin: true,
+        }
+    },
+    {
+        url: '/api/admin/',
+        auth: false,
+        proxy: {
+            target: "http://localhost:3000/api/admin",
+            changeOrigin: true,
+        }
+    }
 ];
