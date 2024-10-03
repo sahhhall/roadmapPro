@@ -30,7 +30,7 @@ export class LoginUser {
             const refreshToken = this.jwtservice.generateRefreshToken(user);
             return {
                 user: {
-                    id: user.id as any,
+                    id: user.id as string,
                     email: user.email,
                 },
                 accessToken,

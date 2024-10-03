@@ -56,6 +56,10 @@ const authSchema = new mongoose.Schema(
       type: Boolean,
       default: true,
     },
+    isGoogle: {
+      type: Boolean,
+      default: false
+    }
   },
   {
     toJSON: {

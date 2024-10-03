@@ -1,17 +1,18 @@
 
 export class User {
-    constructor(
-      public name: string,        
-      public email: string,       
-      public password: string,         
-      public avatar?: string,     
-      public isAdmin: boolean = false,  
-      public isActive: boolean = true,  
-      public id?:string,
-      public role?:string
-    ) {}
-  }
-  
+  constructor(
+    public name: string,
+    public email: string,
+    public password: string,
+    public avatar?: string,
+    public isAdmin: boolean = false,
+    public isGoogle: boolean = false,
+    public isActive: boolean = true,
+    public id?: string,
+    public role?: string
+  ) { }
+}
+
 //   export interface IUser {
 //     id: string;             
 //     name: string;          
@@ -24,4 +25,3 @@ export class User {
 //     createdAt: Date;       
 //     updatedAt: Date;
 //   }
-  
