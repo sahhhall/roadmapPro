@@ -7,7 +7,7 @@ export class JwtService implements ITokenService {
     private readonly refreshTokenSecret: string;
 
     constructor() {
-        this.accessTokenSecret = process.env.JWT_ACCESS_SECRET || 'dhahhasd';
+        this.accessTokenSecret = process.env.JWT_ACCESS_SECRET || 'hi';
         this.refreshTokenSecret = process.env.JWT_REFRESH_SECRET || 'sdfakj';
     }
 

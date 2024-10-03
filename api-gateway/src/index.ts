@@ -9,16 +9,16 @@ import { customLogger } from './logger/logger';
 
 
 const app = express();
-const port = 3000;
+const port = 4001;
 
 
 
 
 customLogger.error("hi")
-app.use(loggingMiddleware);
+// app.use(loggingMiddleware);
 
 app.use(cookieParser());
-setupRateLimit(app, ROUTES);
+// setupRateLimit(app, ROUTES);
 setupAuth(app, ROUTES);
 setupProxies(app, ROUTES);
 
