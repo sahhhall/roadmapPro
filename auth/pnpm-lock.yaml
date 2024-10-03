@@ -8,6 +8,9 @@ importers:
 
   .:
     dependencies:
+      '@sahhhallroadmappro/common':
+        specifier: ^1.0.18
+        version: 1.0.18
       '@types/bcrypt':
         specifier: ^5.0.2
         version: 5.0.2
@@ -188,6 +191,9 @@ packages:
     resolution: {integrity: sha512-c1Q99M5ljsIuc4YdaCwfUEXsofakb9c8+Zse2qxTadu8TalLXuAESzLvFAvNVbkmSlvlzIQOLpBCmWI9wTOt+g==}
     peerDependencies:
       '@redis/client': ^1.0.0
+
+  '@sahhhallroadmappro/common@1.0.18':
+    resolution: {integrity: sha512-1oTG2oqY4UYEcexl420yiPwC1FV5j/Ne9LyY+hU56/zh/3j0eNos3DzqHH6fRL6xsN1aIPClUVK7eh5cvQe9Yw==}
 
   '@tsconfig/node10@1.0.11':
     resolution: {integrity: sha512-DcRjDCujK/kCk/cUe8Xz8ZSpm8mS3mNNpta+jGCA6USEDfktlNvm1+IuZ9eTcDbNk41BHwpHHeW+N1lKCz4zOw==}
@@ -1491,6 +1497,13 @@ snapshots:
   '@redis/time-series@1.1.0(@redis/client@1.6.0)':
     dependencies:
       '@redis/client': 1.6.0
+
+  '@sahhhallroadmappro/common@1.0.18':
+    dependencies:
+      class-validator: 0.14.1
+      express: 4.21.0
+    transitivePeerDependencies:
+      - supports-color
 
   '@tsconfig/node10@1.0.11': {}
 

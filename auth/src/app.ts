@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser'
 import { redisClientInstance } from './infrastructure/database/redis/connection';
 import { adminAuthRoutes } from './presentation/routes/adminAuthRoutes';
+import { errorHandler } from '@sahhhallroadmappro/common';
 class App {
     private readonly app: express.Application;
 
@@ -13,6 +14,7 @@ class App {
         this.app = express();
         this.config();
         this.registerRoutes();
+        this.registerErrorHandler();
         this.startServer();
 
     };
@@ -25,6 +27,9 @@ class App {
         this.app.use('/api/auth', authRoutes)
         this.app.use('/api/admin', adminAuthRoutes);
 
+    }
+    private registerErrorHandler(): void {
+        this.app.use(errorHandler as any);
     }
     private async startServer() {
         try {
