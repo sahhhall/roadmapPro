@@ -1,12 +1,12 @@
 import { GoogleLogin } from "@react-oauth/google";
 import { useGoogleLogin } from "../hooks/useGoogleLogin";
 import SignupForm from "../components/SignupForm";
-import img from "../../../assets/images/illustration.png";
+// import img from "../../../assets/images/illustration.png";
 import { useState } from "react";
 import Otp from "../components/Otp";
 const SignupPage = () => {
   const { handleSuccess, handleError } = useGoogleLogin();
-  const [response, setResponse] = useState(false);
+  const [showOtppage, setShowOtppage] = useState<boolean>(false);
   return (
     <div className="min-h-96   flex items-center justify-center ">
       <div className="flex mt-7  items-center   lg:space-y-0 lg:space-x-12 lg:justify-between">
@@ -19,7 +19,7 @@ const SignupPage = () => {
         
         </div> */}
         <div className="w-25% flex flex-col ">
-          {response ? (
+          {showOtppage ? (
             <>
               <h1 className="text-3xl text-center font-extrabold">Signup</h1>
               <p className=" text-center mt-1   text-xs text-gray-500">
@@ -44,7 +44,7 @@ const SignupPage = () => {
                 <hr className="flex-grow border-white-400" />
               </div>
               <div className="max-w-100 w-full" style={{ minHeight: "450px" }}>
-                <SignupForm />
+                <SignupForm setShowOtppage={setShowOtppage} />
               </div>
             </>
           ) : (

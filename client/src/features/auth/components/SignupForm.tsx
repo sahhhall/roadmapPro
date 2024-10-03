@@ -16,6 +16,9 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import useAuthRequest from "../hooks/useAuthRequest";
+import { userRoutes } from "../services/endpoints";
+import { useToast } from "@/hooks/use-toast";
 
 export const formSchema = z
   .object({
@@ -46,8 +49,16 @@ export const formSchema = z
     path: ["confirmPassword"],
   });
 
-const SignupForm = () => {
-  const [showPassword, setShowPassword] = useState(false);
+const SignupForm = ({ setShowOtppage }: any) => {
+  const [showPassword, setShowPassword] = useState(true);
+  const { doRequest, loading } = useAuthRequest({
+    path: userRoutes.signup,
+    method: "post",
+    onSuccess: () => setShowOtppage(false),
+  });
+
+  const { toast } = useToast();
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -62,8 +73,23 @@ const SignupForm = () => {
     setShowPassword(!showPassword);
   };
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const response = await doRequest(values);
+    if (response.success) {
+      console.log("eveything gine")
+    } else {
+      if (response.error?.status === 409 && !response.success) {
+        form.setError("email", {
+          type: "manual",
+          message: "User already exists with this email",
+        });
+      } else {
+        toast({
+          description: "internal server error try again later",
+          variant: "destructive",
+        });
+      }
+    }
   };
 
   return (
@@ -143,11 +169,17 @@ const SignupForm = () => {
           )}
         />
         <p className="max-w-[22rem] text-xs font-thin dark:text-white-500">
-        Password must contain at least one uppercase letter, one number, and can include special characters
+          Password must contain at least one uppercase letter, one number, and
+          can include special characters
         </p>
 
-        <Button size={"submit"} variant={"submit"} type="submit">
-          Submit
+        <Button
+          className={`${loading && "opacity-50 cursor-not-allowed "}}`}
+          size={"submit"}
+          variant={"submit"}
+          type="submit"
+        >
+          {loading ? loading : "Submit"}
         </Button>
 
         <Button

@@ -6,14 +6,17 @@ import { setupAuth } from './auth/auth';
 import cookieParser from 'cookie-parser';
 import loggingMiddleware from './logger/morgan';
 import { customLogger } from './logger/logger';
-
+import cors from 'cors'
 
 const app = express();
 const port = 4001;
 
 
 
-
+app.use(cors({
+    origin: 'http://localhost:5173',  
+    credentials: true,  
+  }));
 customLogger.error("hi")
 // app.use(loggingMiddleware);
 

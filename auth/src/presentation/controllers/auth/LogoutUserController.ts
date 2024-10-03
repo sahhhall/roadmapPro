@@ -5,7 +5,7 @@ export class LogoutController {
         try {
             res.clearCookie("admin_accessToken")
             res.clearCookie("admin_refreshToken")
-            res.status(200).json({ message: "user successfully logged out" });
+            res.status(200).json({ message: "admin successfully logged out" });
         } catch (error) {
             console.log(error)
         }

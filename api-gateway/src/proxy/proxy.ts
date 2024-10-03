@@ -7,6 +7,8 @@ export const setupProxies = (app: Application, routes: any[]) => {
             target: routes.proxy.target,
             changeOrigin: routes.proxy.changeOrigin,
             on: {
+                //here instaed of passing user data in headers change future to jwt pass and 
+                // handle decode logic to common package 
                 proxyReq: (proxyReq, req: any, res) => {
                     if (req.user) {
                         proxyReq.setHeader('X-User-Data', JSON.stringify(req.user));
