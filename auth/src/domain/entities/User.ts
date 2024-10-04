@@ -8,6 +8,7 @@ export class User {
     public isAdmin: boolean = false,
     public isGoogle: boolean = false,
     public isActive: boolean = true,
+    public isBlocked : boolean= false,
     public id?: string,
     public role?: string
   ) { }

@@ -20,6 +20,8 @@ interface AuthDoc extends mongoose.Document {
   password: string;
   role: string;
   avatar?: string;
+  isBlocked: boolean;
+  isGoogle: boolean;
   isActive: boolean;
   isAdmin: boolean;
   createdAt: Date;
@@ -43,10 +45,10 @@ const authSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      default: "user", 
+      default: "user",
     },
     avatar: {
-      type: String, 
+      type: String,
     },
     isAdmin: {
       type: Boolean,
@@ -59,7 +61,11 @@ const authSchema = new mongoose.Schema(
     isGoogle: {
       type: Boolean,
       default: false
-    }
+    },
+    isBlocked: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     toJSON: {
@@ -67,10 +73,10 @@ const authSchema = new mongoose.Schema(
         ret.id = ret._id;
         delete ret._id;
         delete ret.__v;
-        delete ret.password; 
+        delete ret.password;
       },
     },
-    timestamps: true, 
+    timestamps: true,
   }
 );
 

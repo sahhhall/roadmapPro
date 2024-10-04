@@ -13,6 +13,7 @@ import { NodeMailerService } from "../external-services/NodeMailerService";
 import { LoginAdmin } from "../../application/usecases/admin/LoginAdmin";
 import { FetchUsers } from "../../application/usecases/admin/FetchUsers";
 import { GoogleLogin } from "../../application/usecases/user/GoogleLogin";
+import { BlockUser } from "../../application/usecases/admin/BlockUser";
 
 
 class DIContainer {
@@ -61,6 +62,10 @@ class DIContainer {
 
     static getGoogleLoginUseCase() {
         return new GoogleLogin(this._authRepository, this._jwtService)
+    }
+
+    static blockUserUseCase() {
+        return new BlockUser(this._authRepository);
     }
 }
 
