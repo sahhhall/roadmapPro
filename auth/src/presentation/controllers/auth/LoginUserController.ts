@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import { LoginUserDto } from "../../dto/LoginUserDto";
 import { validate } from "class-validator";
 import { DIContainer } from "../../../infrastructure/di/DIContainer";
+import { BadRequestError, NotFoundError } from "@sahhhallroadmappro/common";
 
 
 
@@ -22,9 +23,12 @@ export class LoginController {
                 email,
                 password
             })
+            if (user?.notfound) {
+                throw new NotFoundError();
+            }
             if (!user) {
                 // here common error  badreq
-                throw new Error("bad req")
+                throw new BadRequestError('password not correct')
             };
             res.cookie(`user_accessToken`, user.accessToken, {
                 httpOnly: true,

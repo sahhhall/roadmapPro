@@ -44,7 +44,6 @@ const Otp = ({ email }: { email: string }) => {
       navigate("/");
       toast({
         description: `Welcome ${response.data.userVerified.name}🎉.`,
-        duration: 10,
       });
     },
   });

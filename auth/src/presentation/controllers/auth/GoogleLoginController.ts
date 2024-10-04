@@ -13,7 +13,6 @@ export class GoogleLoginController {
                 email,
                 name,
                 avatar,
-                password: "123456"
             });
             res.cookie(`user_accessToken`, user.accessToken, {
                 httpOnly: true,
@@ -26,8 +25,7 @@ export class GoogleLoginController {
                 sameSite: "strict",
             });
             res.json({
-                user: user.user,
-                accessToken: user.accessToken
+                user: user?.user,
             })
         } catch (err) {
             console.log(err)

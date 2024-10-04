@@ -1,27 +1,9 @@
-import { GoogleLogin, CredentialResponse } from "@react-oauth/google";
-import { jwtDecode } from "jwt-decode";
-import { JwtPayload } from "jwt-decode";
+import { GoogleLogin } from "@react-oauth/google";
 import { ProfileForm } from "../components/LoginForm";
+import { useGoogleLogin } from "../hooks/useGoogleLogin";
 
-interface CredentialPayload extends JwtPayload {
-  name: string;
-  email: string;
-  picture: string;
-}
 const LoginPage = () => {
-  const responseMessage = (response: CredentialResponse) => {
-    try {
-      const credentials: CredentialPayload = jwtDecode(
-        response.credential as string
-      );
-      console.log(credentials);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  const errorMessage = (error: object): void => {
-    console.log(error);
-  };
+  const { handleSuccess, handleError } = useGoogleLogin();
 
   return (
     <div className="min-h-96  flex items-center justify-center ">
@@ -30,7 +12,7 @@ const LoginPage = () => {
         <p className=" text-center mt-1   text-xs text-gray-500">Welcome back! Let's take you to your account.</p>
         <div className="w-full mt-7">
           <div>
-            <GoogleLogin width={"350"} size="large" onSuccess={responseMessage} onError={errorMessage as any} />
+            <GoogleLogin width={"350"} size="large" onSuccess={handleSuccess} onError={handleError as any} />
           </div>
         </div>
         <div className="w-full flex items-center mt-4 mb-4">

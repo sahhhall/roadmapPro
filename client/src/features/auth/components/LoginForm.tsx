@@ -5,17 +5,23 @@ import {
   EyeOff as HidePasswordIcon,
 } from "lucide-react";
 import { z } from "zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormMessage   ,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import useAuthRequest from "../hooks/useAuthRequest";
+import { userRoutes } from "../services/endpoints";
+import { useAppDispatch } from "@/hooks/useAppStore";
+import { useToast } from "@/hooks/use-toast";
+import { login } from "@/redux/slices/authSlice";
+import { ToastAction } from "@/components/ui/toast";
 
 export const formSchema = z.object({
   email: z.string().email({
@@ -26,6 +32,21 @@ export const formSchema = z.object({
 
 export const ProfileForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { toast } = useToast();
+  const { doRequest, loading } = useAuthRequest({
+    path: userRoutes.login,
+    method: "post",
+    onSuccess: (response) => {
+      dispatch(login(response.data.user));
+      navigate("/");
+      toast({
+        description: `Welcome back ${response.data.userVerified.name}🎉.`,
+      });
+    },
+  });
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,8 +59,28 @@ export const ProfileForm = () => {
     setShowPassword(!showPassword);
   };
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    const response = await doRequest(values);
+    if (!response.success) {
+      if (response.error?.status === 404) {
+        form.setError("email", {
+          type: "manual",
+          message: "not a valid email",
+        });
+      } else if (response.error?.status === 400) {
+        form.setError("password", {
+          type: "manual",
+          message: response.error?.message,
+        });
+      } else if (response.error?.status === 403) {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: "Your account blocked from this site .",
+          action: <ToastAction altText="Try again">Try again</ToastAction>,
+        });
+      }
+    }
   };
 
   return (
@@ -99,9 +140,9 @@ export const ProfileForm = () => {
         </div>
 
         <Button size={"submit"} variant={"submit"} type="submit">
-          Submit
+          {loading ? loading : "Submit"}
         </Button>
-       
+
         <Button
           className="dark:text-white w-full     border   rounded-md  text-black text-center"
           type="submit"
