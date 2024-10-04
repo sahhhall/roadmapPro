@@ -14,3 +14,13 @@ export const userSignup = async (data: SignupData) => {
         console.log(error)
     }
 }
+
+export const verifyOtp = async (email: string) => {
+    try {
+        const response = await axiosInstance.post(userRoutes.resendOtp, { email: email });
+        return response.data
+    }
+    catch (error: any) {
+        return error.response.data;
+    }
+}

@@ -54,7 +54,11 @@ const SignupForm = ({ setShowOtppage }: any) => {
   const { doRequest, loading } = useAuthRequest({
     path: userRoutes.signup,
     method: "post",
-    onSuccess: () => setShowOtppage(false),
+    onSuccess: (response) =>
+      setShowOtppage({
+        show: true,
+        email: response.data.email,
+      }),
   });
 
   const { toast } = useToast();
@@ -76,7 +80,7 @@ const SignupForm = ({ setShowOtppage }: any) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const response = await doRequest(values);
     if (response.success) {
-      console.log("eveything gine")
+     
     } else {
       if (response.error?.status === 409 && !response.success) {
         form.setError("email", {

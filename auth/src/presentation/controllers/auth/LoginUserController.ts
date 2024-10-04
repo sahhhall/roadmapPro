@@ -37,8 +37,7 @@ export class LoginController {
                 sameSite: "strict",
             });
             res.json({
-                user: user.user,
-                accessToken: user.accessToken
+                user: user?.user
             })
         } catch (error) {
             console.log(error)

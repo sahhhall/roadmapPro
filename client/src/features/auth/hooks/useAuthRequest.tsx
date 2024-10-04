@@ -1,6 +1,5 @@
 import axiosInstance from "@/services/axiosConfig";
 import { useState } from "react";
-import { SignupData } from "../types/auth";
 import { LoaderCircle } from "lucide-react";
 
 export interface RequestHookProps {
@@ -11,14 +10,15 @@ export interface RequestHookProps {
 export default ({ path, method, onSuccess }: RequestHookProps) => {
   const [errors, setErrors] = useState(null);
   const [loading, setLoading] = useState<null | any>(null);
-  const doRequest = async (data: SignupData) => {
+  const doRequest = async (data: any) => {
     try {
       setErrors(null);
       setLoading(<LoaderCircle className="animate-spin" />);
+      console.log(method, path, data);
       const response = await axiosInstance[method](path, data);
       setLoading(null);
       if (onSuccess) {
-        onSuccess(data);
+        onSuccess(response);
       }
       return {
         success: true,
@@ -27,6 +27,7 @@ export default ({ path, method, onSuccess }: RequestHookProps) => {
     } catch (err: any) {
       const errorMessage =
         err.response?.data?.errors?.[0]?.message ||
+        err?.response?.data.message ||
         "An unexpected error occurred";
       return {
         success: false,

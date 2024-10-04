@@ -1,4 +1,4 @@
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/useAppStore";
 import { toggleDarkMode } from "@/redux/slices/themeSlice";
 import { Button } from "../ui/button";
 import { Moon } from "lucide-react";

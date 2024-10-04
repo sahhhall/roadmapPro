@@ -22,7 +22,7 @@ export class LoginUser {
     async execute({
         email,
         password
-    }: Pick<User, "email" | "password">): Promise<LoginResponse | null> {
+    }: Pick<User, "email" | "password">): Promise<User | any> {
         const user = await this.userRepository.findByEmail(email);
         if (user?.isBlocked) {
             throw new BlockError();
@@ -31,10 +31,7 @@ export class LoginUser {
             const accessToken = this.jwtservice.generateAccessToken(user)
             const refreshToken = this.jwtservice.generateRefreshToken(user);
             return {
-                user: {
-                    id: user.id as string,
-                    email: user.email,
-                },
+                user,
                 accessToken,
                 refreshToken
             }

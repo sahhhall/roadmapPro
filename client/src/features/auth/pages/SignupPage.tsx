@@ -6,7 +6,10 @@ import { useState } from "react";
 import Otp from "../components/Otp";
 const SignupPage = () => {
   const { handleSuccess, handleError } = useGoogleLogin();
-  const [showOtppage, setShowOtppage] = useState<boolean>(false);
+  const [showOtppage, setShowOtppage] = useState({
+    show: false,
+    email: "",
+  });
   return (
     <div className="min-h-96   flex items-center justify-center ">
       <div className="flex mt-7  items-center   lg:space-y-0 lg:space-x-12 lg:justify-between">
@@ -19,7 +22,7 @@ const SignupPage = () => {
         
         </div> */}
         <div className="w-25% flex flex-col ">
-          {showOtppage ? (
+          {!showOtppage.show ? (
             <>
               <h1 className="text-3xl text-center font-extrabold">Signup</h1>
               <p className=" text-center mt-1   text-xs text-gray-500">
@@ -48,7 +51,9 @@ const SignupPage = () => {
               </div>
             </>
           ) : (
-            <Otp />
+            <div>
+              <Otp email={showOtppage.email} />
+            </div>
           )}
         </div>
       </div>

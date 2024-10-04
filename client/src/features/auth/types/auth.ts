@@ -10,6 +10,11 @@ export interface SignupData extends LoginCredentials {
     avatar?: string;
 }
 
+export interface VerifyOtp {
+    email: string
+    otp: string
+}
+
 export interface ForgotPasswordData {
     email: string;
 }

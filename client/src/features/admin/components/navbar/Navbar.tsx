@@ -1,5 +1,5 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
-import { useAppDispatch, useAppSelector } from "@/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/hooks/useAppStore";
 import { toggleDarkMode } from "@/redux/slices/themeSlice";
 import {  Moon } from "lucide-react";
 import Hamburgermenu from "./Hamburgermenu";
