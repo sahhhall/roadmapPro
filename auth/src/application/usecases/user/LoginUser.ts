@@ -2,7 +2,7 @@ import { User } from "../../../domain/entities/User";
 import { ITokenService } from "../../../domain/interfaces/ITokenService";
 import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
 import { Password } from "../../services/PasswordHash";
-
+import { BlockError } from '@sahhhallroadmappro/common'
 
 export interface LoginResponse {
     user: {
@@ -24,7 +24,9 @@ export class LoginUser {
         password
     }: Pick<User, "email" | "password">): Promise<LoginResponse | null> {
         const user = await this.userRepository.findByEmail(email);
-
+        if (user?.isBlocked) {
+            throw new BlockError();
+        }
         if (user && await Password.compare(password, user.password)) {
             const accessToken = this.jwtservice.generateAccessToken(user)
             const refreshToken = this.jwtservice.generateRefreshToken(user);

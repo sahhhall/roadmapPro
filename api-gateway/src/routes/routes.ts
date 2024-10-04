@@ -33,6 +33,14 @@ export const ROUTES = [
         }
     },
     {
+        url: '/api/admin/user-action',
+        auth: "admin",
+        proxy: {
+            target: "http://localhost:3000/api/admin/user-action",
+            changeOrigin: true
+        }
+    },
+    {
         url: '/api/admin/',
         auth: false,
         proxy: {

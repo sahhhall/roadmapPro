@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 
-export class LogoutController {
+export class LogoutAdminController {
     async logout(req: Request, res: Response) {
         try {
             res.clearCookie("admin_accessToken")

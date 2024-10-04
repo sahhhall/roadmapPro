@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { LoginUserDto } from "../../dto/LoginUserDto";
 import { validate } from "class-validator";
 import { DIContainer } from "../../../infrastructure/di/DIContainer";
@@ -8,7 +8,7 @@ import { DIContainer } from "../../../infrastructure/di/DIContainer";
 
 export class LoginController {
     private loginUser = DIContainer.getLoginUserUseCase();
-    async login(req: Request, res: Response) {
+    async login(req: Request, res: Response, next: NextFunction) {
         const dto = Object.assign(new LoginUserDto(), req.body);
         const errors = await validate(dto);
         if (errors.length > 0) {
@@ -42,6 +42,7 @@ export class LoginController {
             })
         } catch (error) {
             console.log(error)
+            next(error)
             //here next function comes to pass error
         }
     }
