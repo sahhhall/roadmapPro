@@ -24,3 +24,14 @@ export const verifyOtp = async (email: string) => {
         return error.response.data;
     }
 }
+
+export const logoutUser = async () => {
+    try {
+        const response = await axiosInstance.post(userRoutes.logout);
+        console.log(response,"response from api")
+        return response
+    }
+    catch (error: any) {
+        return error.response.data;
+    }
+}

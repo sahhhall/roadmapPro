@@ -55,10 +55,7 @@ export const useGoogleLogin = () => {
       toast({
         variant: "destructive",
         title: "Login Failed",
-        description:
-          error instanceof Error
-            ? error.message
-            : "An unexpected error occurred",
+        description: "An unexpected error occurred",
       });
     }
   };

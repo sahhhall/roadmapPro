@@ -5,17 +5,21 @@ import {
   EyeOff as HidePasswordIcon,
 } from "lucide-react";
 import { z } from "zod";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormMessage   ,
+  FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
+import { adminLogin } from "../../api/auth";
+import { useAppDispatch } from "@/hooks/useAppStore";
+import { login } from "@/redux/slices/authSlice";
+import { useToast } from "@/hooks/use-toast";
 
 export const formSchema = z.object({
   email: z.string().email({
@@ -26,6 +30,9 @@ export const formSchema = z.object({
 
 export const LoginForm = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const dispatch = useAppDispatch();
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -38,8 +45,34 @@ export const LoginForm = () => {
     setShowPassword(!showPassword);
   };
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
+    try {
+      const response = await adminLogin(values);
+      if (response.success && response.data) {
+        dispatch(login(response.data.admin));
+        navigate("/admin");
+        toast({
+          title: "Login Successful",
+          description: "Welcome back, admin!",
+        });
+      } else {
+        const errorMessage =
+          response.error?.[0]?.message || "Login failed. Please try again.";
+        toast({
+          variant: "destructive",
+          title: "Login Failed",
+          description: errorMessage,
+        });
+      }
+    } catch (err) {
+      console.error("Unexpected error during login:", err);
+      toast({
+        variant: "destructive",
+        title: "Login Failed",
+        description: "An unexpected error occurred. Please try again later.",
+      });
+    }
   };
 
   return (
@@ -92,7 +125,7 @@ export const LoginForm = () => {
         <Button size={"submit"} variant={"submit"} type="submit">
           Submit
         </Button>
-       
+
         <Button
           className="dark:text-white w-full     border   rounded-md  text-black text-center"
           type="submit"

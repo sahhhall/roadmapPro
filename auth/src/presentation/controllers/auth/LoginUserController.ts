@@ -33,12 +33,12 @@ export class LoginController {
             res.cookie(`user_accessToken`, user.accessToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV !== "development",
-                sameSite: "strict",
+                sameSite: "none",
             });
             res.cookie(`user_refreshToken`, user.refreshToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV !== "development",
-                sameSite: "strict",
+                sameSite: "none",
             });
             res.json({
                 user: user?.user

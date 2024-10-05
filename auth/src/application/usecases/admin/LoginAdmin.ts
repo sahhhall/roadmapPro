@@ -3,40 +3,59 @@ import { ITokenService } from "../../../domain/interfaces/ITokenService";
 import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
 import { Password } from "../../services/PasswordHash";
 
-
-export interface LoginResponse {
-    user: {
-        id: string;
-        email: string;
-    };
+export interface LoginResult {
+  success: boolean;
+  data?: {
+    admin: User;
     accessToken: string;
     refreshToken: string;
+  };
+  error?: {
+    message: string;
+  };
 }
 
 export class LoginAdmin {
-    constructor(
-        private userRepository: IUserRepository,
-        private jwtservice: ITokenService
-    ) { }
+  constructor(
+    private userRepository: IUserRepository,
+    private jwtService: ITokenService
+  ) {}
 
-    async execute({
-        email,
-        password
-    }: Pick<User, "email" | "password">): Promise<LoginResponse | null> {
-        const admin = await this.userRepository.findByEmail(email);
+  async execute({
+    email,
+    password
+  }: Pick<User, "email" | "password">): Promise<LoginResult> {
+    const admin = await this.userRepository.findByEmail(email);
 
-        if (admin && await Password.compare(password, admin.password) && admin.isAdmin) {
-            const accessToken = this.jwtservice.generateAccessToken(admin)
-            const refreshToken = this.jwtservice.generateRefreshToken(admin);
-            return {
-                user: {
-                    id: admin.id as any,
-                    email: admin.email,
-                },
-                accessToken,
-                refreshToken
-            }
+    if (!admin || !admin.isAdmin) {
+      return {
+        success: false,
+        error: {
+          message: 'not an admin'
         }
-        return null;
+      };
     }
+
+    const passwordMatches = await Password.compare(password, admin.password);
+    if (!passwordMatches) {
+      return {
+        success: false,
+        error: {
+          message: 'Incorrect password'
+        }
+      };
+    }
+
+    const accessToken = this.jwtService.generateAccessToken(admin);
+    const refreshToken = this.jwtService.generateRefreshToken(admin);
+
+    return {
+      success: true,
+      data: {
+        admin,
+        accessToken,
+        refreshToken
+      }
+    };
+  }
 }

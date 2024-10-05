@@ -3,6 +3,7 @@ export const userRoutes = {
     login: '/api/auth/login',
     resendOtp: '/api/auth/resent-otp',
     verifyOtp: '/api/auth/verify-otp',
-    googleLogin: '/api/auth//google-login'
+    googleLogin: '/api/auth/google-login',
+    logout: '/api/auth/logout'
 }
 
