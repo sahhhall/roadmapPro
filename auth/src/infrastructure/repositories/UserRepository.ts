@@ -23,7 +23,7 @@ export class UserRepository implements IUserRepository {
     }
 
     async fetchUsers(): Promise<User[] | null> {
-        return await Auth.find()
+        return await Auth.find({ role: { $ne: 'admin' } })
     }
 
     async login(email: string, password: string): Promise<User | null> {
