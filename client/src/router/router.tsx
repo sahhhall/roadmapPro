@@ -9,6 +9,7 @@ import Resetpassword from "@/features/auth/pages/Resetpassword";
 import UserLayout from "@/layout/UserLayout";
 import Home from "@/pages/HomePage";
 import { createBrowserRouter } from "react-router-dom";
+import AdminProtected from "@/router/protected/AdminProtected";
 
 const routes = createBrowserRouter([
   {
@@ -27,12 +28,15 @@ const routes = createBrowserRouter([
   },
   {
     path: "/admin/login",
-    // element:<NavBar/>
     element: <AdminLoginPage />,
   },
   {
     path: "/admin/",
-    element: <AdminLayout />,
+    element: (
+      <AdminProtected>
+        <AdminLayout />
+      </AdminProtected>
+    ),
     children: [
       { path: "/admin/", element: <AdminDashBoard /> },
       {

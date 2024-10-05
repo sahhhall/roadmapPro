@@ -18,9 +18,8 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { adminLogin } from "@/features/admin/services/api/auth";
 import { useAppDispatch } from "@/hooks/useAppStore";
-import { login } from "@/redux/slices/authSlice";
 import { useToast } from "@/hooks/use-toast";
-
+import { adminAuth } from "@/redux/slices/adminSlice";
 export const formSchema = z.object({
   email: z.string().email({
     message: "Email must be valid",
@@ -50,7 +49,7 @@ export const LoginForm = () => {
     try {
       const response = await adminLogin(values);
       if (response.success && response.data) {
-        dispatch(login(response.data.admin));
+        dispatch(adminAuth());
         navigate("/admin");
         toast({
           title: "Login Successful",
