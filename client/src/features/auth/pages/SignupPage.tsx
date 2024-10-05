@@ -1,6 +1,6 @@
 import { GoogleLogin } from "@react-oauth/google";
-import { useGoogleLogin } from "../hooks/useGoogleLogin";
-import SignupForm from "../components/SignupForm";
+import { useGoogleLogin } from "@/features/auth/hooks/useGoogleLogin";
+import SignupForm from "@/features/auth/components/SignupForm";
 // import img from "../../../assets/images/illustration.png";
 import { useState } from "react";
 import Otp from "../components/Otp";

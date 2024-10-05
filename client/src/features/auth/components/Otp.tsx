@@ -16,9 +16,9 @@ import {
 } from "@/components/ui/form";
 import { useEffect, useState } from "react";
 import { useAppDispatch } from "@/hooks/useAppStore";
-import useAuthRequest from "../hooks/useAuthRequest";
-import { userRoutes } from "../services/endpoints";
-import { verifyOtp } from "../api/auth";
+import useAuthRequest from "@/features/auth/hooks/useAuthRequest";
+import { userRoutes } from "@/features/auth/services/endpoints";
+import { verifyOtp } from "@/features/auth/api/auth";
 import { useToast } from "@/hooks/use-toast";
 import { login } from "@/redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";

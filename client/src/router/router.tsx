@@ -6,7 +6,7 @@ import {
 } from "@/features/admin";
 import { ForgotPassowrdForm, LoginPage, SignupPage } from "@/features/auth";
 import UserLayout from "@/layout/UserLayout";
-import Home from "@/pages/ HomePage";
+import Home from "@/pages/HomePage";
 import { createBrowserRouter } from "react-router-dom";
 
 const routes = createBrowserRouter([

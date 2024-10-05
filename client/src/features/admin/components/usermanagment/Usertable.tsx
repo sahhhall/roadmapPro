@@ -9,52 +9,52 @@ import {
 } from "@/components/ui/table";
 import DropDown from "./DropDown";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
-import { getAccessStyle } from "../../util/getAccessStyle";
+import { getAccessStyle } from "../../lib/getAccessStyle";
 import { Input } from "@/components/ui/input";
 import Container from "@/components/Container";
-import { useFetchusersQuery } from "../../api/authApi";
+import { useFetchusersQuery } from "@/features/admin/services/api/authApi";
 
-const users = [
-  {
-    id: "1",
-    name: "John Doe",
-    role: "admin",
-    status: "Active",
-    createdAt: "2023-01-15",
-    email: "sahalvavoor@gmail.com",
-    avatar: "https://github.com/shadcn.png",
-  },
-  {
-    id: "2",
-    name: "Jane Smith",
-    role: "user",
-    status: "Inactive",
-    createdAt: "2022-12-01",
-    email: "sahalvavoor@gmail.com",
-    avatar: "https://github.com/shadcn.png",
-  },
-  {
-    id: "3",
-    name: "Alice Johnson",
-    role: "mentor",
-    status: "Active",
-    createdAt: "2023-03-22",
-    email: "sahalvavoor@gmail.com",
-    avatar: "https://github.com/shadcn.png",
-  },
-  {
-    id: "4",
-    name: "Bob Lee",
-    role: "admin",
-    status: "Suspended",
-    createdAt: "2021-11-08",
-    email: "sahalvavoor@gmail.com",
-    avatar: "https://github.com/shadcn.png",
-  },
-];
+// const users = [
+//   {
+//     id: "1",
+//     name: "John Doe",
+//     role: "admin",
+//     status: "Active",
+//     createdAt: "2023-01-15",
+//     email: "sahalvavoor@gmail.com",
+//     avatar: "https://github.com/shadcn.png",
+//   },
+//   {
+//     id: "2",
+//     name: "Jane Smith",
+//     role: "user",
+//     status: "Inactive",
+//     createdAt: "2022-12-01",
+//     email: "sahalvavoor@gmail.com",
+//     avatar: "https://github.com/shadcn.png",
+//   },
+//   {
+//     id: "3",
+//     name: "Alice Johnson",
+//     role: "mentor",
+//     status: "Active",
+//     createdAt: "2023-03-22",
+//     email: "sahalvavoor@gmail.com",
+//     avatar: "https://github.com/shadcn.png",
+//   },
+//   {
+//     id: "4",
+//     name: "Bob Lee",
+//     role: "admin",
+//     status: "Suspended",
+//     createdAt: "2021-11-08",
+//     email: "sahalvavoor@gmail.com",
+//     avatar: "https://github.com/shadcn.png",
+//   },
+// ];
 
 const Usertable = () => {
-  const { data, isLoading } = useFetchusersQuery({});
+  const { data } = useFetchusersQuery({});
   return (
     <Container className="justify-center">
       <div className="flex justify-center mt-4  ">
@@ -95,8 +95,16 @@ const Usertable = () => {
                 </span>
               </TableCell>
 
-              <TableCell className={`w-20 ${user.isBlocked ? 'text-red-500':'text-green-500'} `} >{user.isBlocked ? "Blocked" : "Active"}</TableCell>
-              <TableCell>{user.createdAt}</TableCell>
+              <TableCell
+                className={`w-20 ${
+                  user.isBlocked ? "text-red-500" : "text-green-500"
+                } `}
+              >
+                {user.isBlocked ? "Blocked" : "Active"}
+              </TableCell>
+              <TableCell>
+                {user.createdAt} ${user.createdAt}
+              </TableCell>
               <TableCell className="text-right">
                 <DropDown user={user} />
               </TableCell>

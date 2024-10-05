@@ -1,6 +1,6 @@
 import { GoogleLogin } from "@react-oauth/google";
-import { ProfileForm } from "../components/LoginForm";
-import { useGoogleLogin } from "../hooks/useGoogleLogin";
+import { ProfileForm } from "@/features/auth/components/LoginForm";
+import { useGoogleLogin } from "@/features/auth/hooks/useGoogleLogin";
 
 const LoginPage = () => {
   const { handleSuccess, handleError } = useGoogleLogin();

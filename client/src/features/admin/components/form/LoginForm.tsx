@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import { adminLogin } from "../../api/auth";
+import { adminLogin } from "@/features/admin/services/api/auth";
 import { useAppDispatch } from "@/hooks/useAppStore";
 import { login } from "@/redux/slices/authSlice";
 import { useToast } from "@/hooks/use-toast";

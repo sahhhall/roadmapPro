@@ -5,7 +5,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { EllipsisVertical } from "lucide-react";
-import { useBlockuserMutation } from "../../api/authApi";
+import { useBlockuserMutation } from "@/features/admin/services/api/authApi";
 import { useToast } from "@/hooks/use-toast";
 import { IUser } from "../../types/admin";
 

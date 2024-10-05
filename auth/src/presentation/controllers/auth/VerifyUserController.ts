@@ -17,6 +17,16 @@ export class OtpVerifyController {
         try {
             const response = await this.verifyUser.execute(dto);
             if (response.success) {
+                res.cookie(`user_accessToken`, response.accessToken, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV !== "development",
+                    sameSite: "none",
+                });
+                res.cookie(`user_refreshToken`, response.refreshToken, {
+                    httpOnly: true,
+                    secure: process.env.NODE_ENV !== "development",
+                    sameSite: "none",
+                });
                 return res.status(200).json({ userVerified: response.user });
             } else {
                 return res.status(400).json({ message: response.message });

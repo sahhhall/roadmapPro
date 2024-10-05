@@ -1,8 +1,8 @@
 import { CredentialResponse } from "@react-oauth/google";
 import { jwtDecode } from "jwt-decode";
 import { JwtPayload } from "jwt-decode";
-import useAuthRequest from "./useAuthRequest";
-import { userRoutes } from "../services/endpoints";
+import useAuthRequest from "@/features/auth/hooks/useAuthRequest";
+import { userRoutes } from "@/features/auth/services/endpoints";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { useAppDispatch } from "@/hooks/useAppStore";

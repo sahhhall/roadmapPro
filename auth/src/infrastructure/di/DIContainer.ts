@@ -53,7 +53,7 @@ class DIContainer {
         return new ResendOTP(this._rediseService, this._otpService)
     }
     static verifyUserUserCase() {
-        return new OtpVerification(this._rediseService, this._authRepository)
+        return new OtpVerification(this._rediseService, this._authRepository, this._jwtService)
     }
 
     static getAllUsersUseCase() {

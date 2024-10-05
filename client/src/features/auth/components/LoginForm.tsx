@@ -16,7 +16,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import useAuthRequest from "../hooks/useAuthRequest";
+import useAuthRequest from "@/features/auth/hooks/useAuthRequest";
 import { userRoutes } from "../services/endpoints";
 import { useAppDispatch } from "@/hooks/useAppStore";
 import { useToast } from "@/hooks/use-toast";

@@ -1,6 +1,5 @@
-import LoginPage from "./pages/LoginPage";
-import UserManagment from './pages/UserManagment';
-import DashBoard from "./pages/DashBoard";
-import Sidebar from "./components/sidebar/Sidebar";
-import AdminLayout from "./layout/AdminLayout";
-export {   LoginPage as AdminLoginPage, UserManagment , DashBoard as AdminDashBoard, Sidebar as AdminSideBar, AdminLayout }
+import LoginPage from "@/features/admin/pages/LoginPage";
+import UserManagment from '@/features/admin/pages/UserManagment';
+import DashBoard from "@/features/admin/pages/DashBoard";
+import AdminLayout from "@/features/admin/layout/AdminLayout";
+export {   LoginPage as AdminLoginPage, UserManagment , DashBoard as AdminDashBoard, AdminLayout }

@@ -2,7 +2,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@radix-ui/react-avatar";
 import { useAppDispatch, useAppSelector } from "@/hooks/useAppStore";
 import { toggleDarkMode } from "@/redux/slices/themeSlice";
 import {  Moon } from "lucide-react";
-import Hamburgermenu from "./Hamburgermenu";
+import Hamburgermenu from "@/features/admin/components/navbar/Hamburgermenu";
 const Navbar = () => {
   const dispatch = useAppDispatch();
   const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);

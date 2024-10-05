@@ -7,7 +7,7 @@ import {
   BreadcrumbPage,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import Usertable from "../components/usermanagment/Usertable";
+import Usertable from "@/features/admin/components/usermanagment/Usertable";
 
 
 const UserManagment = () => {

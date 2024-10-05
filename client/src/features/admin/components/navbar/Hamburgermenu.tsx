@@ -5,7 +5,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { LogOut, Menu } from "lucide-react";
-import { sidebarItems } from "../../util/sidebaritems";
+import { sidebarItems } from "@/features/admin/lib/sidebaritems";
 import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { useLocation, useNavigate } from "react-router-dom";
 

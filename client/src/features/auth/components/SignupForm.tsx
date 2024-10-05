@@ -16,8 +16,8 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
-import useAuthRequest from "../hooks/useAuthRequest";
-import { userRoutes } from "../services/endpoints";
+import useAuthRequest from "@/features/auth/hooks/useAuthRequest";
+import { userRoutes } from "@/features/auth/services/endpoints";
 import { useToast } from "@/hooks/use-toast";
 
 export const formSchema = z
@@ -31,7 +31,7 @@ export const formSchema = z
         message: "Name should be under 10 characters",
       })
       .regex(/^[a-zA-Z]+$/, {
-        message: "Username must only contain English alphabets",
+        message: "Username must only contain  alphabets",
       }),
     email: z.string().email({
       message: "Email must be valid",
@@ -39,9 +39,13 @@ export const formSchema = z
     password: z
       .string()
       .min(6, "Password must be at least 6 characters")
-      .regex(/^(?=.*[A-Z])(?=.*[0-9])[a-zA-Z0-9!@#$%^&*]+$/, {
-        message: "Password not valid",
-      }),
+      .regex(
+        /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/, 
+        {
+          message:
+            "enter strong password",
+        }
+      ),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -80,7 +84,6 @@ const SignupForm = ({ setShowOtppage }: any) => {
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     const response = await doRequest(values);
     if (response.success) {
-     
     } else {
       if (response.error?.status === 409 && !response.success) {
         form.setError("email", {

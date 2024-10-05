@@ -1,6 +1,6 @@
 import axiosInstance from '@/services/axiosConfig';
-import { adminEndpoints } from '../services/endpoints';
-import { LoginCredentials } from '../types/admin';
+import { adminEndpoints } from '@/features/admin/services/endpoints';
+import { LoginCredentials } from '@/features/admin/types/admin';
 
 
 

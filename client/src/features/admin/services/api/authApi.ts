@@ -1,7 +1,7 @@
 import { apiSlice } from "@/redux/slices/apiSlice";
-import { adminEndpoints } from "../services/endpoints";
+import { adminEndpoints } from "@/features/admin/services/endpoints";
 import { IUserData } from "@/types/database";
-import { Blockdata } from "../types/admin";
+import { Blockdata } from '@/features/admin/types/admin';
 
 const adminApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({

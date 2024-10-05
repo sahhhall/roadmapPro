@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { sidebarItems } from "../../util/sidebaritems";
+import { sidebarItems } from "../../lib/sidebaritems";
 import { LogOut } from "lucide-react";
 const Sidebar = () => {
   const location = useLocation();

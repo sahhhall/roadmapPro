@@ -24,14 +24,15 @@ export class LoginUser {
         password
     }: Pick<User, "email" | "password">): Promise<User | any> {
         const user = await this.userRepository.findByEmail(email);
+        if (user?.isBlocked) {
+            throw new BlockError();
+        }
         if (!user || user.isGoogle) {
             return {
                 notfound: true
             }
         }
-        if (user?.isBlocked) {
-            throw new BlockError();
-        }
+
         if (user && await Password.compare(password, user.password)) {
             const accessToken = this.jwtservice.generateAccessToken(user)
             const refreshToken = this.jwtservice.generateRefreshToken(user);

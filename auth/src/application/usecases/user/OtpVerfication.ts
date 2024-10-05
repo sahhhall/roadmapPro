@@ -1,5 +1,6 @@
 import { User } from "../../../domain/entities/User";
 import { IRedisRepository } from "../../../domain/interfaces/ICacheUserRepo";
+import { ITokenService } from "../../../domain/interfaces/ITokenService";
 import { IUserRepository } from "../../../domain/interfaces/IUserRepository";
 
 interface OtpVerificationParams {
@@ -11,12 +12,15 @@ interface OtpVerificationResponse {
     success: boolean;
     user?: User | null;
     message?: string;
+    refreshToken?: string;
+    accessToken?: string
 }
 
 export class OtpVerification {
     constructor(
         private redisRepository: IRedisRepository,
-        private userRepository: IUserRepository
+        private userRepository: IUserRepository,
+        private jwtservice: ITokenService
     ) { }
 
     async execute({ otp, email }: OtpVerificationParams): Promise<OtpVerificationResponse> {
@@ -44,8 +48,9 @@ export class OtpVerification {
 
             await this.userRepository.create(user);
             await this.redisRepository.removeUnverifiedUser(email);
-
-            return { success: true, user }; 
+            const accessToken = this.jwtservice.generateAccessToken(user)
+            const refreshToken = this.jwtservice.generateRefreshToken(user);
+            return { success: true, user, accessToken, refreshToken };
         } catch (error) {
             console.error("Error verifying OTP:", error);
             return { success: false, message: "Internal server error." };
