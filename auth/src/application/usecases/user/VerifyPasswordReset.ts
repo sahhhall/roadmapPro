@@ -17,14 +17,14 @@ export class VerifyPasswordReset {
             if (!storedToken) {
                 return {
                     success: false,
-                    message: "No token found or token expired."
+                    message: "link expired ."
                 };
             }
 
             if (storedToken as any !== token) {
                 return {
                     success: false,
-                    message: "Invalid  token."
+                    message: "Invalid link."
                 };
             }
             let hashedPassword = await Password.toHash(newPassword) as string;

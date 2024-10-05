@@ -23,8 +23,8 @@ const formSchema = z.object({
 });
 
 const ForgotPassowrdForm = () => {
-  const { toast } = useToast();
   const [checkText, setcheckText] = useState<boolean>(false);
+  const { toast } = useToast();
   const { doRequest, loading } = useAuthRequest({
     path: userRoutes.forgotpassword,
     method: "post",

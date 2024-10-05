@@ -4,7 +4,7 @@ import { LoaderCircle } from "lucide-react";
 
 export interface RequestHookProps {
   path: string;
-  method: "get" | "post" | "put" | "delete";
+  method: "get" | "post" | "put" | "delete" | "patch";
   onSuccess?: (data: any) => void;
 }
 export default ({ path, method, onSuccess }: RequestHookProps) => {

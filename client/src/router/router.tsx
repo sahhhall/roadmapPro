@@ -5,6 +5,7 @@ import {
   UserManagment,
 } from "@/features/admin";
 import { ForgotPasswordPage, LoginPage, SignupPage } from "@/features/auth";
+import Resetpassword from "@/features/auth/pages/Resetpassword";
 import UserLayout from "@/layout/UserLayout";
 import Home from "@/pages/HomePage";
 import { createBrowserRouter } from "react-router-dom";
@@ -18,6 +19,10 @@ const routes = createBrowserRouter([
       { path: "/login", element: <LoginPage /> },
       { path: "/signup", element: <SignupPage /> },
       { path: "/forgot-password", element: <ForgotPasswordPage /> },
+      {
+        path: "/reset-password",
+        element: <Resetpassword />,
+      },
     ],
   },
   {

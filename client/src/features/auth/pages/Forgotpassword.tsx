@@ -1,5 +1,5 @@
 import Container from "@/components/Container";
-import ForgotPassowrdForm from "../components/ForgotPassowrdForm";
+import ForgotPassowrdForm from "../components/ForgotPassowordForm";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
