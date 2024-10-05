@@ -16,6 +16,7 @@ import { GoogleLogin } from "../../application/usecases/user/GoogleLogin";
 import { BlockUser } from "../../application/usecases/admin/BlockUser";
 import { ResetPasswordToken } from "../../application/usecases/user/ResetPassword";
 import { SendLinkResetPassword } from "../../application/usecases/user/SendLinkResetPass";
+import { VerifyPasswordReset } from "../../application/usecases/user/VerifyPasswordReset";
 
 
 class DIContainer {
@@ -75,6 +76,9 @@ class DIContainer {
     }
     static SendLinkResetPasswordUseCase() {
         return new SendLinkResetPassword(this._nodeMailerService)
+    }
+    static confirmPasswordResetUseCase() {
+        return new VerifyPasswordReset(this._rediseService, this._authRepository)
     }
 }
 

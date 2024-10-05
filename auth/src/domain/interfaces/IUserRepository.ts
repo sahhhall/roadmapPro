@@ -10,5 +10,6 @@ export interface IUserRepository {
     create(user: User): Promise<User>;
     findById(id: string): Promise<User | null>;
     update(user: User): Promise<void>;
-    fetchUsers(): Promise<User[]| null>
+    fetchUsers(): Promise<User[] | null>
+    partialUpdate(email: string, password: string): Promise<boolean>
 }

@@ -19,8 +19,13 @@ export class UserRepository implements IUserRepository {
         return await Auth.findById(id);
     }
 
-    async partialUpdate(id: string, ) {
-
+    async partialUpdate(email: string, password: string): Promise<boolean> {
+        const result = await Auth.updateOne({ email }, { $set: { password: password } }, { new: true })
+        if (result.modifiedCount === 1) {
+            return true
+        } else {
+            return false
+        }
     }
     async update(user: any): Promise<void> {
         await Auth.findByIdAndUpdate(user.id, user);
