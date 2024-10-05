@@ -12,6 +12,7 @@ import { Avatar, AvatarImage } from "@/components/ui/avatar";
 import { getAccessStyle } from "../../util/getAccessStyle";
 import { Input } from "@/components/ui/input";
 import Container from "@/components/Container";
+import { useFetchusersQuery } from "../../api/authApi";
 
 const users = [
   {
@@ -53,11 +54,12 @@ const users = [
 ];
 
 const Usertable = () => {
+  const { data, isLoading } = useFetchusersQuery({});
   return (
     <Container className="justify-center">
       <div className="flex justify-center mt-4  ">
         {/* <h3 className="font-semibold">All Users <span className="text-gray-400" >{users.length}</span></h3> */}
-        <Input className="w-[300px]"/>
+        <Input className="w-[300px]" />
       </div>
       <Table className="mt-5">
         <TableCaption>
@@ -73,7 +75,7 @@ const Usertable = () => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {users.map((user) => (
+          {data?.users?.map((user) => (
             <TableRow key={user.id}>
               <TableCell className="font-medium flex gap-4">
                 <Avatar className="w-10 h-10 rounded-full">
@@ -93,10 +95,10 @@ const Usertable = () => {
                 </span>
               </TableCell>
 
-              <TableCell>{user.status}</TableCell>
+              <TableCell className={`w-20 ${user.isBlocked ? 'text-red-500':'text-green-500'} `} >{user.isBlocked ? "Blocked" : "Active"}</TableCell>
               <TableCell>{user.createdAt}</TableCell>
               <TableCell className="text-right">
-                <DropDown />
+                <DropDown user={user} />
               </TableCell>
             </TableRow>
           ))}

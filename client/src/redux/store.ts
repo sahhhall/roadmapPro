@@ -4,11 +4,13 @@ import storage from "redux-persist/lib/storage";
 import themeReducer from "./slices/themeSlice";
 import authReducer from './slices/authSlice'
 import adminReducer from './slices/adminSlice'
+import { apiSlice } from "./slices/apiSlice";
 
 const rootReducer = combineReducers({
     theme: themeReducer,
     auth: authReducer,
-    adminAuth: adminReducer
+    adminAuth: adminReducer,
+    [apiSlice.reducerPath]: apiSlice.reducer,
 })
 
 const persistConfig = {
@@ -25,7 +27,7 @@ export const store = configureStore({
     middleware: (getDefaultMiddleware) =>
         getDefaultMiddleware({
             serializableCheck: false,
-        }),
+        }).concat(apiSlice.middleware),
 })
 
 export const persistor = persistStore(store);
