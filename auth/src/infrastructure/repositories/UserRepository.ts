@@ -18,6 +18,10 @@ export class UserRepository implements IUserRepository {
     async findById(id: string): Promise<User | null> {
         return await Auth.findById(id);
     }
+
+    async partialUpdate(id: string, ) {
+
+    }
     async update(user: any): Promise<void> {
         await Auth.findByIdAndUpdate(user.id, user);
     }

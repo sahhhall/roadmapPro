@@ -14,6 +14,8 @@ import { LoginAdmin } from "../../application/usecases/admin/LoginAdmin";
 import { FetchUsers } from "../../application/usecases/admin/FetchUsers";
 import { GoogleLogin } from "../../application/usecases/user/GoogleLogin";
 import { BlockUser } from "../../application/usecases/admin/BlockUser";
+import { ResetPasswordToken } from "../../application/usecases/user/ResetPassword";
+import { SendLinkResetPassword } from "../../application/usecases/user/SendLinkResetPass";
 
 
 class DIContainer {
@@ -66,6 +68,13 @@ class DIContainer {
 
     static blockUserUseCase() {
         return new BlockUser(this._authRepository);
+    }
+
+    static resetPasswordTokenUseCase() {
+        return new ResetPasswordToken(this._rediseService, this._authRepository);
+    }
+    static SendLinkResetPasswordUseCase() {
+        return new SendLinkResetPassword(this._nodeMailerService)
     }
 }
 

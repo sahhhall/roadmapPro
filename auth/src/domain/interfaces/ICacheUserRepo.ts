@@ -7,7 +7,7 @@ export interface IRedisRepository {
     removeUnverifiedUser(email: string): Promise<void>;
     storeOtp(email: string, otp: string): Promise<void>;
     getOtp(email: string): Promise<string | null>;
-    storeToken(token:string, userId: string): Promise<void>;
-    verifyToken(token:string): Promise<boolean>;
-    deleteToken(token:string): Promise<void>;
+    storeToken(token:string, email: string): Promise<void>;
+    verifyToken(email:string): Promise<boolean>;
+    deleteToken(email:string): Promise<void>;
 }

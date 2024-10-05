@@ -31,16 +31,16 @@ export class RedisUserRepository implements IRedisRepository {
 
     //for store token forget password
 
-    async storeToken(token: string, userId: string): Promise<void> {
-        const tokenKey = `password-reset:${token}`;
-        await this.redisClient.set(tokenKey, userId, { EX: 900 })
+    async storeToken(token: string, email: string): Promise<void> {
+        const tokenKey = `password-reset:${email}`;
+        await this.redisClient.set(tokenKey, token, { EX: 1800 }) //30m
     }
-    async verifyToken(token: string): Promise<any> {
-        const tokenKey = `password-reset:${token}`;
+    async verifyToken(email:string): Promise<any> {
+        const tokenKey = `password-reset:${email}`;
         return await this.redisClient.get(tokenKey);
     }
-    async deleteToken(token: string): Promise<void> {
-        const tokenKey = `password-reset:${token}`;
+    async deleteToken(email: string): Promise<void> {
+        const tokenKey = `password-reset:${email}`;
         await this.redisClient.del(tokenKey);
     }
 }
