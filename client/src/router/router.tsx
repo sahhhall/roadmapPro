@@ -4,7 +4,7 @@ import {
   AdminLoginPage,
   UserManagment,
 } from "@/features/admin";
-import { ForgotPassowrdForm, LoginPage, SignupPage } from "@/features/auth";
+import { ForgotPasswordPage, LoginPage, SignupPage } from "@/features/auth";
 import UserLayout from "@/layout/UserLayout";
 import Home from "@/pages/HomePage";
 import { createBrowserRouter } from "react-router-dom";
@@ -17,7 +17,7 @@ const routes = createBrowserRouter([
       { path: "", element: <Home /> },
       { path: "/login", element: <LoginPage /> },
       { path: "/signup", element: <SignupPage /> },
-      { path: "/forgot-password", element: <ForgotPassowrdForm /> },
+      { path: "/forgot-password", element: <ForgotPasswordPage /> },
     ],
   },
   {
