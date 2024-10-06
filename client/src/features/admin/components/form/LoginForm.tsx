@@ -65,11 +65,10 @@ export const LoginForm = () => {
         });
       }
     } catch (err) {
-      console.error("Unexpected error during login:", err);
       toast({
         variant: "destructive",
         title: "Login Failed",
-        description: "An unexpected error occurred. Please try again later.",
+        description: "Internal server err .",
       });
     }
   };

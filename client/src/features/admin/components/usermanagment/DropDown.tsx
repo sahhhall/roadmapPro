@@ -18,12 +18,18 @@ const DropDown: React.FC<DropDownProps> = ({ user }) => {
   const { toast } = useToast();
   const handleBlockUnblock = async () => {
     try {
-      await blockuser({ email: user.email });
+      await blockuser({ email: user.email }).unwrap();
       toast({
-        description: "success",
+        description: "User has been blocked/unblocked successfully",
       });
-    } catch (error) {
-      console.error("Failed to block/unblock user", error);
+    } catch (error: any) {
+      console.error("Failed to block/unblock user:", error);
+      const errorMessage =
+        error?.data?.message ||
+        "An unexpected error occurred. Please try again later.";
+      toast({
+        description: errorMessage,
+      });
     }
   };
   return (

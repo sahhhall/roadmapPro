@@ -1,25 +1,25 @@
-import axios from 'axios'
+    import axios from 'axios'
 
 
-const BASE_URL =  'http://localhost:4001';
+    const BASE_URL = 'http://localhost:4001';
 
-const axiosInstance = axios.create({
-    baseURL: BASE_URL,
-    headers: {
-        'Content-Type': 'application/json',
-    },
-    withCredentials: true
-})
+    const axiosInstance = axios.create({
+        baseURL: BASE_URL,
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        withCredentials: true
+    })
 
-// axios.interceptors.response.use(response => response,
+    axios.interceptors.response.use(response => response,
+        function (error) {
+            if (error.response.status === 401) {
+                console.log("unauthorized error")
+            }
+            return Promise.reject(error)
+        }
+    )
 
-//     function (error) {
 
 
-//         return Promise.reject(error)
-//     }
-// )
-
-
-
-export default axiosInstance
+    export default axiosInstance

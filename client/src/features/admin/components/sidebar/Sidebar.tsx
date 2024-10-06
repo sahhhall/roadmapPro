@@ -1,11 +1,18 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import { sidebarItems } from "../../lib/sidebaritems";
 import { LogOut } from "lucide-react";
+import { useAppDispatch } from "@/hooks/useAppStore";
+import { adminLogout } from "@/redux/slices/adminSlice";
 const Sidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const handleClick = (path: string) => {
     navigate(path);
+  };
+  const handleLogout = () => {
+    dispatch(adminLogout());
+    navigate('/admin/login')
   };
   return (
     <div className="bg-gray-100  h-screen dark:bg-black border border-r-2">
@@ -29,7 +36,7 @@ const Sidebar = () => {
           </li>
         ))}
         <li className="flex hover:cursor-pointer  items-center px-4">
-          <button>
+          <button onClick={handleLogout}>
             <LogOut />
           </button>
         </li>
