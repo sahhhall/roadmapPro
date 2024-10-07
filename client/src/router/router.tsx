@@ -5,6 +5,7 @@ import AdminProtected from "@/router/protected/AdminProtected";
 import UserProtected from "@/router/protected/UserProtected";
 import RedirectLoggedIn from "@/router/protected/RedirectLoggedIn";
 import NotFound from "@/pages/NotFound";
+import RoadMapMangment from "@/features/admin/pages/RoadMapMangment";
 
 const Home = lazy(() => import("@/pages/HomePage"));
 const LoginPage = lazy(() => import("@/features/auth/pages/LoginPage"));
@@ -116,6 +117,14 @@ const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<div>Loading...</div>}>
             <UserManagment />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/admin/roadmap-management",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <RoadMapMangment />
           </Suspense>
         ),
       },
