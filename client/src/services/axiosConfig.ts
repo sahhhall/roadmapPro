@@ -1,25 +1,32 @@
-    import axios from 'axios'
+import axios from 'axios';
 
+const BASE_URL = 'http://localhost:4001';
 
-    const BASE_URL = 'http://localhost:4001';
+const axiosInstance = axios.create({
+    baseURL: BASE_URL,
+    headers: {
+        'Content-Type': 'application/json',
+    },
+    withCredentials: true
+});
 
-    const axiosInstance = axios.create({
-        baseURL: BASE_URL,
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        withCredentials: true
-    })
-
-    axios.interceptors.response.use(response => response,
-        function (error) {
-            if (error.response.status === 401) {
-                console.log("unauthorized error")
+axiosInstance.interceptors.response.use(
+    response => response,
+    async function (error) {
+        const originalRequest = error.config;
+        if (error.response && error.response.status === 401 && !originalRequest._retry) {
+            originalRequest._retry = true;
+            try {
+                console.log("machu am here on intercpetre")
+                await axiosInstance.post('/api/auth/refreshToken');
+                return axiosInstance(originalRequest);
+            } catch (err) {
+                console.log(err, "from interptor")
+                return Promise.reject(err);
             }
-            return Promise.reject(error)
         }
-    )
+        return Promise.reject(error);
+    }
+);
 
-
-
-    export default axiosInstance
+export default axiosInstance;

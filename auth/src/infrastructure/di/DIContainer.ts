@@ -17,6 +17,8 @@ import { BlockUser } from "../../application/usecases/admin/BlockUser";
 import { ResetPasswordToken } from "../../application/usecases/user/ResetPassword";
 import { SendLinkResetPassword } from "../../application/usecases/user/SendLinkResetPass";
 import { VerifyPasswordReset } from "../../application/usecases/user/VerifyPasswordReset";
+import { RefreshToken } from "../../application/usecases/user/RefreshToken";
+import { AdminRefreshToken } from "../../application/usecases/admin/AdminRefreshToken";
 
 
 class DIContainer {
@@ -79,6 +81,12 @@ class DIContainer {
     }
     static confirmPasswordResetUseCase() {
         return new VerifyPasswordReset(this._rediseService, this._authRepository)
+    }
+    static refreshTokenUserUseCase() {
+        return new RefreshToken(this._jwtService)
+    }
+    static adminRefeshTokenUseCase() {
+        return new AdminRefreshToken(this._jwtService)
     }
 }
 

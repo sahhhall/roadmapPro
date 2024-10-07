@@ -26,7 +26,6 @@ class App {
     private registerRoutes(): void {
         this.app.use('/api/auth', authRoutes)
         this.app.use('/api/admin', adminAuthRoutes);
-
     }
     private registerErrorHandler(): void {
         this.app.use(errorHandler as any);

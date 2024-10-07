@@ -12,7 +12,7 @@ const baseQueryWithReAuth: BaseQueryFn<any, any, FetchBaseQueryError> = async (a
     let result = await baseQuery(args, api, extraOptions);
     if (result.error && result.error.status === 401) {
         console.log('Access token expired. Attempting to refresh...');
-        const refreshResult = await baseQuery('/refreshToken', api, extraOptions);
+        const refreshResult = await baseQuery('/api/auth/refreshToken', api, extraOptions);
 
         if (refreshResult.data) {
             console.log('token refreshed success returying original req');
