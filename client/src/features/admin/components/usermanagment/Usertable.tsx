@@ -13,6 +13,7 @@ import { getAccessStyle } from "../../lib/getAccessStyle";
 import { Input } from "@/components/ui/input";
 import Container from "@/components/Container";
 import { useFetchusersQuery } from "@/features/admin/services/api/authApi";
+import { dateFormatter } from "@/lib/formatters";
 
 // const users = [
 //   {
@@ -103,7 +104,7 @@ const Usertable = () => {
                 {user.isBlocked ? "Blocked" : "Active"}
               </TableCell>
               <TableCell>
-                {user.createdAt} ${user.createdAt}
+                {dateFormatter(user.createdAt)} 
               </TableCell>
               <TableCell className="text-right">
                 <DropDown user={user} />
