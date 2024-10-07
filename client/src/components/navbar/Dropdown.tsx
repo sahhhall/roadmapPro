@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, Moon } from "lucide-react";
+import { LogOut, Moon, User } from "lucide-react";
 import { useAppDispatch } from "@/hooks/useAppStore";
 import { logout } from "@/redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -70,7 +70,12 @@ const Dropdown = ({ handleToggle }: DropdownProps) => {
         <DropdownMenuContent>
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>Profile</DropdownMenuItem>
+          <DropdownMenuItem>
+            <button className="items-center flex gap-2" onClick={()=> navigate('/profile')}>
+              <User size={15} />
+              <span>Profile</span>
+            </button>
+          </DropdownMenuItem>
           <DropdownMenuItem className="items-center">
             <button className="items-center flex gap-2" onClick={handleToggle}>
               <Moon size={15} />

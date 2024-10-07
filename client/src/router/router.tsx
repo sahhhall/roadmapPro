@@ -1,29 +1,45 @@
-import {
-  AdminDashBoard,
-  AdminLayout,
-  AdminLoginPage,
-  UserManagment,
-} from "@/features/admin";
-import { ForgotPasswordPage, LoginPage, SignupPage } from "@/features/auth";
-import Resetpassword from "@/features/auth/pages/Resetpassword";
-import UserLayout from "@/layout/UserLayout";
-import Home from "@/pages/HomePage";
+import { Suspense, lazy } from "react";
 import { createBrowserRouter } from "react-router-dom";
+import UserLayout from "@/layout/UserLayout";
 import AdminProtected from "@/router/protected/AdminProtected";
 import UserProtected from "@/router/protected/UserProtected";
 import RedirectLoggedIn from "@/router/protected/RedirectLoggedIn";
+import NotFound from "@/pages/NotFound";
+
+const Home = lazy(() => import("@/pages/HomePage"));
+const LoginPage = lazy(() => import("@/features/auth/pages/LoginPage"));
+const SignupPage = lazy(() => import("@/features/auth/pages/SignupPage"));
+const ForgotPasswordPage = lazy(
+  () => import("@/features/auth/pages/Forgotpassword")
+);
+const Resetpassword = lazy(() => import("@/features/auth/pages/Resetpassword"));
+const AdminLoginPage = lazy(() => import("@/features/admin/pages/LoginPage"));
+const AdminDashBoard = lazy(() => import("@/features/admin/pages/DashBoard"));
+const AdminLayout = lazy(() => import("@/features/admin/layout/AdminLayout"));
+const UserManagment = lazy(
+  () => import("@/features/admin/pages/UserManagment")
+);
 
 const routes = createBrowserRouter([
   {
     path: "/",
     element: <UserLayout />,
     children: [
-      { path: "", element: <Home /> },
+      {
+        path: "",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <Home />
+          </Suspense>
+        ),
+      },
       {
         path: "/login",
         element: (
           <RedirectLoggedIn>
-            <LoginPage />
+            <Suspense fallback={<div>Loading...</div>}>
+              <LoginPage />
+            </Suspense>
           </RedirectLoggedIn>
         ),
       },
@@ -31,18 +47,29 @@ const routes = createBrowserRouter([
         path: "/signup",
         element: (
           <RedirectLoggedIn>
-            <SignupPage />
+            <Suspense fallback={<div>Loading...</div>}>
+              <SignupPage />
+            </Suspense>
           </RedirectLoggedIn>
         ),
       },
-
-      { path: "/forgot-password", element: <ForgotPasswordPage /> },
-
+      {
+        path: "/forgot-password",
+        element: (
+          <RedirectLoggedIn>
+            <Suspense fallback={<div>Loading...</div>}>
+              <ForgotPasswordPage />
+            </Suspense>
+          </RedirectLoggedIn>
+        ),
+      },
       {
         path: "/reset-password",
         element: (
           <RedirectLoggedIn>
-            <Resetpassword />
+            <Suspense fallback={<div>Loading...</div>}>
+              <Resetpassword />
+            </Suspense>
           </RedirectLoggedIn>
         ),
       },
@@ -50,34 +77,51 @@ const routes = createBrowserRouter([
         path: "/profile",
         element: (
           <UserProtected>
-            <>
-              <p>fds</p>
-            </>
+            <Suspense fallback={<div>Loading...</div>}>
+              <p>fadf</p>
+            </Suspense>
           </UserProtected>
         ),
       },
     ],
   },
-
   {
     path: "/admin/login",
-    element: <AdminLoginPage />,
+    element: (
+      <Suspense fallback={<div>Loading...</div>}>
+        <AdminLoginPage />
+      </Suspense>
+    ),
   },
   {
     path: "/admin/",
     element: (
       <AdminProtected>
-        <AdminLayout />
+        <Suspense fallback={<div>Loading...</div>}>
+          <AdminLayout />
+        </Suspense>
       </AdminProtected>
     ),
     children: [
-      { path: "/admin/", element: <AdminDashBoard /> },
+      {
+        path: "/admin/",
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <AdminDashBoard />
+          </Suspense>
+        ),
+      },
       {
         path: "/admin/user-management",
-        element: <UserManagment />,
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <UserManagment />
+          </Suspense>
+        ),
       },
     ],
   },
+  { path: "*", element: <NotFound /> },
 ]);
 
 export default routes;
