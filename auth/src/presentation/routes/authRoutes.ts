@@ -9,7 +9,7 @@ import { validateRequest } from '@sahhhallroadmappro/common'
 import { GoogleLoginController } from '../controllers/auth/GoogleLoginController';
 import { PasswordResetController } from '../controllers/auth/PasswordResetController';
 import { PasswordResetVerify } from '../controllers/auth/PasswordResetverifyController';
-import { refreshMiddleware } from '../middlewares/RefreshToken';
+import { refreshControllerUser, RefreshTokenUser } from '../controllers/auth/RefreshToken';
 
 
 const router = Router();
@@ -30,6 +30,6 @@ router.post('/resent-otp', async (req, res) => { await resendController.resendOt
 router.post('/google-login', validateRequest(GoogleLoginDto), async (req, res) => { await googleLoginControler.login(req, res) })
 router.post('/forgot-password', validateRequest(ForgotPasswordDTO), async (req, res, next) => { await resetPasswordController.reset(req, res, next) })
 router.patch('/reset-password', validateRequest(ResetPasswordDTO), async (req, res, next) => { await resetPasswordChanger.resetPassword(req, res, next) })
-router.post('/refreshToken', async (req, res, next) => { await refreshMiddleware.generateRefreshToken(req, res, next) })
+router.post('/refreshToken', async (req, res, next) => { await refreshControllerUser.generateRefreshTokenUser(req, res, next) })
 
 export { router as authRoutes };

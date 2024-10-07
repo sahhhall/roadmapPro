@@ -11,10 +11,15 @@ const baseQueryWithReAuth: BaseQueryFn<any, any, FetchBaseQueryError> = async (a
 
     let result = await baseQuery(args, api, extraOptions);
     if (result.error && result.error.status === 401) {
-        console.log('Access token expired. Attempting to refresh...');
+        console.log('Access token expired. Attempting to refresh...', args);
+        // here setted for the conflicts like if i use this as my global store there will be confilct
+        // like if i mention any one here it go there and refersh token appropiate one
+        // the problem solved here
+        //     if i didt mention anything here i used /api/auth so it take req and generate user refresh every time
+        const refreshUrl = args.url.startsWith('/api/admin') ? '/api/admin/refreshToken' : '/api/auth/refreshToken'
         const refreshResult = await baseQuery({
-            url: '/api/auth/refreshToken',
-            method: 'POST',  
+            url: refreshUrl,
+            method: 'POST',
         }, api, extraOptions);
         console.log(refreshResult, "refreshresult")
         if (refreshResult.data) {
