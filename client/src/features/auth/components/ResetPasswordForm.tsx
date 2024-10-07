@@ -47,7 +47,7 @@ const ResetPasswordForm = () => {
     path: userRoutes.resetpassword,
     method: "patch",
     onSuccess: () => {
-      navigate("/");
+      navigate("/login");
     },
   });
   const togglePasswordVisibility = () => {

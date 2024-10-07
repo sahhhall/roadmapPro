@@ -2,19 +2,17 @@ import { usegetUser } from "@/hooks/usegetUser";
 import React from "react";
 import { Navigate, Outlet } from "react-router-dom";
 
-interface UserProtectedProps {
+interface RedirectLoggedInProps {
   children?: React.ReactNode;
 }
 
-const UserProtected: React.FC<UserProtectedProps> = ({ children }) => {
+const RedirectLoggedIn: React.FC<RedirectLoggedInProps> = ({ children }) => {
   const user = usegetUser();
-  console.log(user, "user");
-  
-  if (!user) {
-    return <Navigate to="/login" />;
+
+  if (user) {
+    return <Navigate to="/" />;
   }
-  
   return children ? <>{children}</> : <Outlet />;
 };
 
-export default UserProtected;
+export default RedirectLoggedIn;

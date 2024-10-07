@@ -10,6 +10,8 @@ import UserLayout from "@/layout/UserLayout";
 import Home from "@/pages/HomePage";
 import { createBrowserRouter } from "react-router-dom";
 import AdminProtected from "@/router/protected/AdminProtected";
+import UserProtected from "@/router/protected/UserProtected";
+import RedirectLoggedIn from "@/router/protected/RedirectLoggedIn";
 
 const routes = createBrowserRouter([
   {
@@ -17,15 +19,46 @@ const routes = createBrowserRouter([
     element: <UserLayout />,
     children: [
       { path: "", element: <Home /> },
-      { path: "/login", element: <LoginPage /> },
-      { path: "/signup", element: <SignupPage /> },
+      {
+        path: "/login",
+        element: (
+          <RedirectLoggedIn>
+            <LoginPage />
+          </RedirectLoggedIn>
+        ),
+      },
+      {
+        path: "/signup",
+        element: (
+          <RedirectLoggedIn>
+            <SignupPage />
+          </RedirectLoggedIn>
+        ),
+      },
+
       { path: "/forgot-password", element: <ForgotPasswordPage /> },
+
       {
         path: "/reset-password",
-        element: <Resetpassword />,
+        element: (
+          <RedirectLoggedIn>
+            <Resetpassword />
+          </RedirectLoggedIn>
+        ),
+      },
+      {
+        path: "/profile",
+        element: (
+          <UserProtected>
+            <>
+              <p>fds</p>
+            </>
+          </UserProtected>
+        ),
       },
     ],
   },
+
   {
     path: "/admin/login",
     element: <AdminLoginPage />,

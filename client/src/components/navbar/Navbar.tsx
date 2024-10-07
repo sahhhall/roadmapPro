@@ -4,11 +4,12 @@ import { Button } from "../ui/button";
 import { Bell, Moon } from "lucide-react";
 import { Link } from "react-router-dom";
 import Dropdown from "./Dropdown";
+import { usegetUser } from "@/hooks/usegetUser";
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
   const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
-  const { userData } = useAppSelector((state) => state.auth);
+  const userData = usegetUser();
   const handleToggle = () => {
     dispatch(toggleDarkMode());
     //toggle method part of classlist (clasname, force(true,flase))
@@ -31,7 +32,7 @@ const Navbar = () => {
               <Bell />
             </Link>
             <div className="flex flex-row md:gap-2  items-center">
-              <Dropdown  handleToggle={handleToggle} />
+              <Dropdown handleToggle={handleToggle} />
               <div className="md:block hidden">
                 <p className="text-xs pt-1 font-bold ">{userData.name}</p>
                 <p className="text-xs">{userData.email}</p>

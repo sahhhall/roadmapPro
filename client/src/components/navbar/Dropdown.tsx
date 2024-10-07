@@ -23,6 +23,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
+import { usegetUser } from "@/hooks/usegetUser";
 
 interface DropdownProps {
   handleToggle: () => void;
@@ -31,12 +32,13 @@ interface DropdownProps {
 const Dropdown = ({ handleToggle }: DropdownProps) => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const user = usegetUser();
   const { toast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
 
   const handleLogout = async () => {
     const response = await logoutUser();
-    console.log(response)
+    console.log(response);
     if (response.status === 200) {
       dispatch(logout());
       navigate("/");
@@ -59,7 +61,7 @@ const Dropdown = ({ handleToggle }: DropdownProps) => {
         <DropdownMenuTrigger className="w-8 h-8 rounded-full">
           <Avatar>
             <AvatarImage
-              src="https://github.com/shadcn.png"
+              src={user?.avatar || "https://github.com/shadcn.png"}
               className="rounded-full w-full h-full"
             />
             <AvatarFallback>hihii</AvatarFallback>
@@ -86,7 +88,7 @@ const Dropdown = ({ handleToggle }: DropdownProps) => {
         <DialogContent>
           <DialogHeader className=" space-y-3">
             <DialogTitle>Are you absolutely sure?</DialogTitle>
-            <DialogDescription >
+            <DialogDescription>
               Are you sure you want to logout? This action will log you out of
               your account.
             </DialogDescription>
