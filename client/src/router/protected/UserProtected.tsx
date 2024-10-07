@@ -9,7 +9,7 @@ interface UserProtectedProps {
 const UserProtected: React.FC<UserProtectedProps> = ({ children }) => {
   const { userData } = useAppSelector((state) => state.auth);
 
-  if (!userData) {
+  if (userData) {
     return <Navigate to={"/"} />; 
   }
 

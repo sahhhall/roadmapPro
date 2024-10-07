@@ -60,13 +60,13 @@ const Usertable = () => {
     <Container className="justify-center">
       <div className="flex justify-center mt-4  ">
         {/* <h3 className="font-semibold">All Users <span className="text-gray-400" >{users.length}</span></h3> */}
-        <Input className="w-[300px]" />
+        <Input placeholder="search...." className="w-[300px]" />
       </div>
       <Table className="mt-5">
         <TableCaption>
           A list of registered users and their access status.
         </TableCaption>
-        <TableHeader className="bg-gray-100 dark:bg-black dark:border">
+        <TableHeader className="bg-gray-100  dark:bg-black dark:border">
           <TableRow>
             <TableHead>User Name</TableHead>
             <TableHead>Access</TableHead>
@@ -75,10 +75,10 @@ const Usertable = () => {
             <TableHead className="text-right"></TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody>
+        <TableBody >
           {data?.users?.map((user) => (
             <TableRow key={user.id}>
-              <TableCell className="font-medium flex gap-4">
+              <TableCell className="font-medium mt-3 flex gap-4">
                 <Avatar className="w-10 h-10 rounded-full">
                   <AvatarImage
                     src="https://github.com/shadcn.png"

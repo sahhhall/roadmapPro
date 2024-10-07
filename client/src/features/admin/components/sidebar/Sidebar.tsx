@@ -12,12 +12,15 @@ const Sidebar = () => {
   };
   const handleLogout = () => {
     dispatch(adminLogout());
-    navigate('/admin/login')
+    navigate("/admin/login");
   };
   return (
     <div className="bg-gray-100  h-screen dark:bg-black border border-r-2">
       <br />
       <ul className="flex flex-col space-y-10 ">
+        {/* <li className="flex hover:cursor-pointer  items-center        px-4">
+           <img className=" font-extrabold " src={logo}></img>
+        </li> */}
         {sidebarItems.map((item) => (
           <li
             key={item.name}
