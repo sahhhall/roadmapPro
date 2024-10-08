@@ -39,13 +39,9 @@ export const formSchema = z
     password: z
       .string()
       .min(6, "Password must be at least 6 characters")
-      .regex(
-        /^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/, 
-        {
-          message:
-            "enter strong password",
-        }
-      ),
+      .regex(/^(?=.*[A-Z])(?=.*\d)(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{6,}$/, {
+        message: "enter strong password",
+      }),
     confirmPassword: z.string(),
   })
   .refine((data) => data.password === data.confirmPassword, {
@@ -55,6 +51,7 @@ export const formSchema = z
 
 const SignupForm = ({ setShowOtppage }: any) => {
   const [showPassword, setShowPassword] = useState(true);
+  const [confirmPasswordshow, setShowconfirmPassword] = useState(true);
   const { doRequest, loading } = useAuthRequest({
     path: userRoutes.signup,
     method: "post",
@@ -165,10 +162,22 @@ const SignupForm = ({ setShowOtppage }: any) => {
               <FormControl>
                 <div className="relative">
                   <Input
-                    type={showPassword ? "text" : "password"}
-                    placeholder="Confirm Password"
+                    type={confirmPasswordshow ? "text" : "password"}
+                    placeholder="Password"
                     {...field}
                   />
+                  <div
+                    className="absolute right-3 top-2 cursor-pointer"
+                    onClick={() =>
+                      setShowconfirmPassword(!setShowconfirmPassword)
+                    }
+                  >
+                    {confirmPasswordshow ? (
+                      <HidePasswordIcon size={20} />
+                    ) : (
+                      <ShowPasswordIcon size={20} />
+                    )}
+                  </div>
                 </div>
               </FormControl>
               <FormMessage />

@@ -15,9 +15,9 @@ const Sidebar = () => {
     navigate("/admin/login");
   };
   return (
-    <div className="bg-gray-100  h-screen dark:bg-black border border-r-2">
+    <div className="bg-gray-100  h-screen dark:bg-black border border-r-1">
       <br />
-      <ul className="flex flex-col space-y-10 ">
+      <ul className="flex flex-col mt-8 space-y-10 ">
         {/* <li className="flex hover:cursor-pointer  items-center        px-4">
            <img className=" font-extrabold " src={logo}></img>
         </li> */}
@@ -34,13 +34,13 @@ const Sidebar = () => {
                   : ""
               }`}
             >
-              <item.icon />
+              <item.icon size={18} />
             </button>
           </li>
         ))}
-        <li className="flex hover:cursor-pointer  items-center px-4">
+        <li className="flex hover:cursor-pointer  items-center px-6">
           <button onClick={handleLogout}>
-            <LogOut />
+            <LogOut size={18} />
           </button>
         </li>
       </ul>

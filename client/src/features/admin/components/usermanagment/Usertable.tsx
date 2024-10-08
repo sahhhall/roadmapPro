@@ -14,6 +14,7 @@ import { Input } from "@/components/ui/input";
 import Container from "@/components/Container";
 import { useFetchusersQuery } from "@/features/admin/services/api/authApi";
 import { dateFormatter } from "@/lib/formatters";
+import { useEffect, useRef } from "react";
 
 // const users = [
 //   {
@@ -56,11 +57,19 @@ import { dateFormatter } from "@/lib/formatters";
 
 const Usertable = () => {
   const { data } = useFetchusersQuery({});
+  const inputRef = useRef<any>(null);
+
+  useEffect(() => {
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
   return (
     <Container className="justify-center">
       <div className="flex justify-center mt-4  ">
         {/* <h3 className="font-semibold">All Users <span className="text-gray-400" >{users.length}</span></h3> */}
-        <Input placeholder="search...." className="w-[300px]" />
+        <Input ref={inputRef} placeholder="search...." className="w-[300px]" />
       </div>
       <Table className="mt-5">
         <TableCaption>
@@ -75,7 +84,7 @@ const Usertable = () => {
             <TableHead className="text-right"></TableHead>
           </TableRow>
         </TableHeader>
-        <TableBody >
+        <TableBody>
           {data?.users?.map((user) => (
             <TableRow key={user.id}>
               <TableCell className="font-medium mt-3 flex gap-4">
@@ -103,9 +112,7 @@ const Usertable = () => {
               >
                 {user.isBlocked ? "Blocked" : "Active"}
               </TableCell>
-              <TableCell>
-                {dateFormatter(user.createdAt)} 
-              </TableCell>
+              <TableCell>{dateFormatter(user.createdAt)}</TableCell>
               <TableCell className="text-right">
                 <DropDown user={user} />
               </TableCell>
