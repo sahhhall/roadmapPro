@@ -2,7 +2,6 @@ import Container from "@/components/Container";
 import {
   Breadcrumb,
   BreadcrumbItem,
-  BreadcrumbLink,
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
@@ -16,13 +15,13 @@ const UserManagment = () => {
         <BreadcrumbList>
           <BreadcrumbItem>
             <Link to={"/admin"}>
-              <BreadcrumbLink>home</BreadcrumbLink>
+              home
             </Link>
           </BreadcrumbItem>
           <BreadcrumbSeparator />
           <BreadcrumbItem>
             <Link to={"/admin/user-management"}>
-              <BreadcrumbLink>user-management</BreadcrumbLink>
+             user-management
             </Link>
           </BreadcrumbItem>
         </BreadcrumbList>

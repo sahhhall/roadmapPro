@@ -9,7 +9,7 @@ export const authMiddleware = (req: any, res: Response, next: NextFunction) => {
     }
 
     try {
-        const secret = 'hi';
+        const secret = process.env.JWT_ACCESS_SECRET as string;
         const decoded = JWT.verify(token, secret) as any;
         req.user = {
             id: decoded.id,
@@ -32,7 +32,7 @@ export const adminAuthMiddleware = (req: any, res: Response, next: NextFunction)
     }
 
     try {
-        const secret = 'hi';
+        const secret = process.env.JWT_ACCESS_SECRET as string;
         const decoded = JWT.verify(token, secret) as any;
         req.admin = {
             id: decoded.id,

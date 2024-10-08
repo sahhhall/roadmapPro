@@ -8,7 +8,7 @@ interface AdminProtectedProps {
 
 const AdminProtected: React.FC<AdminProtectedProps> = ({ children }) => {
   const { isAuth } = useAppSelector((state) => state.adminAuth);
-
+  
   if (!isAuth) {
     return <Navigate to={"/admin/login"} />; 
   }

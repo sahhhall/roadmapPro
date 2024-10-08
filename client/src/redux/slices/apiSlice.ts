@@ -1,9 +1,9 @@
 import { BaseQueryFn, createApi, fetchBaseQuery, FetchBaseQueryError } from '@reduxjs/toolkit/query/react';
 import { logout } from './authSlice';
 import { adminLogout } from './adminSlice';
-
+const baseURL =  import.meta.env.VITE_BASE_URL;
 const baseQuery = fetchBaseQuery({
-    baseUrl: 'http://localhost:4001',
+    baseUrl: baseURL,
     credentials: 'include'
 });
 
@@ -26,6 +26,7 @@ const baseQueryWithReAuth: BaseQueryFn<any, any, FetchBaseQueryError> = async (a
             console.log('token refreshed success returying original req');
             result = await baseQuery(args, api, extraOptions);
         } else {
+            //here need change handle later
             console.log('Refresh token failed. Logging out the user.');
             api.dispatch(logout());
             api.dispatch(adminLogout());
