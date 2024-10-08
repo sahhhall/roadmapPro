@@ -61,7 +61,7 @@ const Dropdown = ({ handleToggle }: DropdownProps) => {
         <DropdownMenuTrigger className="w-8 h-8 rounded-full">
           <Avatar>
             <AvatarImage
-              src={user?.avatar || "https://github.com/shadcn.png"}
+              src={user?.avatar ? user.avatar : "https://github.com/shadcn.png"}
               className="rounded-full w-full h-full"
             />
             <AvatarFallback>hihii</AvatarFallback>
@@ -71,7 +71,10 @@ const Dropdown = ({ handleToggle }: DropdownProps) => {
           <DropdownMenuLabel>My Account</DropdownMenuLabel>
           <DropdownMenuSeparator />
           <DropdownMenuItem>
-            <button className="items-center flex gap-2" onClick={()=> navigate('/profile')}>
+            <button
+              className="items-center flex gap-2"
+              onClick={() => navigate("/profile")}
+            >
               <User size={15} />
               <span>Profile</span>
             </button>

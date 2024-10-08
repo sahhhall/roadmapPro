@@ -15,6 +15,7 @@ import Container from "@/components/Container";
 import { useFetchusersQuery } from "@/features/admin/services/api/authApi";
 import { dateFormatter } from "@/lib/formatters";
 import { useEffect, useRef } from "react";
+import { AvatarFallback } from "@radix-ui/react-avatar";
 
 // const users = [
 //   {
@@ -90,9 +91,12 @@ const Usertable = () => {
               <TableCell className="font-medium mt-3 flex gap-4">
                 <Avatar className="w-10 h-10 rounded-full">
                   <AvatarImage
-                    src="https://github.com/shadcn.png"
+                    src={user?.avatar}
                     className="rounded-full w-full h-full"
                   />
+                  <AvatarFallback>
+                    google
+                  </AvatarFallback>
                 </Avatar>
                 <div className="flex flex-col">
                   <span> {user.name}</span>
