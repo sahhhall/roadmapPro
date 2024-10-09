@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { DIContainer } from "../../../infrastructure/di/DIContainer";
-import { NotFoundError } from "@sahhhallroadmappro/common";
+import { BlockError, NotFoundError } from "@sahhhallroadmappro/common";
 import { User } from "../../../domain/entities/User";
 
 
@@ -12,6 +12,9 @@ export class PasswordResetController {
         try {
             const { email } = req.body;
             const result = await this.resetToken.execute({ email });
+            if(result?.blocked){
+                throw new BlockError();
+            }
             if (!result.success) {
                 throw new NotFoundError();
             }

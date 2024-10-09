@@ -46,6 +46,11 @@ const ForgotPassowrdForm = () => {
         form.setError("email", {
           message: "Email address not found. Please check and try again",
         });
+      } else if (response.error?.status === 403) {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! You are blocked from site.",
+        });
       } else {
         toast({
           variant: "destructive",

@@ -10,9 +10,15 @@ export class ResetPasswordToken {
         private userRepository: IUserRepository,
     ) { }
 
-    async execute({ email }: { email: string }) {
+    async execute({ email }: { email: string }) {        
         const token = await generatePasswordResetToken.generate();
         const user = await this.userRepository.findByEmail(email) as User;
+        if (user?.isBlocked) {
+            return {
+                blocked:true,
+                token
+            }
+        }
         if (!user) {
             return {
                 success: false,
