@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from 'express';
 
 export const authMiddleware = (req: any, res: Response, next: NextFunction) => {
     const token = req.cookies?.user_accessToken;
-    console.log(req.cookies)
+    // console.log(req.cookies)
     if (!token) {
         return res.status(401).json({ message: 'Unauthorized - No token found' });
     }
@@ -18,7 +18,7 @@ export const authMiddleware = (req: any, res: Response, next: NextFunction) => {
 
         next();
     } catch (error) {
-        console.error('Token verification error:', error);
+        // console.error('Token verification error:', error);
         return res.status(401).json({ message: 'Unauthorized - Invalid token' });
     }
 };
@@ -41,7 +41,7 @@ export const adminAuthMiddleware = (req: any, res: Response, next: NextFunction)
 
         next();
     } catch (error) {
-        console.error('Token verification error:', error);
+        // console.error('Token verification error:', error);
         return res.status(401).json({ message: 'Unauthorized - Invalid token' });
     }
 };
