@@ -18,7 +18,7 @@ export class JwtService implements ITokenService {
             role: user.role
         }
         const options = {
-            expiresIn: '30s'
+            expiresIn: '15m'
         }
         return JWT.sign(payload, this.accessTokenSecret, options)
     }
