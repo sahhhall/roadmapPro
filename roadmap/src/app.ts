@@ -29,7 +29,7 @@ class App {
     private async startServer() {
         try {
             await connectDB();
-            const PORT: number = 3000;
+            const PORT: number = 3001;
             this.app.listen(process.env.PORT || PORT, () => {
                 console.log(`App listening on port ===> http://localhost:${PORT}/`);
             })
