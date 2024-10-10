@@ -9,7 +9,7 @@ import { BadRequestError, NotFoundError } from "@sahhhallroadmappro/common";
 
 export class LoginController {
     private loginUser = DIContainer.getLoginUserUseCase();
-    async login(req: any, res: Response, next: NextFunction) {
+    async login(req: Request, res: Response, next: NextFunction) {
         const dto = Object.assign(new LoginUserDto(), req.body);
         const errors = await validate(dto);
         if (errors.length > 0) {
@@ -30,7 +30,7 @@ export class LoginController {
                 // here common error  badreq
                 throw new BadRequestError('password not correct')
             };
-            req.logger.info("user auth createing :)")
+            req!.logger.info("user auth createing :)")
             res.cookie(`user_accessToken`, user.accessToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV !== "development",
