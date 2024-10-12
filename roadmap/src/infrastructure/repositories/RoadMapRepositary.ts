@@ -28,8 +28,10 @@ export class RoadMapRepository implements IRoadMapRepository {
     async getRoadmapById(id: mongoose.Types.ObjectId): Promise<Roadmap | null> {
         try {
             const roadmap = await RoadMap.findById(id).populate('nodes').populate('edges');
+            console.log("here roadmap",roadmap)
             return roadmap
         } catch (error: any) {
+            customLogger.error(error.message)
             throw new Error(`db error,get:${error.message}`);
         }
     }

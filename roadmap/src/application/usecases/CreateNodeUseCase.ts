@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import { NodeEntity } from "../../domain/entities/Roadmap";
 import { IRoadMapRepository } from "../../domain/interfaces/IRoadMapRepositary";
 import { ICreateNodeUseCase } from "../interfaces/ICreateNodeUseCase";
+import { NotFoundError } from "@sahhhallroadmappro/common";
 
 export class CreateNodeUseCase implements ICreateNodeUseCase {
     constructor(private roadMapRepository: IRoadMapRepository) { }
@@ -17,7 +18,7 @@ export class CreateNodeUseCase implements ICreateNodeUseCase {
         const { type, position, data, roadmapId } = nodeData;
         const existingRoadmap = await this.roadMapRepository.getRoadmapById(roadmapId);
         if (!existingRoadmap) {
-            throw new Error('Roadmap not found');
+            return null;
         }
 
         const newNode = new NodeEntity(
