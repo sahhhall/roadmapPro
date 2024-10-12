@@ -6,6 +6,7 @@ import { CreateRoadMap, NodeController } from "../controllers";
 import { ReviewRoadmapDTO } from "../dto/ReviewRoadmapDTO";
 import { RoadMapReviewController } from "../controllers/admin/ReviewRoadmapController";
 import { AllRoadMapController } from "../controllers/AllRoadMapController";
+import { GetRoadMapController } from "../controllers/GetRoadMapController";
 
 
 const router = Router();
@@ -15,9 +16,12 @@ const createRoadMapController = new CreateRoadMap(diContainer.getCreateRoadMapUs
 const createNodeController = new NodeController(diContainer.getCreateNodeCreateUseCase());
 const reviewRoadmapController = new RoadMapReviewController(diContainer.getReviewRoadMapUseCase());
 const getAllRoadMapController = new AllRoadMapController(diContainer.getAllRoadMapUseCase());
-
+const getRoadMapController = new GetRoadMapController(diContainer.getRoadMapUseCases())
 router.get('/', async (req, res, next) => {
     await getAllRoadMapController.execute(req, res, next);
+})
+router.get('/:roadmapId', async (req, res, next) => {
+    await getRoadMapController.getRoadMap(req, res, next);
 })
 
 router.post('/', validateRequest(CreateRoadMapDTO), async (req, res, next) => {
