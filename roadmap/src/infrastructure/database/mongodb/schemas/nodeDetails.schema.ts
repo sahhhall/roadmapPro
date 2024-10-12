@@ -11,8 +11,8 @@ interface NodeDetailsAttrs {
 interface NodeDetailsDoc extends mongoose.Document {
     nodeId: mongoose.Types.ObjectId;
     title: string;
-    description?: string;
-    links?: Array<{ title: string; url: string }>;
+    description: string;
+    links: Array<{ title: string; url: string }>;
 };
 
 interface NodeDetailsModal extends mongoose.Model<NodeDetailsDoc> {
@@ -32,7 +32,7 @@ const nodeDetailsSchema = new mongoose.Schema({
     },
     description: {
         type: String,
-        required: true
+        required: false
     },
     links: [{
         title: { type: String, required: true },

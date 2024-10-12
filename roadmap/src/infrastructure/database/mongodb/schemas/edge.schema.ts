@@ -3,14 +3,12 @@ import mongoose from "mongoose";
 
 
 interface EdgeAttr {
-    roadmapId: mongoose.Types.ObjectId;
     source: mongoose.Types.ObjectId;
     target: mongoose.Types.ObjectId
 }
 
 
 interface EdgeDoc extends mongoose.Document {
-    roadmapId: mongoose.Types.ObjectId;
     source: mongoose.Types.ObjectId;
     target: mongoose.Types.ObjectId
 };
@@ -22,11 +20,6 @@ interface EdgeModal extends mongoose.Model<EdgeDoc> {
 
 
 const edgeSchmea = new mongoose.Schema({
-    roadmapId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'RoadMap',
-        required: true
-    },
     source: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Node',

@@ -2,7 +2,6 @@ import mongoose from 'mongoose';
 
 
 interface NodeAttr {
-    roadmapId: mongoose.Types.ObjectId;
     type: string;
     position: { x: number, y: number };
     data: string;
@@ -10,7 +9,6 @@ interface NodeAttr {
 
 
 interface NodeDoc extends mongoose.Document {
-    roadmapId: mongoose.Types.ObjectId;
     type: string;
     position: { x: number, y: number };
     data: string;
@@ -24,11 +22,6 @@ interface NodeModal extends mongoose.Model<NodeDoc> {
 
 
 const nodeSchema = new mongoose.Schema({
-    roadmapId: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'RoadMap',
-        required: true
-    },
     type: {
         type: String,
         required: true

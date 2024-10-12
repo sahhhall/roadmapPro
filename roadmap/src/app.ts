@@ -3,6 +3,8 @@ import { connectDB } from './infrastructure/database/mongodb/connection';
 import dotenv from 'dotenv';
 import cookieParser from 'cookie-parser'
 import { errorHandler } from '@sahhhallroadmappro/common';
+import { router } from './presentation/routes/roadmap';
+import loggerMiddleware from './presentation/middlewares/loggerMiddleware';
 class App {
     private readonly app: express.Application;
 
@@ -19,9 +21,10 @@ class App {
         this.app.use(cookieParser())
         this.app.use(express.urlencoded());
         this.app.use(express.json());
+        this.app.use(loggerMiddleware)
     };
     private registerRoutes(): void {
-     
+        this.app.use('/api/roadmap', router)
     }
     private registerErrorHandler(): void {
         this.app.use(errorHandler as any);

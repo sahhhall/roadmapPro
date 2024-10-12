@@ -8,6 +8,7 @@ interface RoadMapAttr {
     status: 'drafted' | 'published' | 'rejected';
     nodes?: mongoose.Types.ObjectId[]; 
     edges?: mongoose.Types.ObjectId[];  
+    adminFeedback?: string;
 }
 
 
@@ -15,9 +16,10 @@ interface RoadMapDoc extends mongoose.Document {
     userId: mongoose.Types.ObjectId;
     title: string;
     description: string;
-    status: string;
+    status: 'drafted' | 'published' | 'rejected';
     nodes: mongoose.Types.ObjectId[]; 
     edges: mongoose.Types.ObjectId[];  
+    adminFeedback: string;
 }
 
 
@@ -47,12 +49,17 @@ const roadmapSchema = new mongoose.Schema({
     },
     nodes: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Node' 
+        ref: 'Node',
+        default:[]
     }],
     edges: [{
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'Edge' 
-    }]
+        ref: 'Edge',
+        default:[]
+    }],
+    adminFeedback:{
+        type: String
+    }
 }, {
     toJSON: {
         transform(_, ret) {
