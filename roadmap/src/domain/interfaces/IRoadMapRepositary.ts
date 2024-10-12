@@ -1,9 +1,10 @@
-import { Roadmap, Node, Edge, NodeDetails, Link } from "../entities/Roadmap";
+import mongoose from "mongoose";
+import { Roadmap, Edge, NodeDetails, Link, NodeEntity } from "../entities/Roadmap";
 
 
 export interface IRoadMapRepository {
   
-    getRoadmapById(id: string): Promise<Roadmap | null>;
+    getRoadmapById(id: mongoose.Types.ObjectId): Promise<Roadmap | null>;
 
     getAllRoadmaps(): Promise<Roadmap[]>;
 
@@ -14,6 +15,10 @@ export interface IRoadMapRepository {
     createRoadMap (roadMap: Roadmap): Promise<Roadmap>;
 
     updateRoadmap(id: string, updatedRoadmap: Partial<Roadmap>): Promise<Roadmap | null>;
+
+    addNodeToRoadmap(roadmapId: mongoose.Types.ObjectId, nodeId: mongoose.Types.ObjectId,): Promise<Roadmap | null> 
     
     deleteRoadmap(id: string): Promise<boolean>;
+
+    createNode(node: NodeEntity): Promise<NodeEntity>;
 }

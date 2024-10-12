@@ -15,14 +15,14 @@ export class Roadmap {
     ) { }
 }
 
-export class Node {
+export class NodeEntity {
     constructor(
         public type: string,
         public position: { x: number, y: number },
         public data: string,
         public hasDetails: boolean = false,
         public details?: NodeDetails,
-        public id?: string
+        public id?: mongoose.Types.ObjectId
     ) { }
 }
 

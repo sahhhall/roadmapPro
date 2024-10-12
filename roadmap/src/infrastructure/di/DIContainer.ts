@@ -1,4 +1,6 @@
+import { ICreateNodeUseCase } from "../../application/interfaces/ICreateNodeUseCase";
 import { IRoadMapCreate } from "../../application/interfaces/IRoadmapCreate";
+import { CreateNodeUseCase } from "../../application/usecases/CreateNodeUseCase";
 import { RoadMapCreate } from "../../application/usecases/RoadmapCreate";
 import { RoadMapRepository } from "../repositories/RoadMapRepositary";
 
@@ -22,4 +24,8 @@ export class DIContainer {
     public getCreateRoadMapUseCase(): IRoadMapCreate {
         return new RoadMapCreate(this._roadmapRepositary)
     };
+
+    public getCreateNodeCreateUseCase(): ICreateNodeUseCase {
+        return new CreateNodeUseCase(this._roadmapRepositary)
+    }
 }

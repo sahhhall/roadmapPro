@@ -1,7 +1,8 @@
 import { RoadMap, Node, NodeDetails, Edge, User } from "../database/mongodb";
-import {  IRoadMapRepository } from "../../domain/interfaces/IRoadMapRepositary";
-import { Roadmap, NodeDetails as NodeD } from "../../domain/entities/Roadmap";
-import  { customLogger } from "../../presentation/middlewares/loggerMiddleware";
+import { IRoadMapRepository } from "../../domain/interfaces/IRoadMapRepositary";
+import { Roadmap, NodeDetails as NodeD, NodeEntity } from "../../domain/entities/Roadmap";
+import { customLogger } from "../../presentation/middlewares/loggerMiddleware";
+import mongoose from "mongoose";
 
 
 export class RoadMapRepository implements IRoadMapRepository {
@@ -24,7 +25,7 @@ export class RoadMapRepository implements IRoadMapRepository {
             throw new Error(`db error,create${error.message}`);
         }
     }
-    async getRoadmapById(id: string): Promise<Roadmap | null> {
+    async getRoadmapById(id: mongoose.Types.ObjectId): Promise<Roadmap | null> {
         try {
             const roadmap = await RoadMap.findById(id).populate('nodes').populate('edges');
             return roadmap
@@ -36,7 +37,7 @@ export class RoadMapRepository implements IRoadMapRepository {
     async getRoadmapByTitle(title: string): Promise<Roadmap | null> {
         try {
             console.log("hi");
-            
+
             const roadmap = await RoadMap.findOne({ title });
             return roadmap;
         } catch (error: any) {
@@ -62,7 +63,25 @@ export class RoadMapRepository implements IRoadMapRepository {
             return null;
         }
     }
-//have to change
+    async createNode(nodeData: NodeEntity): Promise<NodeEntity> {
+        try {
+            const newNode = Node.build({
+                type: nodeData.type,
+                position: {
+                    x: nodeData.position.x,
+                    y: nodeData.position.y
+                },
+                data: nodeData.data,
+            });
+            await newNode.save();
+            return newNode;
+        } catch (error: any) {
+            customLogger.error(error.message);
+            throw new Error(`db error, create node: ${error.message}`);
+        }
+    }
+
+    //have to change
     async updateRoadmap(id: string, updatedRoadmap: Partial<Roadmap>): Promise<Roadmap | null> {
         try {
             const roadmap = await RoadMap.findByIdAndUpdate(id, updatedRoadmap, { new: true }).exec();
@@ -70,6 +89,15 @@ export class RoadMapRepository implements IRoadMapRepository {
         } catch (error) {
             console.error(`Failed to update roadmap with ID: ${id}`, error);
             throw error;
+        }
+    }
+
+    async addNodeToRoadmap(roadmapId: mongoose.Types.ObjectId, nodeId: mongoose.Types.ObjectId): Promise<Roadmap | null> {
+        try {
+            return await RoadMap.findByIdAndUpdate(roadmapId, { $push: { nodes: nodeId } });
+        } catch (error: any) {
+            customLogger.error(error.message)
+            throw new Error(`db error,add node${error.message}`);
         }
     }
 
