@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { NodeEntity } from "../../domain/entities/Roadmap";
 import { IRoadMapRepository } from "../../domain/interfaces/IRoadMapRepositary";
 import { ICreateNodeUseCase } from "../interfaces/ICreateNodeUseCase";
-import { NotFoundError } from "@sahhhallroadmappro/common";
+
 
 export class CreateNodeUseCase implements ICreateNodeUseCase {
     constructor(private roadMapRepository: IRoadMapRepository) { }

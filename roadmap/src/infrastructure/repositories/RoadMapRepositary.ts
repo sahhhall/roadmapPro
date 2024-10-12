@@ -84,10 +84,10 @@ export class RoadMapRepository implements IRoadMapRepository {
     }
 
     //have to change
-    async updateRoadmap(id: string, updatedRoadmap: Partial<Roadmap>): Promise<Roadmap | null> {
+    async updateRoadmap(id: mongoose.Types.ObjectId, updatedRoadmap: Partial<Roadmap>): Promise<Roadmap | null> {
         try {
-            const roadmap = await RoadMap.findByIdAndUpdate(id, updatedRoadmap, { new: true }).exec();
-            return roadmap ? roadmap.toObject() : null;
+            const roadmap = await RoadMap.findByIdAndUpdate(id, updatedRoadmap, { new: true });
+            return roadmap 
         } catch (error) {
             console.error(`Failed to update roadmap with ID: ${id}`, error);
             throw error;

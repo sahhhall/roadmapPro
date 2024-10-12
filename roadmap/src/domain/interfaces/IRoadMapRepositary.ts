@@ -14,7 +14,7 @@ export interface IRoadMapRepository {
 
     createRoadMap (roadMap: Roadmap): Promise<Roadmap>;
 
-    updateRoadmap(id: string, updatedRoadmap: Partial<Roadmap>): Promise<Roadmap | null>;
+    updateRoadmap(id: mongoose.Types.ObjectId, updatedRoadmap: Partial<Roadmap>): Promise<Roadmap | null>;
 
     addNodeToRoadmap(roadmapId: mongoose.Types.ObjectId, nodeId: mongoose.Types.ObjectId,): Promise<Roadmap | null> 
     
