@@ -33,7 +33,7 @@ interface CreateRoadmapProps {
 const formSchema = z.object({
   title: z
     .string()
-    .min(6, { message: "At least 6 characters needed" })
+    .min(3, { message: "At least 6 characters needed" })
     .refine((value) => value.trim().length > 0, {
       message: "Title cannot contain only whitespace",
     })
