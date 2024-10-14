@@ -1,59 +1,104 @@
-import { useState, useCallback } from 'react';
+import { useRef, useCallback, useState } from "react";
 import {
   ReactFlow,
+  ReactFlowProvider,
+  addEdge,
+  useNodesState,
+  useEdgesState,
   Controls,
+  useReactFlow,
   Background,
-  applyNodeChanges,
-  applyEdgeChanges,
-} from '@xyflow/react';
+} from "@xyflow/react";
 import '@xyflow/react/dist/style.css';
+import Sidebar from "../components/sidebar/Sidebar";
+import Container from "@/components/Container";
 
 const initialNodes = [
   {
-    id: '1',
-    data: { label: 'Hello' },
-    position: { x: 0, y: 0 },
-    type: 'input',
-
-  },
-  {
-    id: '2',
-    data: { label: 'World' },
-    position: { x: 100, y: 100 },
+    id: "1",
+    type: "input",
+    data: { label: "input node" },
+    position: { x: 250, y: 5 },
   },
 ];
 
-const initialEdges = [
-  { id: '1-2', source: '1', target: '2',labelStyle:{fill:'red'}, type: 'step' },
-];
+let id = 0;
+const getId = () => `dndnode_${id++}`;
 
-function Flow() {
-  const [nodes, setNodes] = useState(initialNodes);
-  const [edges, setEdges] = useState(initialEdges);
-
-  const onNodesChange = useCallback(
-    (changes : any) => setNodes((nds) => applyNodeChanges(changes, nds)),
-    [],
+const DnDFlow = () => {
+  
+  const reactFlowWrapper = useRef(null);
+  const [nodes, setNodes, onNodesChange] = useNodesState(initialNodes);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const { screenToFlowPosition } = useReactFlow();
+  const [nodeType, setNodeType] = useState(null);
+  console.log(nodes)
+  const onConnect = useCallback(
+    (params: any) => setEdges((eds: any) => addEdge(params, eds)),
+    []
   );
-  const onEdgesChange = useCallback(
-    (changes : any) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-    [],
+
+  const onDragOver = useCallback((event: any) => {
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+  }, []);
+
+  const onDragStart = (event: any, type: any) => {
+    setNodeType(type);
+    event.dataTransfer.effectAllowed = "move";
+  };
+
+  const onDrop = useCallback(
+    (event) => {
+      event.preventDefault();
+      if (!nodeType) {
+        return;
+      }
+      const position = screenToFlowPosition({
+        x: event.clientX,
+        y: event.clientY,
+      });
+      const newNode = {
+        id: getId(),
+        type: nodeType,
+        position,
+        data: { label: `${nodeType} node` },
+      };
+      setNodes((nds) => nds.concat(newNode));
+      setNodeType(null);
+    },
+    [screenToFlowPosition, nodeType]
   );
 
   return (
-    <div className='w-full h-screen'>
-      <ReactFlow
-        nodes={nodes}
-        onNodesChange={onNodesChange}
-        edges={edges}
-        onEdgesChange={onEdgesChange}
-        fitView
-      >
-        <Background />
-        <Controls />
-      </ReactFlow>
-    </div>
+    <Container className="flex h-screen w-screen">
+      <Sidebar onDragStart={onDragStart} />
+      <div className="flex-grow" ref={reactFlowWrapper}>
+      <Controls showZoom={true}  />
+        <ReactFlow
+          nodes={nodes}
+          edges={edges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onConnect={onConnect}
+          onDrop={onDrop}
+          onDragOver={onDragOver}
+          fitView
+          panOnDrag={false} 
+          panOnScroll={false} 
+        >
+          
+     
+        </ReactFlow>
+      </div>
+    </Container>
   );
-}
+};
 
-export default Flow;
+const WrappedDnDFlow = () => (
+  <ReactFlowProvider>
+    <DnDFlow />
+  </ReactFlowProvider>
+);
+
+export default WrappedDnDFlow;

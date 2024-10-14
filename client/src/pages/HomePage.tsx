@@ -1,13 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-
+// import { useNavigate } from "react-router-dom";
+// import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { useState } from "react";
+import CreateRoadmap from "@/components/modals/CreateRoadmap";
 const Home = () => {
-
-  const navigate = useNavigate()
-  const handleClick = () => {
-    navigate('draw-roadmap')
-  }
+  // const navigate = useNavigate()
+  // // const handleClick = () => {
+  // //   navigate('draw-roadmap')
+  // // }
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const openDialog = () => setDialogOpen(true);
   const combinedText =
     "roadmapPro is a community effort to create roadmaps, guides and other educational content to help guide developers in picking up a path and guide their learnings.";
 
@@ -35,19 +38,20 @@ const Home = () => {
                 delay: i / 10,
               }}
             >
-              {el} {" "}
+              {el}{" "}
             </motion.span>
           ))}
         </motion.p>
         <Button
           variant={"default"}
           className="dark:bg-white font-bold dark:text-black mt-5 rounded-lg tracking-normal"
-          onClick={handleClick}
+          onClick={openDialog}
         >
           Create your own roadmap
         </Button>
       </div>
       <div></div>
+        <CreateRoadmap dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
     </div>
   );
 };
