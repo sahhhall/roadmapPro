@@ -6,7 +6,6 @@ import UserProtected from "@/router/protected/UserProtected";
 import RedirectLoggedIn from "@/router/protected/RedirectLoggedIn";
 import NotFound from "@/pages/NotFound";
 import RoadMapMangment from "@/features/admin/pages/RoadMapMangment";
-import Flow from "@/features/roadmaps/pages/Flow";
 import WrappedDnDFlow from "@/features/roadmaps/pages/Flow";
 
 const Home = lazy(() => import("@/pages/HomePage"));
@@ -133,7 +132,7 @@ const routes = createBrowserRouter([
     ],
   },
   {
-    path:'/draw-roadmap',
+    path:'/draw-roadmap/:id',
     element: <WrappedDnDFlow/>
   },
   { path: "*", element: <NotFound /> },

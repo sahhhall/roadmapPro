@@ -14,7 +14,7 @@ const adminApiSlice = apiSlice.injectEndpoints({
         }),
         blockuser: builder.mutation<Blockdata, any>({
             query: (data) => ({
-                url: adminEndpoints.blockunblok,
+                url: adminEndpoints.blockunblok,    
                 method: 'post',
                 body: data
             }),

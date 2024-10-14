@@ -19,6 +19,11 @@ import {
   FormMessage,
 } from "../ui/form";
 import { Input } from "../ui/input";
+import { usegetUser } from "@/hooks/usegetUser";
+import { useCreateRoadmapMutation } from "@/features/roadmaps/services/api/roadmapApi";
+import { useNavigate } from "react-router-dom";
+import { useToast } from "@/hooks/use-toast";
+import { CircleCheck, LoaderCircle } from "lucide-react";
 
 interface CreateRoadmapProps {
   dialogOpen: boolean;
@@ -58,14 +63,42 @@ const CreateRoadmap: React.FC<CreateRoadmapProps> = ({
       description: "",
     },
   });
+  const navigate = useNavigate();
+  const { toast } = useToast();
   const closeDialog = () => {
     form.reset();
     form.clearErrors();
     setDialogOpen(false);
   };
+  const userData = usegetUser();
+  const [createRoadmap, { isLoading }] = useCreateRoadmapMutation({});
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    closeDialog();
+    if (!userData) {
+      console.error("User ID is not available");
+      return;
+    }
+    const payload = {
+      title: values.title,
+      description: values.description,
+      userId: userData?.id,
+    };
+    try {
+      const result = await createRoadmap(payload).unwrap();
+      toast({
+        description: (
+          <>
+            <CircleCheck color="green" className="inline-block mr-2" />
+            Roadmap created successfully!
+          </>
+        ),
+        className: "border-none",
+        variant: "default",
+      });
+      navigate(`/draw-roadmap/${result.id}`);
+      closeDialog();
+    } catch (error) {
+      console.error("Error creating roadmap:", error);
+    }
   };
 
   return (
@@ -105,10 +138,10 @@ const CreateRoadmap: React.FC<CreateRoadmapProps> = ({
                 control={form.control}
                 name="description"
                 render={({ field }) => (
-                  <FormItem >
+                  <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Input  placeholder="Description" {...field} />
+                      <Input placeholder="Description" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -116,9 +149,15 @@ const CreateRoadmap: React.FC<CreateRoadmapProps> = ({
               />
             </div>
             <DialogFooter className="mt-6 w-full grow">
-              <Button type="submit" variant="submit" className="w-full">
-                Submit
-              </Button>
+              {isLoading ? (
+                <Button type="submit" variant="submit" className="w-full ">
+                  <LoaderCircle className="animate-spin " />
+                </Button>
+              ) : (
+                <Button type="submit" variant="submit" className="w-full">
+                  Submit
+                </Button>
+              )}
             </DialogFooter>
           </form>
         </Form>
