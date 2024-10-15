@@ -8,6 +8,8 @@ import {
   useReactFlow,
   Background,
   MiniMap,
+  Connection,
+  Controls,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import Sidebar from "../components/sidebar/Sidebar";
@@ -21,16 +23,23 @@ import {
 import ContentLinks from "../components/drawer/ContentLinks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { Topic } from "../components/drawer/nodes/TopicNode";
+import { SubTopic } from "../components/drawer/nodes/SubTopicNode";
 
+type NodeType = "topic" | "subtopic";
+const nodeTypes = {
+  topic: Topic,
+  subtopic: SubTopic,
+};
 let nodeId = 1;
 const getId = () => `dndnode_${nodeId++}`;
 
 const DnDFlow = () => {
   const reactFlowWrapper = useRef(null);
-  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState<any>([]);
   const [edges, setEdges, onEdgesChange] = useEdgesState([]);
   const { screenToFlowPosition } = useReactFlow();
-  const [nodeType, setNodeType] = useState(null);
+  const [nodeType, setNodeType] = useState<NodeType | null>(null);
   //this for node editing
   const [editValue, setEditValue] = useState("");
   const [selectedNodeId, setSelectedNodeId] = useState(null);
@@ -38,14 +47,15 @@ const DnDFlow = () => {
   const [activeTab, setActiveTab] = useState("properties");
   const [nodeColor, setNodeColor] = useState("#f3c950");
 
-  const onNodeClick = (e, node) => {
+  const onNodeClick = (_: any, node: any) => {
     setEditValue(node.data.label);
     setSelectedNodeId(node.id);
     setNodeColor(node.style?.background || "#f3c950");
     setIsSheetOpen(true);
   };
 
-  const handleChange = (e) => setEditValue(e.target.value);
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>
+    setEditValue(e.target.value);
 
   const handleUpdate = () => {
     setNodes((prevNodes) =>
@@ -56,39 +66,45 @@ const DnDFlow = () => {
       )
     );
   };
-
-  const changeNodeColor = (color) => {
+  const changeNodeColor = (color: any) => {
     setNodeColor(color);
+
     setNodes((prevNodes) =>
       prevNodes.map((node) =>
         node.id === selectedNodeId
-          ? { ...node, style: { ...node.style, background: color } }
+          ? {
+              ...node,
+              style: { ...node.style, background: color },
+            }
           : node
       )
     );
   };
 
   const onConnect = useCallback(
-    (params) => setEdges((eds) => addEdge(params, eds)),
+    (params: Connection) => setEdges((eds) => addEdge(params, eds)),
     []
-);
+  );
 
-// const onConnect = useCallback(
-//   (connection: Connection) => setEdges((eds) => addEdge(...connection, eds)),
-//  []);
+  // const onConnect = useCallback(
+  //   (connection: Connection) => setEdges((eds) => addEdge(...connection, eds)),
+  //  []);
 
-  const onDragOver = useCallback((event) => {
+  const onDragOver = useCallback((event: React.DragEvent<HTMLDivElement>) => {
     event.preventDefault();
     event.dataTransfer.dropEffect = "move";
   }, []);
 
-  const onDragStart = (event, type) => {
+  const onDragStart = (
+    event: React.DragEvent<HTMLDivElement>,
+    type: NodeType
+  ) => {
     setNodeType(type);
     event.dataTransfer.effectAllowed = "move";
   };
 
   const onDrop = useCallback(
-    (event) => {
+    (event: React.DragEvent<HTMLDivElement>) => {
       event.preventDefault();
       if (!nodeType) return;
       console.log(event, "event");
@@ -102,11 +118,16 @@ const DnDFlow = () => {
         position,
         data: { label: `${nodeType}` },
         style: {
-          background: nodeColor,
           color: "#000000",
           border: "1px solid #222138",
-          width: 180,
+          boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.1)",
+          width: 100,
+          fontSize: "7px",
+          padding:'2px',
+          fontWeight: "medium",
+          background: nodeType === "topic" ? "#fdff00" : "#f3c950",
         },
+        type: nodeType,
       };
 
       setNodes((nds) => nds.concat(newNode));
@@ -115,8 +136,8 @@ const DnDFlow = () => {
     [screenToFlowPosition, nodeType, nodeColor]
   );
   const onNodesDelete = () => {
-    setIsSheetOpen(false)
-  }
+    setIsSheetOpen(false);
+  };
 
   return (
     <div className="flex h-screen w-full">
@@ -136,7 +157,8 @@ const DnDFlow = () => {
           fitView
         >
           <Background />
-          <MiniMap/>
+          <MiniMap />
+          <Controls />
         </ReactFlow>
       </div>
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
@@ -194,7 +216,7 @@ const DnDFlow = () => {
                 <hr className="mt-6" />
 
                 <div className="flex space-x-2 mt-5  flex-col">
-                  <div >
+                  <div>
                     <span className="mt-4">Node color</span>
                   </div>
                   <div className="flex gap-3 mt-4">
@@ -235,19 +257,5 @@ const WrappedDnDFlow = () => (
     <DnDFlow />
   </ReactFlowProvider>
 );
-
-const CustomNode = ({ data }) => {
-  return (
-    <div className="p-4" style={{ backgroundColor: data.style?.background }}>
-      {data.label}
-    </div>
-  );
-};
-
-const nodeTypes = {
-  topic: CustomNode,
-  subtopic: CustomNode,
-};
-
 
 export default WrappedDnDFlow;
