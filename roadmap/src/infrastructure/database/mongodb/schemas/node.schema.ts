@@ -5,6 +5,7 @@ interface NodeAttr {
     type: string;
     position: { x: number, y: number };
     data: string;
+    background: string
 }
 
 
@@ -13,6 +14,7 @@ interface NodeDoc extends mongoose.Document {
     position: { x: number, y: number };
     data: string;
     hasDetails: boolean;
+    background: string;
 }
 
 
@@ -31,6 +33,10 @@ const nodeSchema = new mongoose.Schema({
         y: { type: Number, required: true }
     },
     data: {
+        type: String,
+        required: true
+    },
+    background: {
         type: String,
         required: true
     },

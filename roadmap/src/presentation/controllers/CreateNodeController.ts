@@ -7,12 +7,13 @@ export class NodeController {
 
     async createNode(req: Request, res: Response, next: NextFunction) {
         try {
-            const { roadmapId, type, position, data } = req.body;
-
+            const { roadmapId, type, position, background, data } = req.body;
+            console.log("sahal")
             const newNode = await this.createNodeUseCase.execute({
                 data,
                 position,
                 type,
+                background,
                 roadmapId
             });
             if (!newNode) {

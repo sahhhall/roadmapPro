@@ -7,6 +7,7 @@ export interface ICreateNodeUseCase {
         data: string,
         position: any,
         type: string,
+        background: string,
         roadmapId: mongoose.Types.ObjectId
     }): Promise<NodeEntity | null>;
 }

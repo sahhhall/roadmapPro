@@ -74,6 +74,7 @@ export class RoadMapRepository implements IRoadMapRepository {
                     y: nodeData.position.y
                 },
                 data: nodeData.data,
+                background: nodeData.background
             });
             await newNode.save();
             return newNode;

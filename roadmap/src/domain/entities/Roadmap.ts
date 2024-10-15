@@ -20,6 +20,7 @@ export class NodeEntity {
         public type: string,
         public position: { x: number, y: number },
         public data: string,
+        public background: string,
         public hasDetails: boolean = false,
         public details?: NodeDetails,
         public id?: mongoose.Types.ObjectId

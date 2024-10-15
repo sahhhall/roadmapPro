@@ -11,4 +11,7 @@ export class CreateNodeDTO {
 
     @IsString()
     roadmapId!: string;
+
+    @IsString()
+    background!: string;
 };

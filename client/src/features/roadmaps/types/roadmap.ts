@@ -2,19 +2,19 @@
 export interface CreateRoadmapRequest {
     title: string;
     description: string;
-    userId: string; 
+    userId: string;
 }
 
 export interface RoadmapResponse {
-    id: string;                
-    userId: string;           
-    title: string;             
-    description: string;      
-    status: "drafted" | "published"; 
-    nodes: Array<any>;      
-    edges: Array<any>;         
-    adminFeedback: string;    
-    createdAt: string;        
+    id: string;
+    userId: string;
+    title: string;
+    description: string;
+    status: "drafted" | "published";
+    nodes: Array<any>;
+    edges: Array<any>;
+    adminFeedback: string;
+    createdAt: string;
 }
 
 
@@ -25,20 +25,49 @@ interface Position {
     y: number;
 }
 
+// export interface NodeStyle {
+//     color: string;
+//     border: string;
+//     boxShadow: string;
+//     width: number;
+//     fontSize: string;
+//     padding: string;
+//     fontWeight: string;
+//     background: string;
+// }
+
 
 export interface NodeCreationRequest {
-    roadmapId:string| undefined;
+    roadmapId: string | undefined;
     type: string;
-    position:Position
-    data: string
+    position: Position;
+    data: string;
+    background: string;
 }
 
+
 export interface NodeCreationResponse {
-    type: string; 
+    type: string;
     position: Position;
-    data: string; 
+    data: string;
     hasDetails: boolean;
-    createdAt: string; 
-    updatedAt: string; 
+    createdAt: string;
+    updatedAt: string;
     id: string;
 }
+
+
+
+
+//common
+
+// style: {
+//     color: "#000000",
+//     border: "1px solid #222138",
+//     boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.1)",
+//     width: 100,
+//     fontSize: "7px",
+//     padding: "2px",
+//     fontWeight: "medium",
+//     background: nodeType === "topic" ? "#fdff00" : "#f3c950",
+//   },

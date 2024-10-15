@@ -131,6 +131,7 @@ const DnDFlow = () => {
           type: nodeType,
           position,
           data: nodeType,
+          background: nodeType === "topic" ? "#fdff00" : "#f3c950",
         }).unwrap();
 
         const newNode = {

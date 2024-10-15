@@ -12,10 +12,11 @@ export class CreateNodeUseCase implements ICreateNodeUseCase {
             data: string,
             position: any,
             type: string,
+            background: string,
             roadmapId: mongoose.Types.ObjectId
         }
     ): Promise<NodeEntity | null> {
-        const { type, position, data, roadmapId } = nodeData;
+        const { type, position, data, background, roadmapId } = nodeData;
         const existingRoadmap = await this.roadMapRepository.getRoadmapById(roadmapId);
         if (!existingRoadmap) {
             return null;
@@ -24,7 +25,8 @@ export class CreateNodeUseCase implements ICreateNodeUseCase {
         const newNode = new NodeEntity(
             type,
             position,
-            data
+            data,
+            background
         )
 
         const savedNode = await this.roadMapRepository.createNode(newNode) as NodeEntity;
