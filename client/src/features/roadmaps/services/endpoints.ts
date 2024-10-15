@@ -1,3 +1,4 @@
 export const roadmapEndPoints = {
-    roadmapCreate:'/api/roadmap'
+    roadmapCreate:'/api/roadmap',
+    nodeCreate:'/api/roadmap/node'
 }

@@ -10,9 +10,10 @@ import {
   MiniMap,
   Connection,
   Controls,
+  Node,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import Sidebar from "../components/sidebar/Sidebar";
+import Sidebar from "@/features/roadmaps/components/sidebar/Sidebar";
 import {
   Sheet,
   SheetContent,
@@ -20,20 +21,23 @@ import {
   SheetHeader,
   SheetTitle,
 } from "@/components/ui/sheet";
-import ContentLinks from "../components/drawer/ContentLinks";
+import ContentLinks from "@/features/roadmaps/components/drawer/ContentLinks";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Topic } from "../components/drawer/nodes/TopicNode";
-import { SubTopic } from "../components/drawer/nodes/SubTopicNode";
-import { useAppSelector } from "@/hooks/useAppStore";
+import { Topic } from "@/features/roadmaps/components/drawer/nodes/TopicNode";
+import { SubTopic } from "@/features/roadmaps/components/drawer/nodes/SubTopicNode";
+import { useAppDispatch, useAppSelector } from "@/hooks/useAppStore";
+import { useCreateNodeMutation } from "../services/api/roadmapApi";
+import { useParams } from "react-router-dom";
+import { deleteNodeDetails } from "@/redux/slices/roadMapslice";
 
 type NodeType = "topic" | "subtopic";
 const nodeTypes = {
   topic: Topic,
   subtopic: SubTopic,
 };
-let nodeId = 1;
-const getId = () => `dndnode_${nodeId++}`;
+// let nodeId = 1;
+// const getId = () => `dndnode_${nodeId++}`;
 
 const DnDFlow = () => {
   const reactFlowWrapper = useRef(null);
@@ -46,12 +50,16 @@ const DnDFlow = () => {
   const [selectedNodeId, setSelectedNodeId] = useState(null);
   //this also i pass to content link beacuse i want when submit i wan close
   const [isSheetOpen, setIsSheetOpen] = useState(false);
-  //this for content& links page 
+  //this for content& links page
   const [activeTab, setActiveTab] = useState("properties");
   //this for set coloring when a node
   const [nodeColor, setNodeColor] = useState("#f3c950");
 
-  const roadmapNodeContent= useAppSelector((state)=> state.roadMap);
+  //API for creat node when drop
+  const { id } = useParams<string>();
+  const [createNode] = useCreateNodeMutation();
+  const roadmapNodeContent = useAppSelector((state) => state?.roadMap);
+  const dispatch = useAppDispatch();
   const onNodeClick = (_: any, node: any) => {
     setEditValue(node.data.label);
     setSelectedNodeId(node.id);
@@ -109,7 +117,7 @@ const DnDFlow = () => {
   };
 
   const onDrop = useCallback(
-    (event: React.DragEvent<HTMLDivElement>) => {
+    async (event: React.DragEvent<HTMLDivElement>) => {
       event.preventDefault();
       if (!nodeType) return;
       console.log(event, "event");
@@ -117,35 +125,52 @@ const DnDFlow = () => {
         x: event.clientX,
         y: event.clientY,
       });
+      try {
+        const response = await createNode({
+          roadmapId: id,
+          type: nodeType,
+          position,
+          data: nodeType,
+        }).unwrap();
 
-      const newNode = {
-        id: getId(),
-        position,
-        data: { label: `${nodeType}` },
-        style: {
-          color: "#000000",
-          border: "1px solid #222138",
-          boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.1)",
-          width: 100,
-          fontSize: "7px",
-          padding: "2px",
-          fontWeight: "medium",
-          background: nodeType === "topic" ? "#fdff00" : "#f3c950",
-        },
-        type: nodeType,
-      };
+        const newNode = {
+          id: response.id,
+          position,
+          data: { label: `${nodeType}` },
+          style: {
+            color: "#000000",
+            border: "1px solid #222138",
+            boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.1)",
+            width: 100,
+            fontSize: "7px",
+            padding: "2px",
+            fontWeight: "medium",
+            background: nodeType === "topic" ? "#fdff00" : "#f3c950",
+          },
+          type: nodeType,
+        };
 
-      setNodes((nds) => nds.concat(newNode));
-      setNodeType(null);
+        setNodes((nds) => nds.concat(newNode));
+        setNodeType(null);
+      } catch (error) {
+        console.log("check your code flowwwwwwwwwwww");
+      }
     },
     [screenToFlowPosition, nodeType, nodeColor]
   );
-  const onNodesDelete = () => {
-    setIsSheetOpen(false);
-  };
+  const onNodesDelete = useCallback(
+    (deletedNodes: Node[]) => {
+      console.log(deletedNodes, "delete");
+      let nodeIdTodelete = deletedNodes[0];
+      console.log(nodeIdTodelete, "delete");
+      dispatch(deleteNodeDetails({ id: nodeIdTodelete.id }));
+      setIsSheetOpen(false);
+    },
+    [setIsSheetOpen]
+  );
 
   const handleSubmitRoadmap = () => {
-    const roadmapData = { nodes, edges ,roadmapNodeContent};
+    const roadmapData = { nodes, edges, roadmapNodeContent };
     console.log("Saved Roadmap Data:", roadmapData);
   };
 

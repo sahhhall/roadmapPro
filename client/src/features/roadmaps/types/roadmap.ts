@@ -16,3 +16,29 @@ export interface RoadmapResponse {
     adminFeedback: string;    
     createdAt: string;        
 }
+
+
+
+// node creation 
+interface Position {
+    x: number;
+    y: number;
+}
+
+
+export interface NodeCreationRequest {
+    roadmapId:string| undefined;
+    type: string;
+    position:Position
+    data: string
+}
+
+export interface NodeCreationResponse {
+    type: string; 
+    position: Position;
+    data: string; 
+    hasDetails: boolean;
+    createdAt: string; 
+    updatedAt: string; 
+    id: string;
+}
