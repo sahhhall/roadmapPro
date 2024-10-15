@@ -25,6 +25,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Topic } from "../components/drawer/nodes/TopicNode";
 import { SubTopic } from "../components/drawer/nodes/SubTopicNode";
+import { useAppSelector } from "@/hooks/useAppStore";
 
 type NodeType = "topic" | "subtopic";
 const nodeTypes = {
@@ -43,10 +44,14 @@ const DnDFlow = () => {
   //this for node editing
   const [editValue, setEditValue] = useState("");
   const [selectedNodeId, setSelectedNodeId] = useState(null);
+  //this also i pass to content link beacuse i want when submit i wan close
   const [isSheetOpen, setIsSheetOpen] = useState(false);
+  //this for content& links page 
   const [activeTab, setActiveTab] = useState("properties");
+  //this for set coloring when a node
   const [nodeColor, setNodeColor] = useState("#f3c950");
 
+  const roadmapNodeContent= useAppSelector((state)=> state.roadMap);
   const onNodeClick = (_: any, node: any) => {
     setEditValue(node.data.label);
     setSelectedNodeId(node.id);
@@ -123,7 +128,7 @@ const DnDFlow = () => {
           boxShadow: "2px 2px 5px rgba(0, 0, 0, 0.1)",
           width: 100,
           fontSize: "7px",
-          padding:'2px',
+          padding: "2px",
           fontWeight: "medium",
           background: nodeType === "topic" ? "#fdff00" : "#f3c950",
         },
@@ -139,9 +144,14 @@ const DnDFlow = () => {
     setIsSheetOpen(false);
   };
 
+  const handleSubmitRoadmap = () => {
+    const roadmapData = { nodes, edges ,roadmapNodeContent};
+    console.log("Saved Roadmap Data:", roadmapData);
+  };
+
   return (
     <div className="flex h-screen w-full">
-      <Sidebar onDragStart={onDragStart} />
+      <Sidebar onSaveRoadmap={handleSubmitRoadmap} onDragStart={onDragStart} />
       <div className="flex-grow" ref={reactFlowWrapper}>
         <ReactFlow
           nodes={nodes}
@@ -162,7 +172,7 @@ const DnDFlow = () => {
         </ReactFlow>
       </div>
       <Sheet open={isSheetOpen} onOpenChange={setIsSheetOpen}>
-        <SheetContent side="right" className="w-3/4 ">
+        <SheetContent side="right" className="w-3/4 overflow-scroll ">
           <SheetHeader className="mt-4 ">
             <SheetDescription className="text-xs"></SheetDescription>
           </SheetHeader>
@@ -243,7 +253,10 @@ const DnDFlow = () => {
                 <hr className="mt-3" />
               </div>
             ) : (
-              <ContentLinks />
+              <ContentLinks
+                setIsSheetOpen={setIsSheetOpen}
+                nodeId={selectedNodeId}
+              />
             )}
           </div>
         </SheetContent>

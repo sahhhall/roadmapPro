@@ -4,18 +4,21 @@ import storage from "redux-persist/lib/storage";
 import themeReducer from "./slices/themeSlice";
 import authReducer from './slices/authSlice'
 import adminReducer from './slices/adminSlice'
+import roadmapReducer from './slices/roadMapslice'
 import { apiSlice } from "./slices/apiSlice";
 
 const rootReducer = combineReducers({
     theme: themeReducer,
     auth: authReducer,
     adminAuth: adminReducer,
+    roadMap: roadmapReducer,
     [apiSlice.reducerPath]: apiSlice.reducer,
 })
 
 const persistConfig = {
     key: "root",
-    storage
+    storage,
+    blacklist: ["roadMap"],
 }
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
