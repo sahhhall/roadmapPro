@@ -21,4 +21,11 @@ export interface IRoadMapRepository {
     deleteRoadmap(id: string): Promise<boolean>;
 
     createNode(node: NodeEntity): Promise<NodeEntity>;
+
+    saveRoadmap(
+        roadmapId: mongoose.Types.ObjectId,
+        nodes: NodeEntity[],
+        edges: Edge[],
+        nodeDetails: NodeDetails[]
+    ): Promise<Roadmap | null>;
 }

@@ -1,6 +1,6 @@
 import { RoadMap, Node, NodeDetails, Edge, User } from "../database/mongodb";
 import { IRoadMapRepository } from "../../domain/interfaces/IRoadMapRepositary";
-import { Roadmap, NodeDetails as NodeD, NodeEntity } from "../../domain/entities/Roadmap";
+import { Roadmap, NodeDetails as NodeD, NodeEntity, Edge as Edgee, } from "../../domain/entities/Roadmap";
 import { customLogger } from "../../presentation/middlewares/loggerMiddleware";
 import mongoose from "mongoose";
 
@@ -28,7 +28,7 @@ export class RoadMapRepository implements IRoadMapRepository {
     async getRoadmapById(id: mongoose.Types.ObjectId): Promise<Roadmap | null> {
         try {
             const roadmap = await RoadMap.findById(id).populate('nodes').populate('edges');
-            console.log("here roadmap",roadmap)
+            console.log("here roadmap", roadmap)
             return roadmap
         } catch (error: any) {
             customLogger.error(error.message)
@@ -88,7 +88,7 @@ export class RoadMapRepository implements IRoadMapRepository {
     async updateRoadmap(id: mongoose.Types.ObjectId, updatedRoadmap: Partial<Roadmap>): Promise<Roadmap | null> {
         try {
             const roadmap = await RoadMap.findByIdAndUpdate(id, updatedRoadmap, { new: true });
-            return roadmap 
+            return roadmap
         } catch (error) {
             console.error(`Failed to update roadmap with ID: ${id}`, error);
             throw error;
@@ -113,4 +113,70 @@ export class RoadMapRepository implements IRoadMapRepository {
             throw new Error(`db error,delete${error.message}`);
         }
     }
+
+    // when pass diff operation this session i mean bind it trackk for us
+    async saveRoadmap(
+        roadmapId: mongoose.Types.ObjectId,
+        nodes: NodeEntity[],
+        edges: Edgee[],
+        nodeDetails: NodeD[]
+    ): Promise<Roadmap | null> {
+        const session = await mongoose.startSession();
+        session.startTransaction();
+        try {
+           
+            const nodeUpserts = nodes.map((node) => ({
+                updateOne: {
+                    filter: { _id: node.id },
+                    update: { $set: node },
+                    upsert: true,
+                },
+            }));
+            console.log(nodes, "node updates")
+
+            const nodeDetailsUpserts = nodeDetails.map((detail) => ({
+                updateOne: {
+                    filter: { nodeId: detail.nodeId },
+                    update: { $set: detail },
+                    upsert: true,
+                },
+            }));
+            console.log(nodeDetails, "node details");
+
+            const edgeUpserts = edges.map((edge) => ({
+                updateOne: {
+                    filter: { _id: edge.id },
+                    update: { $set: edge },
+                    upsert: true,
+                },
+            }));
+
+            await Promise.all([
+                Node.bulkWrite(nodeUpserts, { session }),
+                NodeDetails.bulkWrite(nodeDetailsUpserts, { session }),
+                Edge.bulkWrite(edgeUpserts, { session }),
+            ])
+            
+            const updatedRoadmap = await RoadMap.findByIdAndUpdate(
+                roadmapId,
+                {
+                    $set: {
+                        nodes: nodes.map((node) => node.id),
+                        edges: edges.map((edge) => edge.id),
+                    },
+                },
+                { new: true, session }
+            );
+           
+            await session.commitTransaction();
+            return updatedRoadmap;
+        } catch (error: any) {
+            await session.abortTransaction();
+            customLogger.error(`Failed to save roadmap draft: ${error}`);
+            throw new Error(`db error, save: ${error.message}`);
+        } finally {
+            session.endSession();
+        }
+    }
+
 }

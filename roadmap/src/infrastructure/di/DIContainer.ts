@@ -3,11 +3,13 @@ import { ICreateNodeUseCase } from "../../application/interfaces/ICreateNodeUseC
 import { IGetAllRoadMaps } from "../../application/interfaces/IGetAllRoadMaps";
 import { IGetRoadMap } from "../../application/interfaces/IGetRoadMap";
 import { IRoadMapCreate } from "../../application/interfaces/IRoadmapCreate";
+import { ISaveRoadmap } from "../../application/interfaces/ISaveRoadMap";
 import { AdminReviewUseCase } from "../../application/usecases/admin/AdminReviewUseCase";
 import { CreateNodeUseCase } from "../../application/usecases/CreateNodeUseCase";
 import { GetRoadMap } from "../../application/usecases/GetRoadMap";
 import { GetAllRoadMaps } from "../../application/usecases/GetRoadMaps";
 import { RoadMapCreate } from "../../application/usecases/RoadmapCreate";
+import { SaveRoadmap } from "../../application/usecases/SaveRoadMap";
 import { RoadMapRepository } from "../repositories/RoadMapRepositary";
 
 
@@ -44,5 +46,9 @@ export class DIContainer {
     }
     public getRoadMapUseCases(): IGetRoadMap {
         return new GetRoadMap(this._roadmapRepositary);
+    }
+
+    public getSaveRoadmapUseCase(): ISaveRoadmap {
+        return new SaveRoadmap(this._roadmapRepositary);
     }
 }

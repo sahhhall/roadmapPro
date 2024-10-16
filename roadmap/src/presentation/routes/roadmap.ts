@@ -2,11 +2,9 @@ import { Router } from "express";
 import { DIContainer } from "../../infrastructure/di/DIContainer";
 import { validateRequest } from "@sahhhallroadmappro/common";
 import { CreateNodeDTO, CreateRoadMapDTO } from "../dto";
-import { CreateRoadMap, NodeController } from "../controllers";
+import { AllRoadMapController, CreateRoadMap, GetRoadMapController, NodeController, RoadMapSaveController } from "../controllers";
 import { ReviewRoadmapDTO } from "../dto/ReviewRoadmapDTO";
 import { RoadMapReviewController } from "../controllers/admin/ReviewRoadmapController";
-import { AllRoadMapController } from "../controllers/AllRoadMapController";
-import { GetRoadMapController } from "../controllers/GetRoadMapController";
 
 
 const router = Router();
@@ -16,7 +14,8 @@ const createRoadMapController = new CreateRoadMap(diContainer.getCreateRoadMapUs
 const createNodeController = new NodeController(diContainer.getCreateNodeCreateUseCase());
 const reviewRoadmapController = new RoadMapReviewController(diContainer.getReviewRoadMapUseCase());
 const getAllRoadMapController = new AllRoadMapController(diContainer.getAllRoadMapUseCase());
-const getRoadMapController = new GetRoadMapController(diContainer.getRoadMapUseCases())
+const getRoadMapController = new GetRoadMapController(diContainer.getRoadMapUseCases());
+const getSaveRoadmapController = new RoadMapSaveController(diContainer.getSaveRoadmapUseCase());
 router.get('/', async (req, res, next) => {
     await getAllRoadMapController.execute(req, res, next);
 })
@@ -35,6 +34,10 @@ router.post('/node', validateRequest(CreateNodeDTO), async (req, res, next) => {
 
 router.post('/review', validateRequest(ReviewRoadmapDTO), async (req, res, next) => {
     await reviewRoadmapController.reviewRoadmap(req, res, next);
+})
+
+router.post('/publish', async (req, res, next) => {
+    await getSaveRoadmapController.saveRoadmap(req,res,next)
 })
 
 export { router };
