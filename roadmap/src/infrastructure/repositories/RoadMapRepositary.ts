@@ -143,12 +143,9 @@ export class RoadMapRepository implements IRoadMapRepository {
             }));
             console.log(nodeDetails, "node details");
 
-            const edgeUpserts = edges.map((edge) => ({
-                updateOne: {
-                    filter: { _id: edge.id },
-                    update: { $set: edge },
-                    upsert: true,
-                },
+            const newEdges = edges.map((edge) => ({
+                source: edge.source,
+                target: edge.target,
             }));
 
             // await Promise.all([
@@ -158,7 +155,7 @@ export class RoadMapRepository implements IRoadMapRepository {
             // ])
             await Node.bulkWrite(nodeUpserts, { session });
             await NodeDetails.bulkWrite(nodeDetailsUpserts, { session });
-            await Edge.bulkWrite(edgeUpserts, { session });
+            const createdEdges = await Edge.insertMany(newEdges, { session });
 
             
             const updatedRoadmap = await RoadMap.findByIdAndUpdate(
@@ -166,7 +163,7 @@ export class RoadMapRepository implements IRoadMapRepository {
                 {
                     $set: {
                         nodes: nodes.map((node) => node.id),
-                        edges: edges.map((edge) => edge.id),
+                        edges: createdEdges.map((edge) => edge.id),
                     },
                 },
                 { new: true, session }
