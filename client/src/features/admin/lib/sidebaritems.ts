@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, AudioWaveform } from "lucide-react";
+import { LayoutDashboard, Users, MapPin } from "lucide-react";
 
 export const sidebarItems = [
     {
@@ -13,7 +13,7 @@ export const sidebarItems = [
     },
     {
         name: "Roadmap Management",
-        icon: AudioWaveform,
+        icon: MapPin,
         path: "/admin/roadmap-management",
     }
 ];

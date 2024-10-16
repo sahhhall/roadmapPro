@@ -19,7 +19,7 @@ export const RoadmapsListed = () => {
           Dedicated Mentors.
         </h3>
       </div>
-      <div className="grid mt-10 grid-cols-2 md:grid-cols-3 gap-4 mx-auto max-w-screen-lg px-4">
+      <div className="grid mt-10 grid-cols-2 md:grid-cols-3 gap-4 mx-auto  px-4">
         {data?.map((roadmap) => (
           <div
             onClick={() => handleClick(roadmap.id)}
