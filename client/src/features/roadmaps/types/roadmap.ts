@@ -104,3 +104,17 @@ export interface RoadMapSaveRequest {
 }
 
 
+// get roadmaps
+
+export interface RoadmMapsResponse {
+    userId: string;
+    title: string;
+    description: string;
+    status: 'drafted' | 'published'| 'rejected'; 
+    nodes: string[];
+    edges: (string | null)[]; 
+    adminFeedback: string;
+    createdAt: string;
+    updatedAt: string;
+    id: string;
+}

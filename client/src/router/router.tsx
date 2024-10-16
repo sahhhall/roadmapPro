@@ -8,6 +8,7 @@ import NotFound from "@/pages/NotFound";
 import RoadMapMangment from "@/features/admin/pages/RoadMapMangment";
 import WrappedDnDFlow from "@/features/roadmaps/pages/Flow";
 
+
 const Home = lazy(() => import("@/pages/HomePage"));
 const LoginPage = lazy(() => import("@/features/auth/pages/LoginPage"));
 const SignupPage = lazy(() => import("@/features/auth/pages/SignupPage"));
@@ -18,9 +19,8 @@ const Resetpassword = lazy(() => import("@/features/auth/pages/Resetpassword"));
 const AdminLoginPage = lazy(() => import("@/features/admin/pages/LoginPage"));
 const AdminDashBoard = lazy(() => import("@/features/admin/pages/DashBoard"));
 const AdminLayout = lazy(() => import("@/features/admin/layout/AdminLayout"));
-const UserManagment = lazy(
-  () => import("@/features/admin/pages/UserManagment")
-);
+const UserManagment = lazy(() => import("@/features/admin/pages/UserManagment"));
+const RoadmapUserView = lazy(()=> import("@/features/roadmaps/pages/RoadmapUserView"))
 
 const routes = createBrowserRouter([
   {
@@ -32,6 +32,14 @@ const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<div>Loading...</div>}>
             <Home />
+          </Suspense>
+        ),
+      },
+      {
+        path: "/roadmap/:title", 
+        element: (
+          <Suspense fallback={<div>Loading...</div>}>
+            <RoadmapUserView />
           </Suspense>
         ),
       },
@@ -132,8 +140,8 @@ const routes = createBrowserRouter([
     ],
   },
   {
-    path:'/draw-roadmap/:id',
-    element: <WrappedDnDFlow/>
+    path: "/draw-roadmap/:id",
+    element: <WrappedDnDFlow />,
   },
   { path: "*", element: <NotFound /> },
 ]);
