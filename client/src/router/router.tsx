@@ -36,7 +36,7 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path: "/roadmap/:title", 
+        path: "/roadmap/:id", 
         element: (
           <Suspense fallback={<div>Loading...</div>}>
             <RoadmapUserView />

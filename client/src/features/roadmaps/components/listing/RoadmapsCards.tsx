@@ -5,8 +5,8 @@ import { useNavigate } from "react-router-dom";
 export const RoadmapsListed = () => {
   const { data = [] } = useGetRoadmapsQuery({});
   const navigate = useNavigate();
-  const handleClick = (title: string) => {
-    navigate(`/roadmap/${title}`);
+  const handleClick = (id: string) => {
+    navigate(`/roadmap/${id}`);
   };
   return (
     <Container className="mb-7">
@@ -22,7 +22,7 @@ export const RoadmapsListed = () => {
       <div className="grid mt-10 grid-cols-2 md:grid-cols-3 gap-4 mx-auto max-w-screen-lg px-4">
         {data?.map((roadmap) => (
           <div
-            onClick={() => handleClick(roadmap.title)}
+            onClick={() => handleClick(roadmap.id)}
             key={roadmap.id}
             className="flex shadow-sm items-center justify-center w-full h-10 border rounded-md cursor-pointer dark:hover:bg-gray-950 hover:bg-gray-100 "
           >
