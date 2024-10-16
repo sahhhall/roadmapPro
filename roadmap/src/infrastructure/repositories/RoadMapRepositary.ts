@@ -151,11 +151,15 @@ export class RoadMapRepository implements IRoadMapRepository {
                 },
             }));
 
-            await Promise.all([
-                Node.bulkWrite(nodeUpserts, { session }),
-                NodeDetails.bulkWrite(nodeDetailsUpserts, { session }),
-                Edge.bulkWrite(edgeUpserts, { session }),
-            ])
+            // await Promise.all([
+            //     Node.bulkWrite(nodeUpserts, { session }),
+            //     NodeDetails.bulkWrite(nodeDetailsUpserts, { session }),
+            //     Edge.bulkWrite(edgeUpserts, { session }),
+            // ])
+            await Node.bulkWrite(nodeUpserts, { session });
+            await NodeDetails.bulkWrite(nodeDetailsUpserts, { session });
+            await Edge.bulkWrite(edgeUpserts, { session });
+
             
             const updatedRoadmap = await RoadMap.findByIdAndUpdate(
                 roadmapId,

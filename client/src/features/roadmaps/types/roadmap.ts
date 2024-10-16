@@ -71,3 +71,36 @@ export interface NodeCreationResponse {
 //     fontWeight: "medium",
 //     background: nodeType === "topic" ? "#fdff00" : "#f3c950",
 //   },
+
+
+// interfaces for roadmap saving
+
+
+interface NodeData {
+    id: string | any;
+    data: string | any;
+    position: Position | any;
+    background: string | any;
+    type: string | any;
+}
+
+interface EdgeData {
+    source: string;
+    target: string;
+}
+
+interface NodeDetail {
+    nodeId: string | null;
+    title: string;
+    description: string;
+    links: { title: string; url: string }[];
+}
+
+export interface RoadMapSaveRequest {
+    roadmapId: string| undefined;
+    edges: EdgeData[];
+    nodes: NodeData[];
+    nodeDetails: NodeDetail[];
+}
+
+

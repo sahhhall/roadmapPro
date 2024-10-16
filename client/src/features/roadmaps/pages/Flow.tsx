@@ -27,9 +27,14 @@ import { Input } from "@/components/ui/input";
 import { Topic } from "@/features/roadmaps/components/drawer/nodes/TopicNode";
 import { SubTopic } from "@/features/roadmaps/components/drawer/nodes/SubTopicNode";
 import { useAppDispatch, useAppSelector } from "@/hooks/useAppStore";
-import { useCreateNodeMutation } from "../services/api/roadmapApi";
-import { useParams } from "react-router-dom";
+import {
+  useCreateNodeMutation,
+  useSaveRoadMapMutation,
+} from "../services/api/roadmapApi";
+import { useNavigate, useParams } from "react-router-dom";
 import { deleteNodeDetails } from "@/redux/slices/roadMapslice";
+import { useToast } from "@/hooks/use-toast";
+import { CircleCheck } from "lucide-react";
 
 type NodeType = "topic" | "subtopic";
 const nodeTypes = {
@@ -42,7 +47,7 @@ const nodeTypes = {
 const DnDFlow = () => {
   const reactFlowWrapper = useRef(null);
   const [nodes, setNodes, onNodesChange] = useNodesState<any>([]);
-  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState<any>([]);
   const { screenToFlowPosition } = useReactFlow();
   const [nodeType, setNodeType] = useState<NodeType | null>(null);
   //this for node editing
@@ -57,7 +62,14 @@ const DnDFlow = () => {
 
   //API for creat node when drop
   const { id } = useParams<string>();
+
+  const navigate = useNavigate();
+  //APis
   const [createNode] = useCreateNodeMutation();
+  const [saveroadMap, { isLoading }] = useSaveRoadMapMutation();
+
+  const { toast } = useToast();
+
   const roadmapNodeContent = useAppSelector((state) => state?.roadMap);
   const dispatch = useAppDispatch();
   const onNodeClick = (_: any, node: any) => {
@@ -170,14 +182,53 @@ const DnDFlow = () => {
     [setIsSheetOpen]
   );
 
-  const handleSubmitRoadmap = () => {
+  const handleSubmitRoadmap = async () => {
     const roadmapData = { nodes, edges, roadmapNodeContent };
+    const formattedNodesForPayload = nodes.map((node) => ({
+      id: node.id,
+      data: node.data.label,
+      position: node.position,
+      type: node.type,
+      background: node.style?.background,
+    }));
+    const formattedEdgesForPayload = edges.map((edge) => ({
+      source: edge?.source,
+      target: edge?.target,
+    }));
     console.log("Saved Roadmap Data:", roadmapData);
+    console.log(formattedNodesForPayload, "formatted");
+    try {
+      await saveroadMap({
+        roadmapId: id,
+        nodeDetails: roadmapNodeContent.nodes,
+        nodes: formattedNodesForPayload,
+        edges: formattedEdgesForPayload,
+      }).unwrap();
+      toast({
+        description: (
+          <>
+            <CircleCheck color="green" className="inline-block mr-2" />
+            Roadmap saved successfully <br />
+            wait for admin approval!!
+          </>
+        ),
+        className: "border-none",
+        variant: "default",
+      });
+      navigate("/");
+      console.log("here need clean up for roadmap contnet details from redux stor")
+    } catch (error) {
+      console.log("submission error ");
+    }
   };
 
   return (
     <div className="flex h-screen w-full">
-      <Sidebar onSaveRoadmap={handleSubmitRoadmap} onDragStart={onDragStart} />
+      <Sidebar
+        isLoading={isLoading}
+        onSaveRoadmap={handleSubmitRoadmap}
+        onDragStart={onDragStart}
+      />
       <div className="flex-grow" ref={reactFlowWrapper}>
         <ReactFlow
           nodes={nodes}

@@ -6,7 +6,7 @@ interface Link {
 }
 
 interface ContentFormState {
-    id: string | null;
+    nodeId: string | null;
     title: string;
     description: string;
     links: Link[];
@@ -26,7 +26,7 @@ const roadmapSlice = createSlice({
     reducers: {
         setFormData: (state, action: PayloadAction<ContentFormState>) => {
             const data = action.payload;
-            const existingIndex = state.nodes.findIndex((node) => node.id === data.id);
+            const existingIndex = state.nodes.findIndex((node) => node.nodeId === data.nodeId);
             if (existingIndex !== -1) {
                 /// meed replacemnet othewise when need change update to content data not affect
                 state.nodes[existingIndex] = data;
@@ -35,7 +35,7 @@ const roadmapSlice = createSlice({
             }
         },
         deleteNodeDetails: (state, action: PayloadAction<{ id: string }>) => {
-            const index = state.nodes.findIndex((node) => node.id === action.payload.id);
+            const index = state.nodes.findIndex((node) => node.nodeId === action.payload.id);
             if (index !== -1) {
                 state.nodes.splice(index, 1)
             }

@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
-const Sidebar = ({ onDragStart,onSaveRoadmap }: any) => {
+import { LoaderCircle } from "lucide-react";
+const Sidebar = ({ onDragStart, onSaveRoadmap, isLoading }: any) => {
   return (
     <aside className="border-r flex flex-col justify-between border-gray-200 p-4 bg-gray-50 w-64">
       <div>
@@ -23,7 +24,14 @@ const Sidebar = ({ onDragStart,onSaveRoadmap }: any) => {
         </div>
       </div>
 
-      <Button  onClick={onSaveRoadmap} variant={'submit'} className="mb-0 flex hover:text-gray-400"> Save Roadmap</Button>
+      <Button
+        onClick={onSaveRoadmap}
+        variant={"submit"}
+        className={`mb-0 flex hover:text-gray-400`}
+      >
+        {" "}
+        {isLoading ? <LoaderCircle className="animate-spin" /> : "Save Roadmap"}
+      </Button>
     </aside>
   );
 };

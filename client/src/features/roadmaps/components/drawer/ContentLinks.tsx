@@ -43,7 +43,7 @@ const ContentForm = ({
   const dispatch = useAppDispatch();
   const roadmap = useAppSelector((state) =>
     state.roadMap.nodes.find((node) => {
-      return node.id === nodeId;
+      return node.nodeId === nodeId;
     })
   );
   // const r = useAppSelector((state)=> state.roadMap);
@@ -63,7 +63,7 @@ const ContentForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     console.log(values);
-    dispatch(setFormData({ ...values, id: nodeId }));
+    dispatch(setFormData({ ...values, nodeId: nodeId }));
     setIsSheetOpen(false);
     toast({
       description: (

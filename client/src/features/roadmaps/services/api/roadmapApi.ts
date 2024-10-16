@@ -1,5 +1,5 @@
 import { apiSlice } from "@/redux/slices/apiSlice";
-import { CreateRoadmapRequest, NodeCreationRequest, NodeCreationResponse, RoadmapResponse } from "@/features/roadmaps/types/roadmap";
+import { CreateRoadmapRequest, NodeCreationRequest, NodeCreationResponse, RoadmapResponse, RoadMapSaveRequest } from "@/features/roadmaps/types/roadmap";
 import { roadmapEndPoints } from "@/features/roadmaps/services/endpoints";
 
 
@@ -20,9 +20,16 @@ const roadmapApiSlice = apiSlice.injectEndpoints({
                 method: 'post',
                 body: data
             }),
+        }),
+        saveRoadMap: builder.mutation<any, RoadMapSaveRequest>({
+            query: (data) => ({
+                url: roadmapEndPoints.saveRoadmap,
+                method: 'post',
+                body: data
+            })
         })
     })
 });
 
 
-export const { useCreateRoadmapMutation,useCreateNodeMutation } = roadmapApiSlice
+export const { useCreateRoadmapMutation, useCreateNodeMutation, useSaveRoadMapMutation } = roadmapApiSlice
