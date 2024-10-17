@@ -55,11 +55,11 @@ export const RoadmapFlow: React.FC<{ roadmapData: RoadmapData }> = ({
         id: edge.id,
         source: edge.source,
         target: edge.target,
-        type: "smoothstep",
+        type: "step",
         animated: true,
         style: {
           stroke: "#a78bfa",
-          strokeWidth: 2,
+          strokeWidth: 1,
         },
         data: {
           createdAt: edge.createdAt,
@@ -68,7 +68,7 @@ export const RoadmapFlow: React.FC<{ roadmapData: RoadmapData }> = ({
       })) || []
     );
   }, [roadmapData?.edges]);
-
+  
   //for effiecieny
   const onNodeClick = useCallback(
     async (event: React.MouseEvent, node: Node) => {

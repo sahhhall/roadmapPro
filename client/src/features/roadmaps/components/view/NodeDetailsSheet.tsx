@@ -74,9 +74,9 @@ const NodeDetailsSheet: React.FC<INodeDetailsProps> = React.memo(
                 />
               </div>
             </div>
-            <div className="">
-              <SheetTitle>
-                <span className=" font-extrabold text-2xl mt-3 ">
+            <div >
+              <SheetTitle className="mt-6">
+                <span className=" font-extrabold text-2xl ">
                   {nodeDetails?.title}
                 </span>
               </SheetTitle>
