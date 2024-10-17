@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useGetRoadMapByIDQuery } from "../services/api/roadmapApi";
 import { ReactFlowProvider } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
@@ -18,6 +18,7 @@ const RoadmapUserView: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const { data: roadmapData, isLoading } = useGetRoadMapByIDQuery(id as string);
   console.log(roadmapData,"data");
+  const navigate = useNavigate();
   if (isLoading) return <div>Loading...</div>;
 
   return (
@@ -26,9 +27,9 @@ const RoadmapUserView: React.FC = () => {
         <div className="w-full max-w-2xl flex flex-col space-y-4">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 flex flex-col">
             <div className="flex justify-between items-center space-x-2">
-              <div className=" flex items-center  space-x-4">
-                <ArrowLeft className="cursor-pointer" size={20} />
-                <span className="text-sm font-semibold">Back to Home</span>
+              <div className=" flex items-center  space-x-1">
+                <ArrowLeft onClick={()=> navigate('/') } className=" text-gray-400 cursor-pointer" size={20} />
+                {/* <span className="text-xs text-gray-400 font-semibold">Back to Home</span> */}
               </div>
               <div className=" flex items-center space-x-2">
                 <Bookmark size={25} className="text-gray-400 cursor-pointer" />
@@ -52,7 +53,7 @@ const RoadmapUserView: React.FC = () => {
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 flex items-center justify-between">
             <div>
               <span className="text-sm font-semibold flex items-center">
-                Connect with Mentor{" "}
+                Connect with Mentor
                 <span className="h-2 w-2 bg-green-500 rounded-full ml-2"></span>
               </span>
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
@@ -70,7 +71,7 @@ const RoadmapUserView: React.FC = () => {
               <span className="bg-yellow-400 text-black rounded-full px-2 py-0.5 text-xs font-medium">
                 0% Done
               </span>
-              <span>0 of 13 Done</span>
+              <span>0 of {roadmapData?.nodes?.length} Done</span>
             </div>
           </div>
         </div>

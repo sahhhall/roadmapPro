@@ -1,8 +1,10 @@
 import { ReactFlow, Node } from "@xyflow/react";
-import { UserViewTopic } from "../drawer/nodes/UserViewTopic";
-import { UserViewSubTopic } from "../drawer/nodes/UserViewSubTopic";
-import { useMemo } from "react";
-import { useGetNodeDetailsByIDQuery } from "../../services/api/roadmapApi";
+import { UserViewTopic } from "@/features/roadmaps/components/drawer/nodes/UserViewTopic";
+import { UserViewSubTopic } from "@/features/roadmaps/components/drawer/nodes/UserViewSubTopic";
+import { useCallback, useMemo, useState } from "react";
+import { useLazyGetNodeDetailsByIDQuery } from "@/features/roadmaps/services/api/roadmapApi";
+import NodeDetailsSheet from "@/features/roadmaps/components/view/NodeDetailsSheet";
+import { NodeDetailsResponse } from "@/features/roadmaps/types/roadmap";
 
 const nodeTypes = {
   topic: UserViewTopic,
@@ -19,6 +21,14 @@ interface RoadmapData {
 export const RoadmapFlow: React.FC<{ roadmapData: RoadmapData }> = ({
   roadmapData,
 }) => {
+  const [trigger, { data: nodeDetails,isLoading }] = useLazyGetNodeDetailsByIDQuery();
+
+  //it for controlling sheet open and close state
+
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+
+  const openSheet = useCallback(() => setIsOpen(true), []);
+  const closeSheet = useCallback(() => setIsOpen(false), []);
   const nodes = useMemo(() => {
     return (
       roadmapData?.nodes?.map((node) => ({
@@ -59,26 +69,42 @@ export const RoadmapFlow: React.FC<{ roadmapData: RoadmapData }> = ({
     );
   }, [roadmapData?.edges]);
 
-  const onNodeClick = (event: React.MouseEvent, node: Node) => {
-    event.preventDefault();
-    const { data: nodeDetails } = useGetNodeDetailsByIDQuery(node.id);
-    console.log(nodeDetails)
-  };
+  //for effiecieny
+  const onNodeClick = useCallback(
+    async (event: React.MouseEvent, node: Node) => {
+      event.preventDefault();
+      try {
+        await trigger(node.id).unwrap();
+        openSheet();
+      } catch (error) {
+        console.log(error, "from de");
+      }
+    },
+    [trigger, openSheet]
+  );
 
   return (
-    <ReactFlow
-      nodes={nodes}
-      edges={edges}
-      nodeTypes={nodeTypes}
-      fitView
-      onNodeClick={onNodeClick}
-      nodesDraggable={false}
-      nodesConnectable={false}
-      elementsSelectable={false}
-      panOnScroll={false}
-      zoomOnScroll={false}
-      panOnDrag={false}
-      zoomOnPinch={false}
-    />
+    <>
+      <ReactFlow
+        nodes={nodes}
+        edges={edges}
+        nodeTypes={nodeTypes}
+        fitView
+        onNodeClick={onNodeClick}
+        nodesDraggable={false}
+        nodesConnectable={false}
+        elementsSelectable={false}
+        panOnScroll={false}
+        zoomOnScroll={false}
+        panOnDrag={false}
+        zoomOnPinch={false}
+      />
+      <NodeDetailsSheet
+        isOpen={isOpen}
+        closeSheet={closeSheet}
+        nodeDetails={nodeDetails as NodeDetailsResponse}
+        isLoading={isLoading}
+      />
+    </>
   );
 };
