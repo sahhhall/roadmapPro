@@ -9,7 +9,7 @@ export class GetNodeDetailsController {
 
     async getNodeDetails(req: Request, res: Response, next: NextFunction) {
         try {
-            const { nodeId } = req.body;
+            const { nodeId } = req.params;
             const nodeDetails = await this.getNodeDetailsUseCase.execute(nodeId);
             if (!nodeDetails) {
                 throw new NotFoundError()

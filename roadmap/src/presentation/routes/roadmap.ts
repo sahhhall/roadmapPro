@@ -1,7 +1,7 @@
 import { Router } from "express";
 import { DIContainer } from "../../infrastructure/di/DIContainer";
 import { validateRequest } from "@sahhhallroadmappro/common";
-import { CreateNodeDTO, CreateRoadMapDTO, GetNodeDetailsDTO } from "../dto";
+import { CreateNodeDTO, CreateRoadMapDTO } from "../dto";
 import { AllRoadMapController, CreateRoadMap, GetNodeDetailsController, GetRoadMapController, NodeController, RoadMapSaveController } from "../controllers";
 import { ReviewRoadmapDTO } from "../dto/ReviewRoadmapDTO";
 import { RoadMapReviewController } from "../controllers/admin/ReviewRoadmapController";
@@ -38,7 +38,7 @@ router.post('/publish', async (req, res, next) => {
     await getSaveRoadmapController.saveRoadmap(req, res, next)
 })
 
-router.get('/nodedetails', validateRequest(GetNodeDetailsDTO), async (req, res, next) => {
+router.get('/nodedetails/:nodeId', async (req, res, next) => {
     console.log("am hre node detailss")
     await getNodeDetailsByNodeIdController.getNodeDetails(req, res, next);
 })
