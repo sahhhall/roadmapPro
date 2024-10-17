@@ -2,6 +2,7 @@ import { ReactFlow, Node } from "@xyflow/react";
 import { UserViewTopic } from "../drawer/nodes/UserViewTopic";
 import { UserViewSubTopic } from "../drawer/nodes/UserViewSubTopic";
 import { useMemo } from "react";
+import { useGetNodeDetailsByIDQuery } from "../../services/api/roadmapApi";
 
 const nodeTypes = {
   topic: UserViewTopic,
@@ -60,7 +61,8 @@ export const RoadmapFlow: React.FC<{ roadmapData: RoadmapData }> = ({
 
   const onNodeClick = (event: React.MouseEvent, node: Node) => {
     event.preventDefault();
-    console.log("Clicked node:", node);
+    const { data: nodeDetails } = useGetNodeDetailsByIDQuery(node.id);
+    console.log(nodeDetails)
   };
 
   return (

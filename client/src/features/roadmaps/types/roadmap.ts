@@ -97,7 +97,7 @@ interface NodeDetail {
 }
 
 export interface RoadMapSaveRequest {
-    roadmapId: string| undefined;
+    roadmapId: string | undefined;
     edges: EdgeData[];
     nodes: NodeData[];
     nodeDetails: NodeDetail[];
@@ -110,11 +110,25 @@ export interface RoadmMapsResponse {
     userId: string;
     title: string;
     description: string;
-    status: 'drafted' | 'published'| 'rejected'; 
+    status: 'drafted' | 'published' | 'rejected';
     nodes: string[];
-    edges: (string | null)[]; 
+    edges: (string | null)[];
     adminFeedback: string;
     createdAt: string;
     updatedAt: string;
     id: string;
+}
+
+
+
+/// nodedetails get endpoint response
+
+export interface NodeDetailsResponse {
+    nodeId: string;
+    createdAt: string;
+    updatedAt: string;
+    description: string;
+    title: string;
+    id: string;
+    links: { title: string, url: string }[];
 }

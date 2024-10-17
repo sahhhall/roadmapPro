@@ -1,5 +1,5 @@
 import { apiSlice } from "@/redux/slices/apiSlice";
-import { CreateRoadmapRequest, NodeCreationRequest, NodeCreationResponse, RoadmapResponse, RoadMapSaveRequest, RoadmMapsResponse } from "@/features/roadmaps/types/roadmap";
+import { CreateRoadmapRequest, NodeCreationRequest, NodeCreationResponse, NodeDetailsResponse, RoadmapResponse, RoadMapSaveRequest, RoadmMapsResponse } from "@/features/roadmaps/types/roadmap";
 import { roadmapEndPoints } from "@/features/roadmaps/services/endpoints";
 
 
@@ -38,7 +38,13 @@ const roadmapApiSlice = apiSlice.injectEndpoints({
         }),
         getRoadMapByID: builder.query<RoadmMapsResponse, any>({
             query: (id) => ({
-                url:roadmapEndPoints.getRoadMapByID(id),
+                url: roadmapEndPoints.getRoadMapByID(id),
+                method: 'get'
+            })
+        }),
+        getNodeDetailsByID: builder.query<NodeDetailsResponse, any>({
+            query: (id) => ({
+                url: roadmapEndPoints.getNodeDetailsByID(id),
                 method: 'get'
             })
         })
@@ -46,4 +52,4 @@ const roadmapApiSlice = apiSlice.injectEndpoints({
 });
 
 
-export const { useCreateRoadmapMutation, useCreateNodeMutation, useSaveRoadMapMutation, useGetRoadmapsQuery, useGetRoadMapByIDQuery } = roadmapApiSlice
+export const { useCreateRoadmapMutation, useCreateNodeMutation, useSaveRoadMapMutation, useGetRoadmapsQuery, useGetRoadMapByIDQuery, useGetNodeDetailsByIDQuery } = roadmapApiSlice
