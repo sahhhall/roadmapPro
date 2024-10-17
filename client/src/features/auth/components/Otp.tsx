@@ -36,6 +36,7 @@ const Otp = ({ email }: { email: string }) => {
   const dispatch = useAppDispatch();
   const { toast } = useToast();
   const navigate = useNavigate();
+  const [confirmedExit, setConfirmedExit] = useState(false);
   const { doRequest, loading } = useAuthRequest({
     path: userRoutes.verifyOtp,
     method: "post",
@@ -47,6 +48,29 @@ const Otp = ({ email }: { email: string }) => {
       });
     },
   });
+  useEffect(() => {
+    const handlePopState = () => {
+      navigate(0); 
+    };
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      event.preventDefault();
+      setConfirmedExit(true);
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [navigate]);
+  
+  useEffect(() => {
+    if (confirmedExit) {
+      navigate("/signup"); 
+    }
+  }, [confirmedExit, navigate]);
 
   useEffect(() => {
     let intervalId: NodeJS.Timeout;

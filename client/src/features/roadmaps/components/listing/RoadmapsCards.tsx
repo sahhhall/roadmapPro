@@ -10,7 +10,7 @@ export const RoadmapsListed = () => {
   };
   return (
     <Container className="mb-7">
-      <div className="flex flex-col ms-[12%] sm:ms-[0%] max-w-[70%] justify-center sm:max-w-[100%] mt-9 space-y-1 items-center ">
+      <div className="flex flex-col  ms-[12%] sm:ms-[0%] max-w-[70%] justify-center sm:max-w-[100%] mt-9 space-y-1 items-center ">
         <h1 className="sm:text-3xl text-2xl text-center dark:text-white text-gray-800 font-extrabold">
           Community Passionate About Knowledge
         </h1>
@@ -19,7 +19,7 @@ export const RoadmapsListed = () => {
           Dedicated Mentors.
         </h3>
       </div>
-      <div className="grid mt-10 grid-cols-2 md:grid-cols-3 gap-4 mx-auto  px-4">
+      <div className="grid mt-10 grid-cols-2 md:grid-cols-3 gap-4 mx-auto px-[5rem]  sm:px-[12em]">
         {data?.map((roadmap) => (
           <div
             onClick={() => handleClick(roadmap.id)}

@@ -73,7 +73,9 @@ const DnDFlow = () => {
   const roadmapNodeContent = useAppSelector((state) => state?.roadMap);
   const dispatch = useAppDispatch();
   const onNodeClick = (_: any, node: any) => {
+    //for chnage name of topix
     setEditValue(node.data.label);
+    /// for changing name we have to know which one selcted
     setSelectedNodeId(node.id);
     setNodeColor(node.style?.background || "#f3c950");
     setIsSheetOpen(true);
@@ -315,13 +317,13 @@ const DnDFlow = () => {
                     </button>
                     <button
                       className="bg-blue-600 border-none py-3 px-4 border rounded-full text-xs"
-                      onClick={() => changeNodeColor("#675ede")}
+                      onClick={() => changeNodeColor("#4338ca")}
                     >
                       B
                     </button>
                     <button
                       className="bg-orange-300 border-none py-3 px-4 border rounded-full text-xs"
-                      onClick={() => changeNodeColor("#f3c950")}
+                      onClick={() => changeNodeColor("#fde68a")}
                     >
                       M
                     </button>

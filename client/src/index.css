@@ -75,7 +75,7 @@ body {
 }
 
 body.dark {
-  @apply bg-black;
+  @apply bg-gray-900 ;
 }
 
 .scrollbar-hide::-webkit-scrollbar {

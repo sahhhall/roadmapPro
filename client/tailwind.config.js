@@ -6,6 +6,7 @@ export default {
   theme: {
     extend: {
       colors: {
+        customColor: '#18191C',
         dark: {
           background: '#010409', 
         },
