@@ -58,7 +58,7 @@ export const ROUTES = [
     }
     , {
         url: '/api/roadmap',
-        auth: 'user',
+        auth: 'admin',
         proxy: {
             target: 'http://localhost:3001/api/roadmap',
             changeOrigin: true,
