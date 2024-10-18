@@ -10,7 +10,7 @@ export interface IRoadMapRepository {
 
     getAllPublishdRoadmaps(): Promise<Roadmap[]>;
 
-    getAllDraftedRoadmaps(): Promise<Roadmap[]>;
+    getAllRequestedRoadmaps(status: string): Promise<Roadmap[]>;
 
     getNodeDetailsByNodeId(nodeId: string): Promise<NodeDetails | null>;
 

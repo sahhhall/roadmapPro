@@ -191,10 +191,10 @@ export class RoadMapRepository implements IRoadMapRepository {
         }
     }
 
-    async getAllDraftedRoadmaps() {
+    async getAllRequestedRoadmaps(status: string) {
         try {
             const roadmaps = await RoadMap.find({
-                status: { $eq: 'drafted' }
+                status
             });
             return roadmaps;
         } catch (error: any) {

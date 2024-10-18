@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser'
 import { errorHandler } from '@sahhhallroadmappro/common';
 import { router } from './presentation/routes/roadmap';
 import loggerMiddleware from './presentation/middlewares/loggerMiddleware';
+import { adminRoutes } from './presentation/routes/adminRoutes';
 class App {
     private readonly app: express.Application;
 
@@ -25,6 +26,7 @@ class App {
     };
     private registerRoutes(): void {
         this.app.use('/api/roadmap', router)
+        this.app.use('/api/admin/roadmap',adminRoutes)
     }
     private registerErrorHandler(): void {
         this.app.use(errorHandler as any);

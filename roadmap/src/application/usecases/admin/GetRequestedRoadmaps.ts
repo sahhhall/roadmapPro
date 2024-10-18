@@ -8,8 +8,9 @@ export class GetRequestedRoadmaps implements IGetRequestedRoadmaps {
 
     constructor(private readonly roadMapRepository: IRoadMapRepository) { };
 
-    async execute(): Promise<Roadmap[] | null> {
-        const roadmaps = await this.roadMapRepository.getAllDraftedRoadmaps();
+    async execute(status: string): Promise<Roadmap[] | null> {
+        console.log(status, "status from usecase");
+        const roadmaps = await this.roadMapRepository.getAllRequestedRoadmaps(status);
         return roadmaps;
     }
 

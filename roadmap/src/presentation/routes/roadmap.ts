@@ -29,11 +29,14 @@ const getRequestedRoadmapController = new GetRequestedRoadmapsController(diConta
 
 //admin 
 
-router.get('/drafted', async (req, res, next) => {
-    await getRequestedRoadmapController.requestedRoadmaps(req, res, next)
-})
+// router.get('/drafted', async (req, res, next) => {
+//     await getRequestedRoadmapController.requestedRoadmaps(req, res, next)
+// });
 
 
+
+
+//
 
 
 router.get('/', async (req, res, next) => {
