@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import {
-  useGetRoadmapsPublishedQuery,
+  useGetRoadmapsByStatusQuery,
 } from "@/features/roadmaps/services/api/roadmapApi";
 import {
   Card,
@@ -12,10 +12,13 @@ import {
 } from "@/components/ui/card";
 import { User, MapPin } from "lucide-react";
 import Container from "@/components/Container";
+import { useEffect } from "react";
 
 const RoadMaps = () => {
-  const { data = [], isLoading, error } = useGetRoadmapsPublishedQuery({});
-
+  const { data = [], isLoading, error,refetch } = useGetRoadmapsByStatusQuery({status:'published'});
+  useEffect(()=> {
+    refetch()
+  },[])
   if (isLoading)
     return <div className="text-center py-10">Loading roadmaps...</div>;
   if (error)

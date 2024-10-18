@@ -14,7 +14,7 @@ import {
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
 import { EllipsisVertical } from "lucide-react";
-import { useGetDraftedRoadmapsQuery } from "@/features/roadmaps/services/api/roadmapApi";
+import { useGetRoadmapsByStatusQuery } from "@/features/roadmaps/services/api/roadmapApi";
 import { Input } from "@/components/ui/input";
 
 import { z } from "zod";
@@ -30,7 +30,7 @@ const RequestsModal: React.FC<RoadMapReqModalProps> = ({
   dialogOpen,
   closeDialog,
 }) => {
-  const { data: draftedItems,refetch } = useGetDraftedRoadmapsQuery({});
+  const { data: draftedItems,refetch } = useGetRoadmapsByStatusQuery({ status: 'drafted' });
   const [feedbackInput, setFeedbackInput] = useState("");
   const [showFeedbackInput, setShowFeedbackInput] = useState(false);
   //need to select one id for when new input comes i mea submimt case

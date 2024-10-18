@@ -13,7 +13,7 @@ const diContainer = DIContainer.getInstance();
 const getRequestedRoadmapController = new GetRequestedRoadmapsController(diContainer.getAllDraftedRoadmaps());
 
 
-router.get('/', async (req, res, next) => {
+router.get('', async (req, res, next) => {
     await getRequestedRoadmapController.requestedRoadmaps(req, res, next);
 });
 
