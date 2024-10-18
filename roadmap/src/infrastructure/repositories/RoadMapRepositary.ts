@@ -42,7 +42,7 @@ export class RoadMapRepository implements IRoadMapRepository {
             const roadmap = await RoadMap.findOne({ title });
             return roadmap;
         } catch (error: any) {
-            console.error(`Error fetching roadmap by title: ${error.message}`);
+            customLogger.error(`Error fetching roadmap by title: ${error.message}`);
             throw new Error(`db error,getbytitle:${error.message}`);
         }
     }
@@ -60,7 +60,7 @@ export class RoadMapRepository implements IRoadMapRepository {
             const nodeDetails = await NodeDetails.findOne({ nodeId: nodeId });
             return nodeDetails;
         } catch (error) {
-            console.error('Error fetching node details:', error);
+            customLogger.error('Error fetching node details:', error);
             return null;
         }
     }
@@ -89,7 +89,7 @@ export class RoadMapRepository implements IRoadMapRepository {
             const roadmap = await RoadMap.findByIdAndUpdate(id, updatedRoadmap, { new: true });
             return roadmap
         } catch (error) {
-            console.error(`Failed to update roadmap with ID: ${id}`, error);
+            customLogger.error(`Failed to update roadmap with ID: ${id}`, error);
             throw error;
         }
     }
@@ -108,7 +108,7 @@ export class RoadMapRepository implements IRoadMapRepository {
             const result = await RoadMap.findByIdAndDelete(id);
             return result != null;
         } catch (error: any) {
-            console.error(`Failed to delete roadmap with ID: ${id}`, error);
+            customLogger.error(`Failed to delete roadmap with ID: ${id}`, error);
             throw new Error(`db error,delete${error.message}`);
         }
     }
@@ -183,7 +183,18 @@ export class RoadMapRepository implements IRoadMapRepository {
     async getAllPublishdRoadmaps() {
         try {
             const roadmaps = await RoadMap.find({
-                status: { $nin: ['rejected', 'drafted'] } 
+                status: { $nin: ['rejected', 'drafted'] }
+            });
+            return roadmaps;
+        } catch (error: any) {
+            throw new Error(`db error, get all: ${error.message}`);
+        }
+    }
+
+    async getAllDraftedRoadmaps() {
+        try {
+            const roadmaps = await RoadMap.find({
+                status: { $eq: 'drafted' }
             });
             return roadmaps;
         } catch (error: any) {

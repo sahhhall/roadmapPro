@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { useGetRoadmapsQuery } from "@/features/roadmaps/services/api/roadmapApi";
+import {
+  useGetRoadmapsPublishedQuery,
+} from "@/features/roadmaps/services/api/roadmapApi";
 import {
   Card,
   CardHeader,
@@ -12,7 +14,7 @@ import { User, MapPin } from "lucide-react";
 import Container from "@/components/Container";
 
 const RoadMaps = () => {
-  const { data = [], isLoading, error } = useGetRoadmapsQuery({});
+  const { data = [], isLoading, error } = useGetRoadmapsPublishedQuery({});
 
   if (isLoading)
     return <div className="text-center py-10">Loading roadmaps...</div>;
@@ -23,7 +25,6 @@ const RoadMaps = () => {
       </div>
     );
 
-  
   return (
     <Container className=" mx-auto px-7 py-8">
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
