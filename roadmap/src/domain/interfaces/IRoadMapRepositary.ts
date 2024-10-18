@@ -3,7 +3,7 @@ import { Roadmap, Edge, NodeDetails, Link, NodeEntity } from "../entities/Roadma
 
 
 export interface IRoadMapRepository {
-  
+
     getRoadmapById(id: mongoose.Types.ObjectId): Promise<Roadmap | null>;
 
     getAllRoadmaps(): Promise<Roadmap[]>;
@@ -16,12 +16,12 @@ export interface IRoadMapRepository {
 
     getRoadmapByTitle(title: string): Promise<Roadmap | null>;
 
-    createRoadMap (roadMap: Roadmap): Promise<Roadmap>;
+    createRoadMap(roadMap: Roadmap): Promise<Roadmap>;
 
-    updateRoadmap(id: mongoose.Types.ObjectId, updatedRoadmap: Partial<Roadmap>): Promise<Roadmap | null>;
+    updateRoadmap(id: mongoose.Types.ObjectId, adminFeedback: string, status: string): Promise<Roadmap | null>;
 
-    addNodeToRoadmap(roadmapId: mongoose.Types.ObjectId, nodeId: mongoose.Types.ObjectId,): Promise<Roadmap | null> 
-    
+    addNodeToRoadmap(roadmapId: mongoose.Types.ObjectId, nodeId: mongoose.Types.ObjectId,): Promise<Roadmap | null>
+
     deleteRoadmap(id: string): Promise<boolean>;
 
     createNode(node: NodeEntity): Promise<NodeEntity>;

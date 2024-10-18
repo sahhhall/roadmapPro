@@ -1,5 +1,5 @@
 export const ROUTES = [
-     
+
     {
         url: '/api/admin/roadmap',
         auth: "admin",
@@ -81,15 +81,16 @@ export const ROUTES = [
             changeOrigin: true,
         }
     },
- 
+
     {
-        url: '/api/roadmap',  
+        url: '/api/roadmap',
         auth: 'user',
         proxy: {
             target: 'http://localhost:3001/api/roadmap',
             changeOrigin: true,
         }
     },
-  
+
+
 
 ];

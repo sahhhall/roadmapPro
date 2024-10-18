@@ -7,6 +7,6 @@ export interface IAdminReview {
     execute(data: {
         adminFeedback: string,
         status: string,
-        roadmapId: mongoose.Types.ObjectId
+        objectId: mongoose.Types.ObjectId
     }): Promise<Roadmap | null>;
 }

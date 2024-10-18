@@ -13,7 +13,6 @@ const diContainer = DIContainer.getInstance();
 
 const createRoadMapController = new CreateRoadMap(diContainer.getCreateRoadMapUseCase());
 const createNodeController = new NodeController(diContainer.getCreateNodeCreateUseCase());
-const reviewRoadmapController = new RoadMapReviewController(diContainer.getReviewRoadMapUseCase());
 const getAllRoadMapController = new AllRoadMapController(diContainer.getAllRoadMapUseCase());
 const getRoadMapController = new GetRoadMapController(diContainer.getRoadMapUseCases());
 const getSaveRoadmapController = new RoadMapSaveController(diContainer.getSaveRoadmapUseCase());
@@ -56,9 +55,6 @@ router.post('/node', validateRequest(CreateNodeDTO), async (req, res, next) => {
 });
 
 
-router.post('/review', validateRequest(ReviewRoadmapDTO), async (req, res, next) => {
-    await reviewRoadmapController.reviewRoadmap(req, res, next);
-})
 
 router.post('/publish', async (req, res, next) => {
     await getSaveRoadmapController.saveRoadmap(req, res, next)
