@@ -68,8 +68,16 @@ const roadmapApiSlice = apiSlice.injectEndpoints({
             }),
             providesTags: ['Roadmap'],
         }),
+        updateRoadmapStatus: builder.mutation<RoadmMapsResponse, { adminFeedback: string; status: string; roadmapId: string }>({
+            query: (data) => ({
+                url: roadmapEndPoints.updateRoadmapStatus, 
+                method: 'post',
+                body: data
+            }),
+            invalidatesTags: ['Roadmap','RoadmapPublished']
+        }),
     })
 });
 
 
-export const { useCreateRoadmapMutation, useCreateNodeMutation, useSaveRoadMapMutation, useGetRoadmapsQuery, useGetRoadMapByIDQuery, useGetNodeDetailsByIDQuery, useLazyGetNodeDetailsByIDQuery, useGetRoadmapsPublishedQuery, useGetRoadmapsByStatusQuery } = roadmapApiSlice
+export const { useCreateRoadmapMutation, useCreateNodeMutation, useSaveRoadMapMutation, useGetRoadmapsQuery, useGetRoadMapByIDQuery, useGetNodeDetailsByIDQuery, useLazyGetNodeDetailsByIDQuery, useGetRoadmapsPublishedQuery, useGetRoadmapsByStatusQuery,useUpdateRoadmapStatusMutation } = roadmapApiSlice

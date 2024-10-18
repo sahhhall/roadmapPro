@@ -65,14 +65,7 @@ export const ROUTES = [
             changeOrigin: true,
         }
     }
-    , {
-        url: '/api/roadmap',
-        auth: 'user',
-        proxy: {
-            target: 'http://localhost:3001/api/roadmap',
-            changeOrigin: true,
-        }
-    }
+    ,
     , {
         url: '/api/roadmap/published',
         auth: false,
@@ -81,7 +74,6 @@ export const ROUTES = [
             changeOrigin: true,
         }
     },
-
     {
         url: '/api/roadmap',
         auth: 'user',
@@ -89,8 +81,5 @@ export const ROUTES = [
             target: 'http://localhost:3001/api/roadmap',
             changeOrigin: true,
         }
-    },
-
-
-
+    }
 ];

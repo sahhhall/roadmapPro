@@ -1,4 +1,4 @@
-import React, {  useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Dialog,
@@ -13,11 +13,15 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
 } from "@/components/ui/dropdown-menu";
-import { EllipsisVertical } from "lucide-react";
-import { useGetRoadmapsByStatusQuery } from "@/features/roadmaps/services/api/roadmapApi";
+import { CircleCheck, EllipsisVertical, Frown } from "lucide-react";
+import {
+  useGetRoadmapsByStatusQuery,
+  useUpdateRoadmapStatusMutation,
+} from "@/features/roadmaps/services/api/roadmapApi";
 import { Input } from "@/components/ui/input";
 
 import { z } from "zod";
+import { useToast } from "@/hooks/use-toast";
 const feedbackSchema = z.object({
   feedback: z.string().min(5, "Feedback must be at least 5 characters."),
 });
@@ -30,14 +34,19 @@ const RequestsModal: React.FC<RoadMapReqModalProps> = ({
   dialogOpen,
   closeDialog,
 }) => {
-  const { data: draftedItems,refetch } = useGetRoadmapsByStatusQuery({ status: 'drafted' });
+  const { data: draftedItems, refetch } = useGetRoadmapsByStatusQuery({
+    status: "drafted",
+  });
+  const [trigger] = useUpdateRoadmapStatusMutation();
   const [feedbackInput, setFeedbackInput] = useState("");
   const [showFeedbackInput, setShowFeedbackInput] = useState(false);
+
+  const { toast } = useToast();
   //need to select one id for when new input comes i mea submimt case
   const [selectedRoadmapId, setSelectedRoadmapId] = useState<string | null>(
     null
   );
- 
+
   const [error, setError] = useState<string | null>(null);
   const openRoadmapInNewTab = (id: string) => {
     const url = `http://localhost:5173/roadmap/${id}`;
@@ -45,9 +54,9 @@ const RequestsModal: React.FC<RoadMapReqModalProps> = ({
   };
   useEffect(() => {
     if (dialogOpen) {
-      refetch(); 
+      refetch();
     }
-  }, [dialogOpen, refetch]); 
+  }, [dialogOpen, refetch]);
 
   const updateRoadmapStatus = async (
     id: string,
@@ -56,8 +65,30 @@ const RequestsModal: React.FC<RoadMapReqModalProps> = ({
   ) => {
     try {
       console.log(id, status, feedback);
+
+     await trigger({
+        roadmapId: id,
+        status,
+        adminFeedback: feedback,
+      }).unwrap();
+      toast({
+        description: (
+          <>
+            <CircleCheck color="green" className="inline-block mr-2" />
+            updated successfully <br />
+          </>
+        ),
+        className: "border-none",
+        variant: "default",
+      });
+      resetState();
     } catch (error) {
-      console.error("Error updating roadmap status:", error);
+      console.error("err updating roadmap status", error);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: `There was a problem with your request.${error}`
+      });
     }
     setShowFeedbackInput(false);
     setFeedbackInput("");
@@ -99,10 +130,9 @@ const RequestsModal: React.FC<RoadMapReqModalProps> = ({
   };
 
   const handleDialogChange = (isOpen: boolean) => {
-    if (!isOpen) resetState(); 
-    closeDialog(); 
+    if (!isOpen) resetState();
+    closeDialog();
   };
-
 
   return (
     <Dialog open={dialogOpen} onOpenChange={handleDialogChange}>
@@ -113,6 +143,7 @@ const RequestsModal: React.FC<RoadMapReqModalProps> = ({
         </DialogHeader>
 
         <div className="space-y-4 mt-3">
+          {draftedItems!.length< 1 && <p className="flex justify-center items-center text-center text-sm" >sorry no requests!   <Frown className="ms-1"  size={14} /></p> }
           {draftedItems?.map((roadmap) => (
             <div
               key={roadmap.id}

@@ -19,6 +19,10 @@ const RoadMaps = () => {
   useEffect(()=> {
     refetch()
   },[])
+  const openRoadmapInNewTab = (id: string) => {
+    const url = `http://localhost:5173/roadmap/${id}`;
+    window.open(url, "_blank");
+  };
   if (isLoading)
     return <div className="text-center py-10">Loading roadmaps...</div>;
   if (error)
@@ -51,7 +55,7 @@ const RoadMaps = () => {
               </p>
             </CardContent>
             <CardFooter className="flex justify-between items-center">
-              <Button variant="outline" className="flex items-center">
+              <Button onClick={() => openRoadmapInNewTab(roadmap.id)} variant="outline" className="flex items-center">
                 <MapPin size={16} className="mr-2" />
                 View Roadmap
               </Button>
