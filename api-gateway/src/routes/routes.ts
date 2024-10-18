@@ -58,12 +58,12 @@ export const ROUTES = [
     }
     , {
         url: '/api/roadmap',
-        auth: 'admin',
+        auth: 'user',
         proxy: {
             target: 'http://localhost:3001/api/roadmap',
             changeOrigin: true,
         }
-    },
+    }
     , {
         url: '/api/roadmap/published',
         auth: false,
@@ -72,13 +72,13 @@ export const ROUTES = [
             changeOrigin: true,
         }
     },
-    // {
-    //     url: '/api/roadmap/drafted',
-    //     auth: "admin",
-    //     proxy: {
-    //         target: 'http://localhost:3001/api/roadmap/drafted',
-    //         changeOrigin: true,
-    //     }
-    // },
+    {
+        url: '/api/roadmap/drafted',
+        auth: "admin",
+        proxy: {
+            target: 'http://localhost:3001/api/roadmap/drafted',
+            changeOrigin: true,
+        }
+    },
 
 ];

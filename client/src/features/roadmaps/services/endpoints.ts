@@ -4,6 +4,7 @@ export const roadmapEndPoints = {
     saveRoadmap: '/api/roadmap/publish',
     getAllRoadMaps: '/api/roadmap',
     getAllRoadMapsPublished: '/api/roadmap/published',
+    getAllRequestedRoadmaps:'/api/roadmap/drafted',
     getRoadMapByID: (id: string) => `/api/roadmap/${id}`,
     getNodeDetailsByID:  (id: string) => `/api/roadmap/nodedetails/${id}`
 }
