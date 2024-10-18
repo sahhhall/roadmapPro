@@ -7,6 +7,7 @@ import { IRoadMapCreate } from "../../application/interfaces/IRoadmapCreate";
 import { ISaveRoadmap } from "../../application/interfaces/ISaveRoadMap";
 import { AdminReviewUseCase } from "../../application/usecases/admin/AdminReviewUseCase";
 import { CreateNodeUseCase } from "../../application/usecases/CreateNodeUseCase";
+import { GetListedRoadMaps } from "../../application/usecases/GetListedRoadmaps";
 import { GetNodeDetails } from "../../application/usecases/GetNodeDetails";
 import { GetRoadMap } from "../../application/usecases/GetRoadMap";
 import { GetAllRoadMaps } from "../../application/usecases/GetRoadMaps";
@@ -56,5 +57,9 @@ export class DIContainer {
 
     public getNodeDetailsUseCase(): IGetNodeDetails {
         return new GetNodeDetails(this._roadmapRepositary)
+    }
+
+    public getAllListedRoadmaps(): IGetAllRoadMaps {
+        return new GetListedRoadMaps(this._roadmapRepositary)
     }
 }

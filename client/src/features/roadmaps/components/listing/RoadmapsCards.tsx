@@ -1,9 +1,9 @@
 import Container from "@/components/Container";
-import { useGetRoadmapsQuery } from "@/features/roadmaps/services/api/roadmapApi";
+import { useGetRoadmapsPublishedQuery } from "@/features/roadmaps/services/api/roadmapApi";
 import { useNavigate } from "react-router-dom";
 
 export const RoadmapsListed = () => {
-  const { data = [] } = useGetRoadmapsQuery({});
+  const { data = [] } = useGetRoadmapsPublishedQuery({});
   const navigate = useNavigate();
   const handleClick = (id: string) => {
     navigate(`/roadmap/${id}`);

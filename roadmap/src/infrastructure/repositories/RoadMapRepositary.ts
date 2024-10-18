@@ -6,7 +6,6 @@ import mongoose from "mongoose";
 
 
 export class RoadMapRepository implements IRoadMapRepository {
-
     async createRoadMap(roadMapData: Roadmap): Promise<Roadmap> {
         try {
             const newRoadmap = RoadMap.build({
@@ -124,7 +123,7 @@ export class RoadMapRepository implements IRoadMapRepository {
         const session = await mongoose.startSession();
         session.startTransaction();
         try {
-           
+
             const nodeUpserts = nodes.map((node) => ({
                 updateOne: {
                     filter: { _id: node.id },
@@ -157,7 +156,7 @@ export class RoadMapRepository implements IRoadMapRepository {
             await NodeDetails.bulkWrite(nodeDetailsUpserts, { session });
             const createdEdges = await Edge.insertMany(newEdges, { session });
 
-            
+
             const updatedRoadmap = await RoadMap.findByIdAndUpdate(
                 roadmapId,
                 {
@@ -168,7 +167,7 @@ export class RoadMapRepository implements IRoadMapRepository {
                 },
                 { new: true, session }
             );
-           
+
             await session.commitTransaction();
             return updatedRoadmap;
         } catch (error: any) {
@@ -177,6 +176,18 @@ export class RoadMapRepository implements IRoadMapRepository {
             throw new Error(`db error, save: ${error.message}`);
         } finally {
             session.endSession();
+        }
+    }
+
+
+    async getAllPublishdRoadmaps() {
+        try {
+            const roadmaps = await RoadMap.find({
+                status: { $nin: ['rejected', 'drafted'] } 
+            });
+            return roadmaps;
+        } catch (error: any) {
+            throw new Error(`db error, get all: ${error.message}`);
         }
     }
 

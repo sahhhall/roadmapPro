@@ -10,7 +10,8 @@ const CustomHandler = ({ type, position, color = "blue" }: any) => {
         borderRadius: "50%",
         width: "1px",
         height: "1px",
-        border: ".4px solid white",
+        border: ".4px solid white", 
+       
       }}
     />
   );

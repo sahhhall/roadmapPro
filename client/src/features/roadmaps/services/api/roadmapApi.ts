@@ -36,6 +36,13 @@ const roadmapApiSlice = apiSlice.injectEndpoints({
             }),
             providesTags: ["Roadmap"]
         }),
+        getRoadmapsPublished: builder.query<RoadmMapsResponse[], any>({
+            query: () => ({
+                url: roadmapEndPoints.getAllRoadMapsPublished,
+                method: 'get'
+            }),
+            providesTags: ["RoadmapPublished"]
+        }),
         getRoadMapByID: builder.query<RoadmMapsResponse, any>({
             query: (id) => ({
                 url: roadmapEndPoints.getRoadMapByID(id),
@@ -52,4 +59,4 @@ const roadmapApiSlice = apiSlice.injectEndpoints({
 });
 
 
-export const { useCreateRoadmapMutation, useCreateNodeMutation, useSaveRoadMapMutation, useGetRoadmapsQuery, useGetRoadMapByIDQuery, useGetNodeDetailsByIDQuery ,useLazyGetNodeDetailsByIDQuery} = roadmapApiSlice
+export const { useCreateRoadmapMutation, useCreateNodeMutation, useSaveRoadMapMutation, useGetRoadmapsQuery, useGetRoadMapByIDQuery, useGetNodeDetailsByIDQuery, useLazyGetNodeDetailsByIDQuery,useGetRoadmapsPublishedQuery } = roadmapApiSlice

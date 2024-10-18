@@ -55,8 +55,8 @@ export const RoadmapFlow: React.FC<{ roadmapData: RoadmapData }> = ({
         id: edge.id,
         source: edge.source,
         target: edge.target,
-        type: "step",
-        animated: true,
+        type: "smoothstep",
+        // animated: true,
         style: {
           stroke: "#a78bfa",
           strokeWidth: 1,

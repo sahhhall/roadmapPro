@@ -41,17 +41,17 @@ const NodeDetailsSheet: React.FC<INodeDetailsProps> = React.memo(
             <></>
           )}
           <SheetHeader className="p-4 flex justify-between  flex-col">
-            <div className="flex justify-between items-center">
+            <div className="flex  justify-between items-center">
               <div>
                 <Button className="text-gray-600   text-xs items-center me-2 border ">
                   done
-                  <span className="ml-2 inline-block h-3 w-3 bg-green-500 rounded-full"></span>
+                  <span className="ml-2 inline-block  h-3 w-3 bg-green-500 rounded-full"></span>
                 </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="outline"
-                      className=" text-xs text-gray-500"
+                      className=" text-xs text-gray-500 max-w-xl sm:w-fit"
                     >
                       update status <ChevronDown />{" "}
                     </Button>

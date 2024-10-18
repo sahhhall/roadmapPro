@@ -49,18 +49,26 @@ export const ROUTES = [
         }
     },
     {
-        url:'/api/roadmap/nodedetails',
-        auth:false,
+        url: '/api/roadmap/nodedetails',
+        auth: false,
         proxy: {
-            target:'http://localhost:3001/api/roadmap/nodedetails',
+            target: 'http://localhost:3001/api/roadmap/nodedetails',
             changeOrigin: true,
         }
     }
-    ,{
-        url:'/api/roadmap',
-        auth:'user',
+    , {
+        url: '/api/roadmap',
+        auth: 'user',
         proxy: {
-            target:'http://localhost:3001/api/roadmap',
+            target: 'http://localhost:3001/api/roadmap',
+            changeOrigin: true,
+        }
+    },
+    , {
+        url: '/api/roadmap/published',
+        auth: false,
+        proxy: {
+            target: 'http://localhost:3001/api/roadmap/published',
             changeOrigin: true,
         }
     },

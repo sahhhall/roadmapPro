@@ -39,6 +39,6 @@ const baseQueryWithReAuth: BaseQueryFn<any, any, FetchBaseQueryError> = async (a
 
 export const apiSlice = createApi({
     baseQuery: baseQueryWithReAuth,
-    tagTypes: ['Users', 'Roadmap'],
+    tagTypes: ['Users', 'Roadmap','RoadmapPublished'],
     endpoints: () => ({})
 });

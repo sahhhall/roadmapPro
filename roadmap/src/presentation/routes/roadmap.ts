@@ -5,6 +5,7 @@ import { CreateNodeDTO, CreateRoadMapDTO } from "../dto";
 import { AllRoadMapController, CreateRoadMap, GetNodeDetailsController, GetRoadMapController, NodeController, RoadMapSaveController } from "../controllers";
 import { ReviewRoadmapDTO } from "../dto/ReviewRoadmapDTO";
 import { RoadMapReviewController } from "../controllers/admin/ReviewRoadmapController";
+import { PublishRoadmapController } from "../controllers/PublishedRoadmapController";
 
 
 const router = Router();
@@ -17,9 +18,15 @@ const getAllRoadMapController = new AllRoadMapController(diContainer.getAllRoadM
 const getRoadMapController = new GetRoadMapController(diContainer.getRoadMapUseCases());
 const getSaveRoadmapController = new RoadMapSaveController(diContainer.getSaveRoadmapUseCase());
 const getNodeDetailsByNodeIdController = new GetNodeDetailsController(diContainer.getNodeDetailsUseCase());
+const publishRoadmapsController = new PublishRoadmapController(diContainer.getAllListedRoadmaps());
+
 router.get('/', async (req, res, next) => {
     await getAllRoadMapController.execute(req, res, next);
 })
+
+router.get('/published', async (req, res, next) => {
+    await publishRoadmapsController.execute(req, res, next);
+});
 
 router.post('/', validateRequest(CreateRoadMapDTO), async (req, res, next) => {
     await createRoadMapController.createRoadMap(req, res, next)
