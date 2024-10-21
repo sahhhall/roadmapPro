@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@sahhhallroadmappro/common':
-        specifier: ^1.0.24
-        version: 1.0.24
+        specifier: ^1.0.29
+        version: 1.0.29
       '@types/bcrypt':
         specifier: ^5.0.2
         version: 5.0.2
@@ -32,6 +32,9 @@ importers:
       jsonwebtoken:
         specifier: ^9.0.2
         version: 9.0.2
+      kafkajs:
+        specifier: ^2.2.4
+        version: 2.2.4
       module-alias:
         specifier: ^2.2.3
         version: 2.2.3
@@ -208,8 +211,8 @@ packages:
     peerDependencies:
       '@redis/client': ^1.0.0
 
-  '@sahhhallroadmappro/common@1.0.24':
-    resolution: {integrity: sha512-JT7ilfmVJpu6q7ykoKB+CP6aXP1Qhe39bPCng8M6MnOUC16gsG0KEZDG6oDAILRb3E38gOYFvQDTdMRqPabm9Q==}
+  '@sahhhallroadmappro/common@1.0.29':
+    resolution: {integrity: sha512-Cny8ZY14mzdfYLGQpQD5q+HGogdTLtu3K1rdSz1XJE1spxDFX6CI/Qf/K3Td50HmZok9Cv+GtSalDFUbWeV6XQ==}
 
   '@tsconfig/node10@1.0.11':
     resolution: {integrity: sha512-DcRjDCujK/kCk/cUe8Xz8ZSpm8mS3mNNpta+jGCA6USEDfktlNvm1+IuZ9eTcDbNk41BHwpHHeW+N1lKCz4zOw==}
@@ -879,6 +882,10 @@ packages:
 
   jws@3.2.2:
     resolution: {integrity: sha512-YHlZCB6lMTllWDtSPHz/ZXTsi8S00usEV6v1tjq8tOUZzw7DpSDWVXjXDre6ed1w/pd495ODpHZYSdkRTsa0HA==}
+
+  kafkajs@2.2.4:
+    resolution: {integrity: sha512-j/YeapB1vfPT2iOIUn/vxdyKEuhuY2PxMBvf5JWux6iSaukAccrMtXEY/Lb7OvavDhOWME589bpLrEdnVHjfjA==}
+    engines: {node: '>=14.0.0'}
 
   kareem@2.6.3:
     resolution: {integrity: sha512-C3iHfuGUXK2u8/ipq9LfjFfXFxAZMQJJq7vLS45r3D9Y2xQ/m4S8zaR4zMLFWh9AsNPXmcFfUDhTEO8UIC/V6Q==}
@@ -1636,11 +1643,12 @@ snapshots:
     dependencies:
       '@redis/client': 1.6.0
 
-  '@sahhhallroadmappro/common@1.0.24':
+  '@sahhhallroadmappro/common@1.0.29':
     dependencies:
       class-validator: 0.14.1
       date-fns: 4.1.0
       express: 4.21.0
+      kafkajs: 2.2.4
       winston: 3.15.0
     transitivePeerDependencies:
       - supports-color
@@ -2360,6 +2368,8 @@ snapshots:
     dependencies:
       jwa: 1.4.1
       safe-buffer: 5.2.1
+
+  kafkajs@2.2.4: {}
 
   kareem@2.6.3: {}
 

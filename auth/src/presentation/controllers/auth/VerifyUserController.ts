@@ -2,6 +2,9 @@ import { Request, Response } from "express";
 import { validate } from "class-validator";
 import { VerifyOtpDto } from "../../dto/VerifyOtpDto";
 import { DIContainer } from "../../../infrastructure/di/DIContainer";
+import { UserCreatedPublisher } from "../../../infrastructure/kafka/producers/user-created-publisher";
+import kafkaWrapper from "../../../infrastructure/kafka/kafka-wrapper";
+import { Producer } from "kafkajs";
 
 
 export class OtpVerifyController {
@@ -16,7 +19,16 @@ export class OtpVerifyController {
 
         try {
             const response = await this.verifyUser.execute(dto);
+
             if (response.success) {
+                await new UserCreatedPublisher(kafkaWrapper.producer as Producer).produce({
+                    id: response.user!.id as string,
+                    name: response.user!.name as string,
+                    email: response.user!.email as string,
+                    role: response.user!.role as string,
+                    avatar: response.user!.avatar as string,
+
+                })
                 res.cookie(`user_accessToken`, response.accessToken, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV !== "development",
