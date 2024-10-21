@@ -6,7 +6,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -18,12 +18,13 @@ import {
   FormLabel,
   FormMessage,
 } from "../ui/form";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 import { usegetUser } from "@/hooks/usegetUser";
 import { useCreateRoadmapMutation } from "@/features/roadmaps/services/api/roadmapApi";
 import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { CircleCheck, LoaderCircle } from "lucide-react";
+import { ToastAction } from "@radix-ui/react-toast";
 
 interface CreateRoadmapProps {
   dialogOpen: boolean;
@@ -72,10 +73,15 @@ const CreateRoadmap: React.FC<CreateRoadmapProps> = ({
   };
   const userData = usegetUser();
   const [createRoadmap, { isLoading }] = useCreateRoadmapMutation({});
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     if (!userData) {
-      console.error("User ID is not available");
-      return;
+      toast({
+        title: "Uh oh! You are not logged in.",
+        description: "Login to continue.",
+        action: <ToastAction altText="Login" onClick={()=> navigate('/login')}>Login</ToastAction>,
+      });
+      return
     }
     const payload = {
       title: values.title,
