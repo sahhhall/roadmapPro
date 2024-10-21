@@ -143,7 +143,7 @@ const RequestsModal: React.FC<RoadMapReqModalProps> = ({
         </DialogHeader>
 
         <div className="space-y-4 mt-3">
-          {draftedItems!.length< 1 && <p className="flex justify-center items-center text-center text-sm" >sorry no requests!   <Frown className="ms-1"  size={14} /></p> }
+          {draftedItems && draftedItems!.length< 1 && <p className="flex justify-center items-center text-center text-sm" >sorry no requests!   <Frown className="ms-1"  size={14} /></p> }
           {draftedItems?.map((roadmap) => (
             <div
               key={roadmap.id}
