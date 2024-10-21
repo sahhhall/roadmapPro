@@ -12,6 +12,14 @@ build:
         manual:
           - src: "src/**/*.ts"
             dest: .
+    - image: sahhhall/roadmap
+      context: roadmap
+      docker:
+        dockerfile: Dockerfilie    
+      sync:
+        manual:
+          - src: "src/**/*.ts"
+            dest: .    
 deploy:
   kubectl:
     manifests:
