@@ -1,5 +1,8 @@
 import { Request, Response } from "express";
 import { DIContainer } from "../../../infrastructure/di/DIContainer";
+import { UserCreatedPublisher } from "../../../infrastructure/kafka/producers/user-created-publisher";
+import { Producer } from "kafkajs";
+import kafkaWrapper from "../../../infrastructure/kafka/kafka-wrapper";
 
 
 
@@ -14,6 +17,15 @@ export class GoogleLoginController {
                 name,
                 avatar,
             });
+            await new UserCreatedPublisher(kafkaWrapper.producer as Producer).produce({
+                id: user.user!.id as string,
+                name: user.user!.name as string,
+                email: user.user!.email as string,
+                role: user.user!.role as string,
+                avatar: user.user!.avatar as string,
+                isAdmin: user.user!.isAdmin as boolean,
+                isGoogle: user.user!.isAdmin as boolean,
+            })
             res.cookie(`user_accessToken`, user.accessToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV !== "development",

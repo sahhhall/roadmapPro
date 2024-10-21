@@ -43,7 +43,7 @@ export class OtpVerification {
                 unverifiedUser.name,
                 unverifiedUser.email,
                 unverifiedUser.password,
-                unverifiedUser.avatar || "https://res.cloudinary.com/dgvcq2pqp/image/upload/v1721892963/r9jiss1giwn3p14ck81h.jpg"
+                unverifiedUser.avatar 
             );
 
             let createdUser = await this.userRepository.create(user);

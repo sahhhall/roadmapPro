@@ -38,9 +38,9 @@ export class GoogleLogin {
             user.isGoogle = true;
             await this.userRepository.create(user);
         }
-        const dbsave = this.userRepository.create(user);
-        const accessToken = this.jwtservice.generateAccessToken(dbsave)
-        const refreshToken = this.jwtservice.generateRefreshToken(dbsave);
+        // const dbsave = this.userRepository.create(user);
+        const accessToken = this.jwtservice.generateAccessToken(user)
+        const refreshToken = this.jwtservice.generateRefreshToken(user);
         return {
             user,
             accessToken,
