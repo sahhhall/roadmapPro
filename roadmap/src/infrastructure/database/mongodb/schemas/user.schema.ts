@@ -1,6 +1,7 @@
 import mongoose from "mongoose";
 
 interface UserAttr {
+  id: string;
   name: string;
   email: string;
   role?: string;
@@ -18,10 +19,15 @@ interface UserDoc extends mongoose.Document {
   avatar?: string;
   createdAt: Date;
   updatedAt: Date;
+  id: string
 }
 
 const userSchema = new mongoose.Schema(
   {
+    id: {
+      type: String,
+      required: true
+    },
     name: {
       type: String,
       required: true,
@@ -33,10 +39,10 @@ const userSchema = new mongoose.Schema(
     },
     role: {
       type: String,
-      default: "user", 
+      default: "user",
     },
     avatar: {
-      type: String, 
+      type: String,
     }
   },
   {
