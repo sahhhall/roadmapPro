@@ -28,7 +28,8 @@ export class OtpVerifyController {
                     email: response.user!.email as string,
                     role: response.user!.role as string,
                     avatar: response.user!.avatar as string,
-
+                    isAdmin: response.user!.isAdmin as boolean,
+                    isGoogle: response.user!.isAdmin as boolean,
                 })
                 res.cookie(`user_accessToken`, response.accessToken, {
                     httpOnly: true,
