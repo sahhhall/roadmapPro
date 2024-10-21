@@ -17,6 +17,7 @@ export class GoogleLoginController {
                 name,
                 avatar,
             });
+            console.log('user',user)
             await new UserCreatedPublisher(kafkaWrapper.producer as Producer).produce({
                 id: user.user!.id as string,
                 name: user.user!.name as string,

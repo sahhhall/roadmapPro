@@ -36,7 +36,7 @@ export class GoogleLogin {
                 avatar as string,
             );
             user.isGoogle = true;
-            await this.userRepository.create(user);
+            user = await this.userRepository.create(user);
         }
         // const dbsave = this.userRepository.create(user);
         const accessToken = this.jwtservice.generateAccessToken(user)
