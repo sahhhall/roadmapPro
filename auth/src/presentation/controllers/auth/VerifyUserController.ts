@@ -21,6 +21,7 @@ export class OtpVerifyController {
             const response = await this.verifyUser.execute(dto);
 
             if (response.success) {
+                console.log(response.user)
                 await new UserCreatedPublisher(kafkaWrapper.producer as Producer).produce({
                     id: response.user!.id as string,
                     name: response.user!.name as string,

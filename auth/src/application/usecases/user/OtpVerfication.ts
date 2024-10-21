@@ -46,11 +46,11 @@ export class OtpVerification {
                 unverifiedUser.avatar || "https://res.cloudinary.com/dgvcq2pqp/image/upload/v1721892963/r9jiss1giwn3p14ck81h.jpg"
             );
 
-            await this.userRepository.create(user);
+            let createdUser = await this.userRepository.create(user);
             await this.redisRepository.removeUnverifiedUser(email);
             const accessToken = this.jwtservice.generateAccessToken(user)
             const refreshToken = this.jwtservice.generateRefreshToken(user);
-            return { success: true, user, accessToken, refreshToken };
+            return { success: true, user: createdUser, accessToken, refreshToken };
         } catch (error) {
             console.error("Error verifying OTP:", error);
             return { success: false, message: "Internal server error." };
