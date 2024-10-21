@@ -1,47 +1,48 @@
-import express from 'express';
 import { connectDB } from './infrastructure/database/mongodb/connection';
-import dotenv from 'dotenv';
-import cookieParser from 'cookie-parser'
 import { errorHandler } from '@sahhhallroadmappro/common';
 import { router } from './presentation/routes/roadmap';
 import loggerMiddleware from './presentation/middlewares/loggerMiddleware';
 import { adminRoutes } from './presentation/routes/adminRoutes';
-class App {
-    private readonly app: express.Application;
+import { IServerInterface } from './domain/interfaces/IServer';
 
-    constructor() {
-        dotenv.config();
-        this.app = express();
-        this.config();
+
+export class App {
+    constructor(private server: IServerInterface) { }
+
+    async initialize(): Promise<void> {
+        this.registerMiddleware()
         this.registerRoutes();
         this.registerErrorHandler();
-        this.startServer();
+        await this.connectDB();
+    }
 
-    };
-    private config() {
-        this.app.use(cookieParser())
-        this.app.use(express.urlencoded());
-        this.app.use(express.json());
-        this.app.use(loggerMiddleware)
-    };
+    private registerMiddleware(): void {
+        this.server.registerMiddleware(loggerMiddleware)
+    }
+
     private registerRoutes(): void {
-        this.app.use('/api/roadmap', router)
-        this.app.use('/api/admin/roadmap',adminRoutes)
+        this.server.registerRoutes('/api/roadmap', router)
+        this.server.registerRoutes('/api/admin/roadmap',adminRoutes)
     }
     private registerErrorHandler(): void {
-        this.app.use(errorHandler as any);
+        this.server.registerErrorHandler(errorHandler as any);
     }
-    private async startServer() {
+    private async connectDB() {
         try {
             await connectDB();
-            const PORT: number = 3001;
-            this.app.listen(process.env.PORT || PORT, () => {
-                console.log(`App listening on port ===> http://localhost:${PORT}/`);
-            })
         } catch (error) {
-            console.error('Server could not be started', error);
+            console.log('Server could not be started', error);
             process.exit(1);
         }
+    }
+
+    async start(port: number): Promise<void> {
+        await this.server.start(port)
+    }
+
+    async shutdown(): Promise<void> {
+        console.log("shut down server");
+        //need addd connection closes to  redis and db lateron
     }
 }
 
