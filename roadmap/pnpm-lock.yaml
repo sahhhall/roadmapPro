@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@sahhhallroadmappro/common':
-        specifier: ^1.0.30
-        version: 1.0.30
+        specifier: ^1.0.31
+        version: 1.0.31
       '@types/bcrypt':
         specifier: ^5.0.2
         version: 5.0.2
@@ -157,8 +157,8 @@ packages:
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
 
-  '@sahhhallroadmappro/common@1.0.30':
-    resolution: {integrity: sha512-j3g+jRjhENtEM+B+5UV1LFUMsU1zans7ur5nWiTTu7y8cIkhVpu6NfuOy7sjvkKQ05LSaD9AToND0H0XsMSFAw==}
+  '@sahhhallroadmappro/common@1.0.31':
+    resolution: {integrity: sha512-DENWBi81EjzMX8qKb2urVj7SIjqnwGLuDv3OykocZDYjKgwYmxELkMzrxTQXQRcz5JI37mYbsImr0YGHPFNC/g==}
 
   '@tsconfig/node10@1.0.11':
     resolution: {integrity: sha512-DcRjDCujK/kCk/cUe8Xz8ZSpm8mS3mNNpta+jGCA6USEDfktlNvm1+IuZ9eTcDbNk41BHwpHHeW+N1lKCz4zOw==}
@@ -1449,7 +1449,7 @@ snapshots:
 
   '@pkgr/core@0.1.1': {}
 
-  '@sahhhallroadmappro/common@1.0.30':
+  '@sahhhallroadmappro/common@1.0.31':
     dependencies:
       class-validator: 0.14.1
       date-fns: 4.1.0
