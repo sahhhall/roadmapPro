@@ -3,6 +3,9 @@ import { errorHandler } from '@sahhhallroadmappro/common';
 import kafkaWrapper from './infrastructure/kafka/kafka-wrapper';
 import loggerMiddleware from './presentation/middleware/loggerMiddleware';
 import { IServerInterface } from './domain/interfaces/IServer';
+import { adminRoutes } from './presentation/routes/adminRoutes';
+import { userRoutes } from './presentation/routes/userRoutes';
+
 
 export class App {
     constructor(private server: IServerInterface) { }
@@ -20,7 +23,9 @@ export class App {
     }
 
     private registerRoutes(): void {
-     
+        this.server.registerRoutes('/api/assessment', userRoutes);
+        this.server.registerRoutes('/api/admin/assessment', adminRoutes)
+
     }
     private registerErrorHandler(): void {
         this.server.registerErrorHandler(errorHandler as any);
