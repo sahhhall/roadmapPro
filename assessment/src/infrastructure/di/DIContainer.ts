@@ -1,6 +1,8 @@
+import { ICreateQuestionUseCase } from "../../application/interfaces/admin/ICreateQuestionUseCase";
 import { ICreateStackUseCase } from "../../application/interfaces/admin/ICreateStackUseCase";
 import { IDeleteStackUseCase } from "../../application/interfaces/admin/IDeleteStackUseCase";
 import { IGetAllStackUseCase } from "../../application/interfaces/admin/IGetAllStacksUseCase";
+import { CreateQuestionUseCase } from "../../application/usecases/admin/CreateQuestionUseCase";
 import { CreateStackUseCase } from "../../application/usecases/admin/CreateStackUseCase";
 import { DeleteStackUseCase } from "../../application/usecases/admin/DeleteStackUseCase";
 import { GetAllStackUseCase } from "../../application/usecases/admin/GetAllStacksUseCase";
@@ -43,5 +45,12 @@ export class DIContainer {
 
     public deleteStackUseCase(): IDeleteStackUseCase {
         return new DeleteStackUseCase(this._stackRepositary)
+    }
+
+
+    ///questions
+
+    public createQuestionUseCase(): ICreateQuestionUseCase {
+        return new CreateQuestionUseCase(this._questionRepositary)
     }
 }
