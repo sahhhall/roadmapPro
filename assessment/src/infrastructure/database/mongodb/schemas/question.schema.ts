@@ -25,7 +25,7 @@ interface QuestionDoc extends mongoose.Document {
 
 const questionSchema = new mongoose.Schema({
     stackId: {
-        types: mongoose.Types.ObjectId,
+        type: mongoose.Types.ObjectId,
         ref: 'Stack',
         required: true
     },

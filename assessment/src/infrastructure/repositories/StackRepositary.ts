@@ -3,10 +3,10 @@ import { Stack as StackDB } from "../database/mongodb/schemas/stack.schema";
 import { customLogger } from "../../presentation/middleware/loggerMiddleware";
 import { IStackRepo } from "../../domain/interfaces/IStackRepo";
 
-export class StackRepository implements IStackRepo{
-    async createStack(stack: Stack): Promise<Stack> {
+export class StackRepository implements IStackRepo {
+    async createStack(name: string): Promise<Stack> {
         try {
-            const createdStack = StackDB.build({ name: stack.name });
+            const createdStack = StackDB.build({ name: name });
             await createdStack.save();
             return createdStack;
         } catch (error: any) {
@@ -39,6 +39,14 @@ export class StackRepository implements IStackRepo{
         } catch (error: any) {
             customLogger.error(error.message);
             throw new Error(`DB error: update stack - ${error.message}`);
+        }
+    }
+    async findStackByName(name: string): Promise<Stack | null> {
+        try {
+            return await StackDB.findOne({ name: name });
+        } catch (error: any) {
+            customLogger.error(error.message);
+            throw new Error(`DB error: find stack by name - ${error.message}`);
         }
     }
 

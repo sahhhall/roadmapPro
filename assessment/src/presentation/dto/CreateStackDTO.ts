@@ -1,8 +1,9 @@
 import { IsString, MinLength } from 'class-validator';
 
-export class CreateNodeDTO {
-
+class CreateStackDTO {
     @IsString()
     @MinLength(3)
     name!: string
 };
+
+export { CreateStackDTO}
