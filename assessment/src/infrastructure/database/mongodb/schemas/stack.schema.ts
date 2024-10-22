@@ -10,10 +10,10 @@ interface StackModal extends mongoose.Model<StackDoc> {
 }
 
 interface StackDoc extends mongoose.Document {
-    id: string;
+    id?: string;
     name: string;
-    createdAt: string;
-    updatedAt: string;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
 

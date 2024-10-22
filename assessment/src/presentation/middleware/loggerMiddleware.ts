@@ -1,6 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { winstonLogger } from '@sahhhallroadmappro/common';
 
+export const customLogger =  winstonLogger('assessment-service');
 
 declare global {
     namespace Express {
@@ -10,18 +11,7 @@ declare global {
     }
 }
 const loggerMiddleware = (req: any, res: Response, next: NextFunction) => {
-    req.logger = winstonLogger('auth-service');
+    req.logger =customLogger;
     next();
 };
-
-// class Logger {
-//     constructor(private logger = useLogger) { }
-
-//     public loggermiddleware(req: any, res: Response, next: NextFunction) {
-//         req.logger = this.logger;
-//         next
-//     }
-
-// }
-
 export default loggerMiddleware;

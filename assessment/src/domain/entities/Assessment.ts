@@ -39,10 +39,10 @@ export class Test {
         public description: string,
         public duration: number,
         public status: 'pending' | 'in-progress' | 'completed' = 'pending',
-        public score: number = 0,
+        public score?: number ,
         public questions: TestQuestion[] = [],
         public id?: string,
         public createdAt?: Date,
         public updatedAt?: Date
-    ) { }
+    ) { }   
 }
