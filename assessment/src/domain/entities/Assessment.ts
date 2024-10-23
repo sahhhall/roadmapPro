@@ -24,9 +24,9 @@ export class Question {
 
 export class TestQuestion {
     constructor(
-        public questionId: mongoose.Types.ObjectId,
-        public userAnswer?: string,
-        public isCorrect?: boolean
+        public questionId: mongoose.Types.ObjectId | string,
+        public userAnswer?: string | undefined,
+        public isCorrect?: boolean | undefined
     ) { }
 }
 

@@ -2,6 +2,7 @@ import { Question } from "../../domain/entities/Assessment";
 import { Question as QuestionDB } from "../database/mongodb/schemas/question.schema";
 import { customLogger } from "../../presentation/middleware/loggerMiddleware";
 import { IQuestionRepo } from "../../domain/interfaces/IQuestionRepo";
+import mongoose from "mongoose";
 
 export class QuestionRepository implements IQuestionRepo {
     async createQuestion(question: Question): Promise<Question> {
@@ -49,6 +50,27 @@ export class QuestionRepository implements IQuestionRepo {
         } catch (error: any) {
             customLogger.error(error.message);
             throw new Error(`DB error: delete question - ${error.message}`);
+        }
+    }
+
+    async getRandomQuestions(stackId: string, count: number): Promise<Question[] | null> {
+        try {
+            let random =  await QuestionDB.aggregate([
+                {
+                    $match: {
+                        stackId: new mongoose.Types.ObjectId(stackId)
+                    },
+                },
+                {
+                    $sample: {
+                        size: count
+                    }
+                }
+            ]);
+            return random
+        } catch (error: any) {
+            customLogger.error(error.message);
+            throw new Error(`DB error: get random questions - ${error.message}`);
         }
     }
 }

@@ -10,7 +10,7 @@ interface TestAttr {
     status: 'pending' | 'in-progress' | 'completed';
     score?: number;
     questions: {
-        questionId: mongoose.Types.ObjectId;
+        questionId: mongoose.Types.ObjectId | string;
         userAnswer?: string;
         isCorrect?: boolean;
     }[];

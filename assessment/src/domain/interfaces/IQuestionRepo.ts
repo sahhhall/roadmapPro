@@ -6,4 +6,5 @@ export interface IQuestionRepo {
     findQuestionsByStackId(stackId: string): Promise<Question[]>;
     updateQuestion(id: string, question: Partial<Question>): Promise<Question | null>;
     deleteQuestion(id: string): Promise<boolean>;
+    getRandomQuestions(stackId: string, count: number): Promise<Question[] | null>
 }

@@ -4,8 +4,10 @@ import { IDeleteQuestionUseCase } from "../../application/interfaces/admin/IDele
 import { IDeleteStackUseCase } from "../../application/interfaces/admin/IDeleteStackUseCase";
 import { IGetAllQuestionByStack } from "../../application/interfaces/admin/IGetAllQuestionByStack";
 import { IGetAllStackUseCase } from "../../application/interfaces/admin/IGetAllStacksUseCase";
+import { ICreateTestUseCase } from "../../application/interfaces/user/ITestCreateUseCase";
 import { CreateQuestionUseCase } from "../../application/usecases/admin/CreateQuestionUseCase";
 import { CreateStackUseCase } from "../../application/usecases/admin/CreateStackUseCase";
+import { CreateTestUseCase } from "../../application/usecases/user/CreateTestUseCase";
 import { DeleteQuestionUseCase } from "../../application/usecases/admin/DeleteQuestionUseCase";
 import { DeleteStackUseCase } from "../../application/usecases/admin/DeleteStackUseCase";
 import { GetAllQuestions } from "../../application/usecases/admin/GetAllQuestionByStack";
@@ -64,5 +66,12 @@ export class DIContainer {
 
     public getAllQuestionByStackId(): IGetAllQuestionByStack {
         return new GetAllQuestions(this._questionRepositary)
+    }
+
+
+    //test
+
+    public createTestUseCase(): ICreateTestUseCase {
+        return new CreateTestUseCase(this._testRepositary, this._questionRepositary)
     }
 }

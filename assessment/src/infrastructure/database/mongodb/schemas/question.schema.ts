@@ -53,6 +53,8 @@ const questionSchema = new mongoose.Schema({
 });
 
 
+questionSchema.index({ stackId: 1 });
+
 questionSchema.statics.build = (attrs: QuestionAttr) => {
     return new Question(attrs);
 }
