@@ -1,4 +1,4 @@
-import { LayoutDashboard, Users, MapPin } from "lucide-react";
+import { LayoutDashboard, Users, MapPin, LandPlot } from "lucide-react";
 
 export const sidebarItems = [
     {
@@ -15,5 +15,10 @@ export const sidebarItems = [
         name: "Roadmap Management",
         icon: MapPin,
         path: "/admin/roadmap-management",
+    },
+    {
+        name: "Assessment Managment",
+        icon:   LandPlot,
+        path: '/admin/assessment-managment' 
     }
 ];
