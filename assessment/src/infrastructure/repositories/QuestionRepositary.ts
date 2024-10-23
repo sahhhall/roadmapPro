@@ -24,7 +24,14 @@ export class QuestionRepository implements IQuestionRepo {
             throw new Error(`DB error: find question - ${error.message}`);
         }
     }
-
+    async findQuestionByIds(ids: string[]): Promise<Question[]> {
+        try {
+            return await QuestionDB.find({_id: { $in: ids }});
+        } catch (error: any) {
+            customLogger.error(error.message);
+            throw new Error(`DB error: find question - ${error.message}`);
+        }
+    }
     async findQuestionsByStackId(stackId: string): Promise<Question[]> {
         try {
             return await QuestionDB.find({ stackId });

@@ -33,4 +33,13 @@ export class TestRepository implements ITestRepo {
             throw new Error(`DB error: delete test - ${error.message}`);
         }
     }
+    async findTest(id: string): Promise<Test|null> {
+        try {
+            return await TestDB.findById(id)
+        } catch (error:any) {
+            customLogger.error(error.message);
+            throw new Error(`DB error: fetch test - ${error.message}`);
+        }
+    }
+
 }

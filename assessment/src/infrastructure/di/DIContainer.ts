@@ -18,6 +18,8 @@ import { ITestRepo } from "../../domain/interfaces/ITestRepo";
 import { QuestionRepository } from "../repositories/QuestionRepositary";
 import { StackRepository } from "../repositories/StackRepositary";
 import { TestRepository } from "../repositories/TestRepositary";
+import { IEvaluateTestUseCase } from "../../application/interfaces/user/IEvaluateTestUseCase";
+import { EvaluateTest } from "../../application/usecases/user/EvaluateTestUseCase";
 
 
 
@@ -73,5 +75,9 @@ export class DIContainer {
 
     public createTestUseCase(): ICreateTestUseCase {
         return new CreateTestUseCase(this._testRepositary, this._questionRepositary)
+    }
+
+    public valuateTestUseCase(): IEvaluateTestUseCase {
+        return new EvaluateTest(this._testRepositary, this._questionRepositary)
     }
 }
