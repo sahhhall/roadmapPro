@@ -1,7 +1,7 @@
 import { validateRequest } from "@sahhhallroadmappro/common";
 import { Router } from "express";
 import { DIContainer } from "../../infrastructure/di/DIContainer";
-import { CreateStackController } from "../controllers/admin/index";
+import { CreateStackController, GetAllQuestionsController } from "../controllers/admin/index";
 import { CreateQuestionDTO, CreateStackDTO } from '../dto/index'
 import { GetAllStacksController } from "../controllers/admin/GetAllStacksController";
 import { DeleteStackController } from "../controllers/admin/DeleteStackController";
@@ -21,6 +21,7 @@ const deleteStackController = new DeleteStackController(diContainer.deleteStackU
 //question
 const createQuestionController = new CreateQuestionController(diContainer.createQuestionUseCase());
 const deleteQuestionController = new DeleteQuestionController(diContainer.deleteQuestionUseCase())
+const getQuestionController = new GetAllQuestionsController(diContainer.getAllQuestionByStackId());
 
 router.post('/', validateRequest(CreateStackDTO), async (req, res, next) => {
     await createStackController.createStack(req, res, next)
@@ -35,10 +36,17 @@ router.delete('/', async (req, res, next) => {
 })
 
 
-router.post('/questions', validateRequest(CreateQuestionDTO),async (req,res,next)=> {
-    await createQuestionController.createQuestion(req,res,next)
+router.post('/questions', validateRequest(CreateQuestionDTO), async (req, res, next) => {
+    await createQuestionController.createQuestion(req, res, next)
 })
-router.delete('/question', async(req,res,next)=> {
-    await deleteQuestionController.delete(req,res,next)
+router.delete('/question', async (req, res, next) => {
+    await deleteQuestionController.delete(req, res, next)
 })
+
+
+router.get('/questions/:stackId', async (req, res, next) => {
+    await getQuestionController.getQuestions(req, res, next)
+})
+
+
 export { router as adminRoutes }

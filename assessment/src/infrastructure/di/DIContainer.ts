@@ -2,11 +2,13 @@ import { ICreateQuestionUseCase } from "../../application/interfaces/admin/ICrea
 import { ICreateStackUseCase } from "../../application/interfaces/admin/ICreateStackUseCase";
 import { IDeleteQuestionUseCase } from "../../application/interfaces/admin/IDeleteQuestionUseCase";
 import { IDeleteStackUseCase } from "../../application/interfaces/admin/IDeleteStackUseCase";
+import { IGetAllQuestionByStack } from "../../application/interfaces/admin/IGetAllQuestionByStack";
 import { IGetAllStackUseCase } from "../../application/interfaces/admin/IGetAllStacksUseCase";
 import { CreateQuestionUseCase } from "../../application/usecases/admin/CreateQuestionUseCase";
 import { CreateStackUseCase } from "../../application/usecases/admin/CreateStackUseCase";
 import { DeleteQuestionUseCase } from "../../application/usecases/admin/DeleteQuestionUseCase";
 import { DeleteStackUseCase } from "../../application/usecases/admin/DeleteStackUseCase";
+import { GetAllQuestions } from "../../application/usecases/admin/GetAllQuestionByStack";
 import { GetAllStackUseCase } from "../../application/usecases/admin/GetAllStacksUseCase";
 import { IQuestionRepo } from "../../domain/interfaces/IQuestionRepo";
 import { IStackRepo } from "../../domain/interfaces/IStackRepo";
@@ -58,5 +60,9 @@ export class DIContainer {
 
     public deleteQuestionUseCase(): IDeleteQuestionUseCase {
         return new DeleteQuestionUseCase(this._questionRepositary)
+    }
+
+    public getAllQuestionByStackId(): IGetAllQuestionByStack {
+        return new GetAllQuestions(this._questionRepositary)
     }
 }

@@ -10,7 +10,7 @@ export class CreateStackController {
         try {
             const { name } = req.body;
             const stack = await this.createStackUseCase.execute(name);
-            return res.status(HttpStatus.CREATED).json(stack)
+            return res.status(HttpStatus.OK).json(stack)
         } catch (error) {
             next(error)
         }
