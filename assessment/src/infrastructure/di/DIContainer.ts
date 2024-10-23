@@ -20,6 +20,8 @@ import { StackRepository } from "../repositories/StackRepositary";
 import { TestRepository } from "../repositories/TestRepositary";
 import { IEvaluateTestUseCase } from "../../application/interfaces/user/IEvaluateTestUseCase";
 import { EvaluateTest } from "../../application/usecases/user/EvaluateTestUseCase";
+import { IGetQuestionUseCase } from "../../application/interfaces/user/IGetQuestionUseCase";
+import { GetQuestionUseCase } from "../../application/usecases/user/GetQuestionUseCase";
 
 
 
@@ -79,5 +81,9 @@ export class DIContainer {
 
     public valuateTestUseCase(): IEvaluateTestUseCase {
         return new EvaluateTest(this._testRepositary, this._questionRepositary)
+    }
+            //this for fetch one by one questionfor each reqiest when test change
+    public getQuestionUseCase(): IGetQuestionUseCase {
+        return new GetQuestionUseCase(this._questionRepositary)
     }
 }
