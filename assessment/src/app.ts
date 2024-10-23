@@ -1,11 +1,11 @@
 import { connectDB, disconnectDB } from './infrastructure/database/mongodb/connection';
-import { errorHandler } from '@sahhhallroadmappro/common';
+import { errorHandler,userDtamiddleaware } from '@sahhhallroadmappro/common';
 import kafkaWrapper from './infrastructure/kafka/kafka-wrapper';
 import loggerMiddleware from './presentation/middleware/loggerMiddleware';
 import { IServerInterface } from './domain/interfaces/IServer';
 import { adminRoutes } from './presentation/routes/adminRoutes';
 import { userRoutes } from './presentation/routes/userRoutes';
-
+ 
 
 export class App {
     constructor(private server: IServerInterface) { }
@@ -20,6 +20,7 @@ export class App {
 
     private registerMiddleware(): void {
         this.server.registerMiddleware(loggerMiddleware)
+        this.server.registerMiddleware(userDtamiddleaware);
     }
 
     private registerRoutes(): void {
