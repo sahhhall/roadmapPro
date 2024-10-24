@@ -1,4 +1,12 @@
 export const ROUTES = [
+    {
+        url: '/api/admin/assessment',
+        auth: 'admin',
+        proxy: {
+            target: 'http://localhost:3002/api/admin/assessment',
+            changeOrigin: true,
+        }
+    },
 
     {
         url: '/api/admin/roadmap',
@@ -81,14 +89,7 @@ export const ROUTES = [
             target: 'http://localhost:3001/api/roadmap',
             changeOrigin: true,
         }
-    }, {
-        url: '/api/admin/assessment',
-        auth: 'admin',
-        proxy: {
-            target: 'http://localhost:3002/api/admin/assessment',
-            changeOrigin: true,
-        }
-    }, {
+    },  {
         url: '/api/assessment',
         auth: 'user',
         proxy: {
