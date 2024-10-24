@@ -14,7 +14,7 @@ export class CreateTestUseCase implements ICreateTestUseCase {
         if (questions!.length < 5) {
             throw new NotFoundError()
         }
-        console.log(questions,'=>',questions?.map((q: any) => q._id), "quession")
+        // console.log(questions,'=>',questions?.map((q: any) => q._id), "quession")
         const test = await this.testRepository.createTest({
             ...testData,
             duration: 5,
