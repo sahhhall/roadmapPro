@@ -1,21 +1,27 @@
 import { apiSlice } from "@/redux/slices/apiSlice";
 import { assessmentEndPoints } from "@/features/assessment/services/endpoints";
-import { AllStacksResponse } from "@/features/assessment/types/assessment";
+import { AllQuestionsByStackResponse, AllStacksResponse } from "@/features/assessment/types/assessment";
 
 
 
 const assessmentApiSlices = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        createStack: builder.mutation<AllStacksResponse, any>({
+        createStack: builder.mutation<AllStacksResponse, { name: string }>({
             query: (data) => ({
                 url: assessmentEndPoints.stackCreation,
                 method: 'post',
                 body: data
             })
         }),
-        getStacks: builder.query<any, any>({
+        getStacks: builder.query<AllStacksResponse[], any>({
             query: () => ({
                 url: assessmentEndPoints.getAllStack,
+                method: 'get'
+            })
+        }),
+        getQuestionsByStackId: builder.query<AllQuestionsByStackResponse[], any>({
+            query: (id: string) => ({
+                url: assessmentEndPoints.getAllQuestionByStackID(id),
                 method: 'get'
             })
         })
@@ -23,4 +29,4 @@ const assessmentApiSlices = apiSlice.injectEndpoints({
 })
 
 
-export const { useCreateStackMutation, useGetStacksQuery } = assessmentApiSlices
+export const { useCreateStackMutation, useGetStacksQuery, useGetQuestionsByStackIdQuery } = assessmentApiSlices
