@@ -6,12 +6,9 @@ import {
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
-import { CreateStackModal } from "@/features/assessment/components/admin/modals/CreateStackModal";
-import { useState } from "react";
+import { StackList } from "@/features/assessment/components/admin/StackLists";
 import { Link } from "react-router-dom";
 const AssessmentManagment = () => {
-  const [dialogOpen, setDialogOpen] = useState<boolean>(false);
-  const openDialog = () => setDialogOpen(true);
   return (
     <Container>
       <Breadcrumb>
@@ -29,16 +26,13 @@ const AssessmentManagment = () => {
       </Breadcrumb>
       <main>
         <div className="flex justify-between">
-          <p>sdf</p>
+          <p></p>
           <div className="gap-2 flex">
-            <Button variant={"outline"}>Assessment Results</Button>
-            <Button onClick={openDialog} variant={"outline"}>
-              Create Stack
-            </Button>
+            <Button variant={"outline"}>Assessment Results</Button>        
           </div>
         </div>
+        <StackList/>
       </main>
-      <CreateStackModal setDialogOpen={setDialogOpen} dialogOpen={dialogOpen} />
     </Container>
   );
 };
