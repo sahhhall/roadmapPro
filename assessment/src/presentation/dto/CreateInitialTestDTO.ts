@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsArray, IsNotEmpty, IsString } from 'class-validator';
 
 class CreateInitialTestDTO {
     // @IsString()
@@ -14,11 +14,27 @@ class CreateInitialTestDTO {
     expirience!: string;
 
     @IsString()
-    certificate?: string;
+    @IsNotEmpty()
+    headline!: string;
+
+
+    @IsArray()
+    @IsString({ each: true })
+    languages!: string[]
 
     @IsString()
     @IsNotEmpty()
-    description!: string;
+    bio!: string;
+
+
+    @IsString()
+    @IsNotEmpty()
+    linkedinUrl!: string;
+
+    @IsString()
+    @IsNotEmpty()
+    githubUrl!: string;
+    
 }
 
 

@@ -23,17 +23,17 @@ import { useGetAllAvalibleStacksQuery } from "../../services/api/mentorTestApi";
 import { Github, Linkedin } from "lucide-react";
 
 const formSchema = z.object({
-  stack: z
+  stackId: z
     .string({
       required_error: "Please select a stack domain",
     })
     .min(1, "Stack domain is required"),
-  experience: z
+  expirience: z
     .string({
       required_error: "Please select your experience level",
     })
     .min(1, "Experience level is required"),
-  language: z
+  languages: z
     .array(z.string())
     .nonempty({ message: "Please select at least one language." }),
   headline: z
@@ -67,12 +67,12 @@ export const MentorDetailsSubmissionForm = () => {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      stack: "",
-      experience: "",
+      stackId: "",
+      expirience: "",
       headline: "",
       bio: "",
       linkedinUrl: "",
-      language: [],
+      languages: [],
     },
   });
 
@@ -103,22 +103,22 @@ export const MentorDetailsSubmissionForm = () => {
 
   //here i used this for push into array
   const handleLanguageChange = (value: string) => {
-    let currentvalues = form.getValues("language");
+    let currentvalues = form.getValues("languages");
     if (!currentvalues.includes(value)) {
       const updated = [...currentvalues, value] as any;
-      form.setValue("language", updated, { shouldValidate: true });
+      form.setValue("languages", updated, { shouldValidate: true });
     }
-    console.log(form.getValues("language"));
+    console.log(form.getValues("languages"));
   };
 
   //for removeing selected langueas so used filtere for that
 
   const handleRemoveLanguage = (language: string) => {
-    const currentValues = form.getValues("language");
+    const currentValues = form.getValues("languages");
     const updatedLanguages = currentValues.filter(
       (val) => language !== val
     ) as any;
-    form.setValue("language", updatedLanguages, { shouldValidate: true });
+    form.setValue("languages", updatedLanguages, { shouldValidate: true });
   };
 
   return (
@@ -127,7 +127,7 @@ export const MentorDetailsSubmissionForm = () => {
         <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
           <FormField
             control={form.control}
-            name="stack"
+            name="stackId"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-medium text-gray-700">
@@ -163,7 +163,7 @@ export const MentorDetailsSubmissionForm = () => {
 
           <FormField
             control={form.control}
-            name="experience"
+            name="expirience"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-sm font-medium text-gray-700">
@@ -213,7 +213,7 @@ export const MentorDetailsSubmissionForm = () => {
         </div>
         <FormField
           control={form.control}
-          name="language"
+          name="languages"
           render={({}) => (
             <FormItem>
               <FormLabel className="text-sm font-medium text-gray-700">
@@ -236,7 +236,7 @@ export const MentorDetailsSubmissionForm = () => {
           )}
         />
         <div className="flex gap-2">
-          {form.getValues("language").map((val) => (
+          {form.getValues("languages").map((val) => (
             <span
               key={val}
               className=" items-center text-xs  inline-flex gap-x-8 p-1 border border-1 border-gray-300 rounded-md"

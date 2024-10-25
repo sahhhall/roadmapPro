@@ -4,9 +4,12 @@ interface TestAttr {
     userId: string;
     stackId: string;
     expirience: string;
-    certificate: string;
-    description: string;
+    headline: string;
+    bio: string;
+    githubUrl: string;
+    linkedinUrl: string;
     duration: number;
+    languages: string[];
     status: 'pending' | 'in-progress' | 'completed';
     score?: number;
     questions: {
@@ -26,9 +29,12 @@ interface TestDoc extends mongoose.Document {
     userId: string;
     stackId: string;
     expirience: string;
-    certificate: string;
-    description: string;
+    headline: string;
+    bio: string;
+    githubUrl: string;
+    linkedinUrl: string;
     duration: number;
+    languages: string[];
     status: 'pending' | 'in-progress' | 'completed';
     score?: number;
     questions: {
@@ -56,26 +62,30 @@ const testSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
-    certificate: {
+    bio: {
         type: String,
         required: true,
     },
-    description: {
+    headline: {
         type: String,
+        required: true,
+    },
+    languages: {
+        type: [String],
         required: true,
     },
     duration: {
         type: Number,
-        required: true, 
+        required: true,
     },
     status: {
         type: String,
         enum: ['pending', 'in-progress', 'completed'],
-        default: 'pending', 
+        default: 'pending',
     },
     score: {
         type: Number,
-        default: 0, 
+        default: 0,
     },
     questions: [{
         questionId: {
@@ -89,6 +99,14 @@ const testSchema = new mongoose.Schema({
             type: Boolean,
         },
     }],
+    githubUrl: {
+        type: String,
+        required: true,
+    },
+    linkedinUrl: {
+        type: String,
+        required: true
+    }
 }, {
     toJSON: {
         transform(_, ret) {
