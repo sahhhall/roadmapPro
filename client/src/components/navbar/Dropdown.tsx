@@ -24,6 +24,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "../ui/button";
 import { usegetUser } from "@/hooks/usegetUser";
+import TestRegistration from "../modals/TestRegistration";
 
 interface DropdownProps {
   handleToggle: () => void;
@@ -35,6 +36,7 @@ const Dropdown = ({ handleToggle }: DropdownProps) => {
   const user = usegetUser();
   const { toast } = useToast();
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [mentorTestDialogOpen, setMentorTestDialogOpen] = useState(false);
 
   const handleLogout = async () => {
     const response = await logoutUser();
@@ -82,7 +84,7 @@ const Dropdown = ({ handleToggle }: DropdownProps) => {
           <DropdownMenuItem>
             <button
               className="items-center flex gap-2"
-              onClick={() => navigate("/")}
+              onClick={() => setMentorTestDialogOpen(true)}
             >
               <Gem size={15} />
               <span>Be mentor</span>
@@ -124,6 +126,10 @@ const Dropdown = ({ handleToggle }: DropdownProps) => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+      <TestRegistration
+        dialogOpen={mentorTestDialogOpen}
+        setDialogOpen={setMentorTestDialogOpen}
+      />
     </>
   );
 };
