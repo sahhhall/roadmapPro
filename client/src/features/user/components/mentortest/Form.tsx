@@ -19,8 +19,12 @@ import {
 } from "@/components/ui/select";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { useGetAllAvalibleStacksQuery } from "../../services/api/mentorTestApi";
-import { Github, Linkedin } from "lucide-react";
+import {
+  useGetAllAvalibleStacksQuery,
+  useRegisterTestMutation,
+} from "@/features/user/services/api/mentorTestApi";
+import { CircleCheck, Github, Linkedin, LoaderCircle } from "lucide-react";
+import { useToast } from "@/hooks/use-toast";
 
 const formSchema = z.object({
   stackId: z
@@ -39,7 +43,7 @@ const formSchema = z.object({
   headline: z
     .string()
     .min(10, "Headline must be at least 10 characters")
-    .max(30, "Headline must not exceed 30 characters")
+    .max(100, "Headline must not exceed 100 characters")
     .refine(
       (val) => val.trim().length > 0,
       "Professional headline is required"
@@ -63,6 +67,25 @@ const formSchema = z.object({
 
 type FormData = z.infer<typeof formSchema>;
 
+const experienceOptions = [
+  { value: "1", label: "1+ year" },
+  { value: "2", label: "2+ years" },
+  { value: "3", label: "3+ years" },
+  { value: "5", label: "5+ years" },
+  { value: "7", label: "7+ years" },
+  { value: "10", label: "10+ years" },
+];
+
+const languageOptions = [
+  { value: "english" },
+  { value: "hindi" },
+  { value: "malayalam" },
+  { value: "tamil" },
+  { value: "spanish" },
+  { value: "french" },
+  { value: "german" },
+];
+
 export const MentorDetailsSubmissionForm = () => {
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -76,30 +99,37 @@ export const MentorDetailsSubmissionForm = () => {
     },
   });
 
+  const { toast } = useToast();
+
   const { data: stacks, isLoading, error } = useGetAllAvalibleStacksQuery({});
+  const [registerTest, { isLoading: isUpdating }] = useRegisterTestMutation({});
 
-  const handleSubmit = (data: FormData) => {
+  const handleSubmit = async (data: FormData) => {
     console.log(data, "data");
+    try {
+      const response = await registerTest(data).unwrap();
+      toast({
+        description: (
+          <>
+            <CircleCheck color="green" className="inline-block mr-2" />
+            Registered successfully!
+          </>
+        ),
+        className: "border-none",
+        variant: "default",
+      });
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: `${
+          error.status === 404
+            ? "For this stack currently no tests"
+            : "Uh oh! Something went wrong."
+        }`,
+      });
+      console.log(error, "error");
+    }
   };
-
-  const experienceOptions = [
-    { value: "1", label: "1+ year" },
-    { value: "2", label: "2+ years" },
-    { value: "3", label: "3+ years" },
-    { value: "5", label: "5+ years" },
-    { value: "7", label: "7+ years" },
-    { value: "10", label: "10+ years" },
-  ];
-
-  const languageOptions = [
-    { value: "english" },
-    { value: "hindi" },
-    { value: "malayalam" },
-    { value: "tamil" },
-    { value: "spanish" },
-    { value: "french" },
-    { value: "german" },
-  ];
 
   //here i used this for push into array
   const handleLanguageChange = (value: string) => {
@@ -325,7 +355,11 @@ export const MentorDetailsSubmissionForm = () => {
 
         <div className="pt-4">
           <Button type="submit" className="w-full" variant={"submit"}>
-            Submit Application
+            {isUpdating ? (
+              <LoaderCircle className="animate-spin" />
+            ) : (
+              "Submit Application"
+            )}
           </Button>
         </div>
       </form>
