@@ -11,18 +11,23 @@ import { PlusCircle, Settings, Trash2, Edit2 } from "lucide-react";
 import { useGetQuestionsByStackIdQuery } from "@/features/assessment/services/api/assessementApi";
 import { useParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { CreateQuestionModal } from "./modals/CreateQuestionModal";
 const QuestionList = () => {
   const { id } = useParams();
-  const { data: questions } = useGetQuestionsByStackIdQuery(id ?? "", {
+  const { data: questions, refetch } = useGetQuestionsByStackIdQuery(id ?? "", {
     skip: !id,
   });
-  console.log(questions, "data");
-
+  // console.log(questions, "data");
+  const [createDialogOpen, setCreateDialogOpen] = useState<boolean>(false);
+  const openDialog = () => setCreateDialogOpen(true);
   return (
     <Container className="mx-auto px-7 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
         <div className="lg:col-span-1 h-full dark:bg-transparent border border-1-black bg-gray-50 rounded-lg p-6">
-          <h2 className="text-sm font-semibold text-blue-900 mb-6">Question Management</h2>
+          <h2 className="text-sm font-semibold text-blue-900 mb-6">
+            Question Management
+          </h2>
           <div className="space-y-6">
             <div className="space-y-2">
               <div className="flex items-center  text-blue-800 gap-2 text-xs">
@@ -47,7 +52,11 @@ const QuestionList = () => {
             </div>
 
             <div className="mt-8">
-              <Button onClick={() => ""} className="w-full" variant={"outline"}>
+              <Button
+                onClick={openDialog}
+                className="w-full"
+                variant={"outline"}
+              >
                 Create Question
               </Button>
             </div>
@@ -112,6 +121,11 @@ const QuestionList = () => {
           )}
         </div>
       </div>
+      <CreateQuestionModal
+        dialogOpen={createDialogOpen}
+        refetchQuestions={refetch}
+        setDialogOpen={setCreateDialogOpen}
+      />
     </Container>
   );
 };

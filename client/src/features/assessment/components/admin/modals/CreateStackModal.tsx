@@ -11,7 +11,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { useCreateStackMutation } from "@/features/assessment/services/api/assessementApi";
 import { useToast } from "@/hooks/use-toast";
-import { CircleCheck, LoaderCircle } from "lucide-react";
+import { CircleCheck } from "lucide-react";
 import React, { useState } from "react";
 import { z } from "zod";
 
@@ -40,7 +40,7 @@ export const CreateStackModal: React.FC<CreateStackProps> = ({
   const { toast } = useToast();
   //api
 
-  const [trigger, { isLoading }] = useCreateStackMutation({});
+  const [trigger] = useCreateStackMutation({});
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const validationResult = stackNameSchema.safeParse({ title: stackname });
@@ -117,7 +117,7 @@ export const CreateStackModal: React.FC<CreateStackProps> = ({
         <AlertDialogFooter className="pt-3">
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <Button onClick={handleSubmit} variant={"submit"}>
-            {isLoading ? "Create" : <LoaderCircle className="animate-spin w-full" />}
+           Create
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
