@@ -8,7 +8,7 @@ import { IEvaluateTestUseCase } from "../../interfaces/user/IEvaluateTestUseCase
 
 export class EvaluateTest implements IEvaluateTestUseCase {
     constructor(private testRepository: ITestRepo, private questioRepositary: IQuestionRepo) { }
-    async execute(submittedData: Pick<Test,'questions'|'id'>): Promise<Test | null> {
+    async execute(submittedData: Pick<Test, 'questions' | 'id'>): Promise<Test | null> {
         const test = await this.testRepository.findTest(submittedData.id as string);
         if (!test) {
             throw new NotFoundError();
@@ -26,10 +26,20 @@ export class EvaluateTest implements IEvaluateTestUseCase {
                 score++
             }
         });
-
+        const totalQuestino = questions.length;
+        const passingScore = Math.ceil(totalQuestino * 0.8);
+        console.log(passingScore);
+        let result = 'pending' as any;
+        let resultFeedback;
+        if (passingScore < score) {
+            result = 'failed';
+            resultFeedback = 'you cant reach asssessment criteria level'
+        }
         const evaluatedTest = await this.testRepository.updateTest(submittedData!.id as string, {
             score: score,
-            status: 'completed'
+            status: 'completed',
+            result,
+            resultFeedback
         });
         return evaluatedTest
 

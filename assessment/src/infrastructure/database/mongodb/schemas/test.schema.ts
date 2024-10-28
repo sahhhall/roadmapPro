@@ -17,6 +17,8 @@ interface TestAttr {
         userAnswer?: string;
         isCorrect?: boolean;
     }[];
+    result?:'passed' | 'failed' | 'pending';
+    resultFeedback?: string;
     reviewAt?: Date;
 }
 
@@ -42,6 +44,8 @@ interface TestDoc extends mongoose.Document {
         userAnswer?: string;
         isCorrect?: boolean;
     }[];
+    result?: 'passed' | 'failed' | 'pending';
+    resultFeedback?: string;
     reviewAt?: Date;
     createdAt: Date;
     updatedAt: Date;
@@ -106,6 +110,12 @@ const testSchema = new mongoose.Schema({
     linkedinUrl: {
         type: String,
         required: true
+    },
+    result: {
+        type: String,
+    },
+    resultFeedback: {
+        type: String,
     }
 }, {
     toJSON: {

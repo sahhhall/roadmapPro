@@ -42,10 +42,12 @@ export class Test {
         public bio: string,
         public duration: number,
         public status: 'pending' | 'in-progress' | 'completed' = 'pending',
-        public score?: number ,
+        public score?: number,
         public questions: TestQuestion[] = [],
         public id?: string,
+        public result?: 'passed' | 'failed' | 'pending',
+        public resultFeedback?: string,
         public createdAt?: Date,
         public updatedAt?: Date
-    ) { }   
+    ) { }
 }
