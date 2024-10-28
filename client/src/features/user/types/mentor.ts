@@ -43,3 +43,23 @@ export interface MentorAssessmentRegistrationResponse {
     updatedAt: string;
     id: string;
 }
+
+
+
+/// test
+
+export interface QuestionResponse {
+    id: string;
+    question: string;
+    options: [string];
+}
+
+interface QuestionTest {
+    questionId: string;
+    userAnswer: string;
+}
+
+export interface TestSubmissionRequest {
+    id: string;
+    questions: QuestionTest[];
+}

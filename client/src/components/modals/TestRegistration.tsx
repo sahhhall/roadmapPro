@@ -5,7 +5,7 @@ import {
     DialogHeader,
     DialogTitle,
   } from "@/components/ui/dialog";
-  import MentorDetailsSubmissionForm from "@/features/user/components/mentortest/Form";
+  import MentorDetailsSubmissionForm from "@/features/user/components/mentortest/MenotrDetailsForm";
   
   interface ITestRegistration {
     dialogOpen: boolean;

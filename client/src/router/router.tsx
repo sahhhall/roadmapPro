@@ -8,19 +8,31 @@ import NotFound from "@/pages/NotFound";
 import RoadMapMangment from "@/features/admin/pages/RoadMapMangment";
 import WrappedDnDFlow from "@/features/roadmaps/pages/Flow";
 
-
 const Home = lazy(() => import("@/pages/HomePage"));
 const LoginPage = lazy(() => import("@/features/auth/pages/LoginPage"));
 const SignupPage = lazy(() => import("@/features/auth/pages/SignupPage"));
-const ForgotPasswordPage = lazy(() => import("@/features/auth/pages/Forgotpassword"));
+const ForgotPasswordPage = lazy(
+  () => import("@/features/auth/pages/Forgotpassword")
+);
 const Resetpassword = lazy(() => import("@/features/auth/pages/Resetpassword"));
 const AdminLoginPage = lazy(() => import("@/features/admin/pages/LoginPage"));
 const AdminDashBoard = lazy(() => import("@/features/admin/pages/DashBoard"));
 const AdminLayout = lazy(() => import("@/features/admin/layout/AdminLayout"));
-const UserManagment = lazy(() => import("@/features/admin/pages/UserManagment"));
-const RoadmapUserView = lazy(()=> import("@/features/roadmaps/pages/RoadmapUserView"))
-const AssessmentManagment = lazy(()=> import("@/features/admin/pages/AssessmentManagment"))
-const QuestionList = lazy(()=> import('@/features/admin/pages/QuestionListPage'))
+const UserManagment = lazy(
+  () => import("@/features/admin/pages/UserManagment")
+);
+const RoadmapUserView = lazy(
+  () => import("@/features/roadmaps/pages/RoadmapUserView")
+);
+const AssessmentManagment = lazy(
+  () => import("@/features/admin/pages/AssessmentManagment")
+);
+const QuestionList = lazy(
+  () => import("@/features/admin/pages/QuestionListPage")
+);
+const AssessmentPage = lazy(
+  () => import("@/features/user/pages/AssessmentPage")
+);
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -35,7 +47,7 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path: "/roadmap/:id", 
+        path: "/roadmap/:id",
         element: (
           <Suspense fallback={<div>Loading...</div>}>
             <RoadmapUserView />
@@ -92,6 +104,16 @@ const routes = createBrowserRouter([
           </UserProtected>
         ),
       },
+      {
+        path: "/assessment/:id",
+        element: (
+          <UserProtected>
+            <Suspense fallback={<div>Loading...</div>}>
+              <AssessmentPage />
+            </Suspense>
+          </UserProtected>
+        ),
+      },
     ],
   },
   {
@@ -137,20 +159,21 @@ const routes = createBrowserRouter([
         ),
       },
       {
-        path:'/admin/assessment-managment',
+        path: "/admin/assessment-managment",
         element: (
           <Suspense fallback={<div>Loading...</div>}>
             <AssessmentManagment />
           </Suspense>
         ),
-      },{
-        path:`/admin/assessment-managment/:id`,
+      },
+      {
+        path: `/admin/assessment-managment/:id`,
         element: (
           <Suspense fallback={<div>Loading...</div>}>
             <QuestionList />
           </Suspense>
         ),
-      }
+      },
     ],
   },
   {

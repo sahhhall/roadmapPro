@@ -25,6 +25,7 @@ import {
 } from "@/features/user/services/api/mentorTestApi";
 import { CircleCheck, Github, Linkedin, LoaderCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
 
 const formSchema = z.object({
   stackId: z
@@ -99,6 +100,8 @@ export const MentorDetailsSubmissionForm = () => {
     },
   });
 
+  const navigate = useNavigate();
+
   const { toast } = useToast();
 
   const { data: stacks, isLoading, error } = useGetAllAvalibleStacksQuery({});
@@ -117,6 +120,9 @@ export const MentorDetailsSubmissionForm = () => {
         ),
         className: "border-none",
         variant: "default",
+      });
+      navigate(`/assessment/${response.id}`, {
+        state: { testData: response },
       });
     } catch (error: any) {
       toast({
