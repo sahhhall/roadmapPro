@@ -54,7 +54,7 @@ export class DIContainer {
     }
 
     public deleteStackUseCase(): IDeleteStackUseCase {
-        return new DeleteStackUseCase(this._stackRepositary)
+        return new DeleteStackUseCase(this._stackRepositary,this._questionRepositary)
     }
 
 

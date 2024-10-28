@@ -31,9 +31,23 @@ const assessmentApiSlices = apiSlice.injectEndpoints({
                 method: 'post',
                 body: data
             })
-        })
+        }),
+        deleteQuestion: builder.mutation<any, { id: string }>({
+            query: (data) => ({
+                url: assessmentEndPoints.deleteQuestion,
+                method: 'delete',
+                body: data
+            })
+        }),
+        deleteStack: builder.mutation<any, { id: string }>({
+            query: (data) => ({
+                url: assessmentEndPoints.deleteStack,
+                method: 'delete',
+                body: data
+            })
+        }),
     })
 })
 
 
-export const { useCreateStackMutation, useGetStacksQuery, useGetQuestionsByStackIdQuery, useCreateQuestionMutation } = assessmentApiSlices
+export const { useCreateStackMutation, useGetStacksQuery, useGetQuestionsByStackIdQuery, useCreateQuestionMutation,useDeleteQuestionMutation,useDeleteStackMutation } = assessmentApiSlices

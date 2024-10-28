@@ -7,23 +7,50 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { PlusCircle, Settings, Trash2, Edit2 } from "lucide-react";
-import { useGetQuestionsByStackIdQuery } from "@/features/assessment/services/api/assessementApi";
+import { PlusCircle, Settings, Trash2, Edit2, CircleCheck } from "lucide-react";
+import {
+  useDeleteQuestionMutation,
+  useGetQuestionsByStackIdQuery,
+} from "@/features/assessment/services/api/assessementApi";
 import { useParams } from "react-router-dom";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { CreateQuestionModal } from "./modals/CreateQuestionModal";
+import { useToast } from "@/hooks/use-toast";
 const QuestionList = () => {
   const { id } = useParams();
   const { data: questions, refetch } = useGetQuestionsByStackIdQuery(id ?? "", {
     skip: !id,
   });
+  const { toast } = useToast();
   // console.log(questions, "data");
 
+  const [deleteQuestion] = useDeleteQuestionMutation();
+  const handleDelete = async (questionId: string) => {
+    console.log(questionId, "handleDelete");
 
-  const handleDelete = (questionId: string) => {
-    console.log(questionId,"handleDelete")
-  }
+    try {
+      await deleteQuestion({ id: questionId }).unwrap();
+      toast({
+        description: (
+          <>
+            <CircleCheck color="green" className="inline-block mr-2" />
+            Question deleted successfully!
+          </>
+        ),
+        className: "border-none",
+        variant: "default",
+      });
+      refetch();
+    } catch (error: any) {
+      console.error("Failed to delete the question:", error);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      });
+    }
+  };
   const [createDialogOpen, setCreateDialogOpen] = useState<boolean>(false);
   const openDialog = () => setCreateDialogOpen(true);
   return (
@@ -115,7 +142,7 @@ const QuestionList = () => {
                       <Button
                         variant="outline"
                         className="flex items-center gap-1"
-                        onClick={()=> handleDelete(q.id)}
+                        onClick={() => handleDelete(q.id)}
                       >
                         <Trash2 className="w-4 h-4" />
                         Delete

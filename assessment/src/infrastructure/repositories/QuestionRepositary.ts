@@ -79,5 +79,15 @@ export class QuestionRepository implements IQuestionRepo {
             customLogger.error(error.message);
             throw new Error(`DB error: get random questions - ${error.message}`);
         }
+    };
+
+    async deleteQuestionsByStackId(stackId: string): Promise<boolean> {
+        try {
+            const result = await QuestionDB.deleteMany({stackId: stackId});
+            return !!result;
+        } catch (error: any) {
+            customLogger.error(error.message);
+            throw new Error(`DB error: delete question - ${error.message}`);
+        }
     }
 }

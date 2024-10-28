@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { Card, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardTitle } from "@/components/ui/card";
 import Container from "@/components/Container";
 import { useNavigate } from "react-router-dom";
 import {
@@ -8,16 +8,22 @@ import {
   BookOpen,
   Settings,
   Trash,
+  CircleCheck,
 } from "lucide-react";
 import { CreateStackModal } from "@/features/assessment/components/admin/modals/CreateStackModal";
 import { useState } from "react";
-import { useGetStacksQuery } from "@/features/assessment/services/api/assessementApi";
+import {
+  useDeleteStackMutation,
+  useGetStacksQuery,
+} from "@/features/assessment/services/api/assessementApi";
+import { useToast } from "@/hooks/use-toast";
 
 export const StackList = () => {
   const [dialogOpen, setDialogOpen] = useState<boolean>(false);
   const openDialog = () => setDialogOpen(true);
   const navigate = useNavigate();
 
+  const { toast } = useToast();
   const { data: stacks, isLoading, refetch } = useGetStacksQuery({});
 
   if (isLoading) return <p>Loading...</p>;
@@ -25,8 +31,29 @@ export const StackList = () => {
   const openQuesionsList = (id: string) => {
     navigate(`/admin/assessment-managment/${id}`);
   };
-  const handleDelete = (questionId: string) => {
-    console.log(questionId, "handleDelete");
+  const [deleteQuestion] = useDeleteStackMutation();
+  const handleDelete = async (stackId: string) => {
+    try {
+      await deleteQuestion({ id: stackId }).unwrap();
+      toast({
+        description: (
+          <>
+            <CircleCheck color="green" className="inline-block mr-2" />
+            Stack deleted successfully!
+          </>
+        ),
+        className: "border-none",
+        variant: "default",
+      });
+      refetch();
+    } catch (error: any) {
+      console.error("Failed to delete the question:", error);
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: "There was a problem with your request.",
+      });
+    }
   };
 
   return (

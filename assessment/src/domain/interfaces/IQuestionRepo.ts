@@ -8,4 +8,5 @@ export interface IQuestionRepo {
     updateQuestion(id: string, question: Partial<Question>): Promise<Question | null>;
     deleteQuestion(id: string): Promise<boolean>;
     getRandomQuestions(stackId: string, count: number): Promise<Question[] | null>
+    deleteQuestionsByStackId(stackId: string): Promise<boolean>
 }
