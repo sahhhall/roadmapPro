@@ -8,7 +8,6 @@ class UserSubmissionDTO {
     id!: string;
 
     @IsArray()
-    @ArrayMinSize(1)
     questions!: [];
 }
 

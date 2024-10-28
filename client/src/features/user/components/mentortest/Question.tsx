@@ -57,9 +57,9 @@ const Question: React.FC<IQuestionProps> = ({
               key={option}
               className={` ${
                 selectedAnswer === option
-                  ? "border-green-500 bg-green-500 "
-                  : "hover:bg-gray-50 hover:border-gray-200"
-              } bg-white rounded-lg shadow-sm p-4  cursor-pointer  border-2 border-transparent `}
+                  ? "border-green-500 border-2 "
+                  : "hover:bg-gray-50 border-2 border-transparent hover:border-gray-200"
+              } bg-white rounded-lg shadow-sm p-4  cursor-pointer   `}
             >
               <div
                 className={`flex items-center space-x-4 `}
@@ -79,12 +79,15 @@ const Question: React.FC<IQuestionProps> = ({
             Previous
           </button> */}
           <Button
-            onClick={() =>
-              onAnswer({
-                questionId: question.id,
-                userAnswer: selectedAnswer as string,
-              })
-            }
+            onClick={() => {
+              if (selectedAnswer) {
+                onAnswer({
+                  questionId: question.id,
+                  userAnswer: selectedAnswer,
+                });
+                setSelectedAnswer(null); 
+              }
+            }}
             disabled={!selectedAnswer}
             className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
           >

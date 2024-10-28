@@ -20,7 +20,7 @@ const AssessmentPage = () => {
   const [score, setScore] = useState<number | null>(null);
 
   const handleTimeUp = async () => {
-    await handleSubmitTest();
+    await handleSubmitTest(answers);
   };
   useEffect(() => {
     if (step !== "questions" || timeRemaining <= 0) return;
@@ -54,32 +54,41 @@ const AssessmentPage = () => {
       }
     }
     setStep("questions");
-    setTimeRemaining(TOTAL_TIME );
+    setTimeRemaining(TOTAL_TIME);
   };
 
-  const handleAnswer = async (answer: any) => {
-    console.log(answer, "what");
-    setAnswers([...answers, answer]);
+  const handleAnswer = async (answer: {
+    questionId: string;
+    userAnswer: string;
+  }) => {
+    const updatedAnswers = [...answers, answer];
+    setAnswers(updatedAnswers);
+
     const nextIndex = currentQuestionIndex + 1;
-    if (currentQuestionIndex < testData[0]?.questions.length - 1) {
+
+    if (nextIndex < testData[0]?.questions.length) {
       setCurrentQuestionIndex(nextIndex);
       try {
-        const nextQuestion = (await fetchQuestion(
+        const nextQuestion = await fetchQuestion(
           testData[0].questions[nextIndex]?.questionId
-        ).unwrap()) as any;
+        ).unwrap();
         setQuestions([...questions, nextQuestion]);
       } catch (error) {
-        console.log("error from aessemetn start question fetach", error);
+        console.error("Error fetching next question:", error);
       }
     } else {
-      await handleSubmitTest();
+      await handleSubmitTest(updatedAnswers);
     }
   };
 
-  const handleSubmitTest = async () => {
+  const handleSubmitTest = async (finalAnswers: any) => {
     try {
-      console.log(answers,"is anserts")
-      const response = await submitTest(answers).unwrap();
+      const submitData = {
+        id: testData[0]?.id,
+        questions: finalAnswers,
+      };
+      console.log(submitData, "suubmutmiting");
+      const response = await submitTest(submitData).unwrap();
       setScore(response.score);
       setStep("completed");
     } catch (error) {
