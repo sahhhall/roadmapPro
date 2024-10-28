@@ -27,10 +27,10 @@ const CompletionPage: React.FC<ICompletionPageProps> = ({ userName = "Sahal Kk",
           </div>
           
           <p className="text-gray-400 text-xs">
-            {score >= 4 ? (
+            {score >= passingScore ? (
               "Congratulations! You have successfully passed the mentor test with a score that meets our requirements. Please note that it will take some time to process your certificates and eligibility. We will notify you once this is complete. Once your eligibility is confirmed, you will unlock exclusive mentor-supported features that will enhance your experience and capabilities."
             ) : (
-              "Unfortunately, you did not meet the required score for passing. You can try again after 30 days. Use this time to improve your skills and knowledge."
+              `Unfortunately, you did not meet the required score for passing.you scored  ${score} minimum need ${passingScore} ,You can try again after 30 days. Use this time to improve your skills and knowledge.`
             )}
           </p>
           

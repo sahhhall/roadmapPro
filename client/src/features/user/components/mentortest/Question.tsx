@@ -33,21 +33,21 @@ const Question: React.FC<IQuestionProps> = ({
           <div className="flex items-center space-x-4">
             <div className="flex items-center space-x-2">
               <CheckCircle className="w-5 h-5 text-green-500" />
-              <span className="text-gray-600">
-                Questions Attempted: {currentQuestionNumber}/5
+              <span className="sm:text-sm text-xs text-gray-600">
+                Questions Attempted: {currentQuestionNumber-1}/5
               </span>
             </div>
           </div>
-          <div className="flex items-center space-x-2">
-            <User className="w-5 h-5 text-gray-600" />
-            <span className="text-gray-600">Sahal KK</span>
+          <div className="flex flex-row items-center space-x-2">
+            <User className="w-5 h-5 md:block hidden text-gray-600" />
+            <span className=" text-xs  text-gray-600">Sahal KK</span>
           </div>
         </div>
       </nav>
 
       <div className="max-w-4xl mx-auto px-4 py-8">
         <div className="bg-white rounded-lg shadow-sm p-6 mb-6">
-          <h2 className="text-xl font-semibold mb-2">Question 9</h2>
+          <h2 className="text-xl font-semibold mb-2">Question {currentQuestionNumber}</h2>
           <p className="text-gray-700">{question?.question}</p>
         </div>
 
@@ -89,7 +89,8 @@ const Question: React.FC<IQuestionProps> = ({
               }
             }}
             disabled={!selectedAnswer}
-            className="px-6 py-2 bg-black text-white rounded-lg hover:bg-gray-800 transition-colors"
+            variant={'submit'}
+            className="w-full mt-3"
           >
             {currentQuestionNumber === 5 ? "submit" : "Next"}
           </Button>

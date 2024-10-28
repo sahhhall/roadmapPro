@@ -19,8 +19,10 @@ const AssessmentPage = () => {
   const [questions, setQuestions] = useState([]) as any;
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
   const [score, setScore] = useState<number | null>(null);
+  const [isTestCompleted, setIsTestCompleted] = useState<boolean>(false);
 
-  const totalQuestions = questions.length;
+  //this for makae it as a reusble user shoud be answer 80%questsion answer only then ge get 
+  const totalQuestions = testData[0].questions.length;
   const passingScore = Math.ceil(totalQuestions * 0.8);
 
   const user = usegetUser();
@@ -28,6 +30,36 @@ const AssessmentPage = () => {
   const handleTimeUp = async () => {
     await handleSubmitTest(answers);
   };
+  useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      if (!isTestCompleted) {
+        event.preventDefault();
+      }
+    };
+
+    const handleBackNavigation = (event: PopStateEvent) => {
+      if (!isTestCompleted) {
+        event.preventDefault(); 
+        const confirmNavigation = window.confirm(
+          "Are you sure you want to leave? Your test will be submitted."
+        );
+
+        if (confirmNavigation) {
+          handleSubmitTest(answers);
+        } else {
+          window.history.pushState(null, '', window.location.href);
+        }
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("popstate", handleBackNavigation);
+
+    return () => {
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("popstate", handleBackNavigation);
+    };
+  }, [isTestCompleted, answers]);
   useEffect(() => {
     if (step !== "questions" || timeRemaining <= 0) return;
 
@@ -96,6 +128,7 @@ const AssessmentPage = () => {
       console.log(submitData, "suubmutmiting");
       const response = await submitTest(submitData).unwrap();
       setScore(response.score);
+      setIsTestCompleted(true)
       setStep("completed");
     } catch (error) {
       console.error("Error submitting test:", error);
@@ -114,7 +147,13 @@ const AssessmentPage = () => {
         />
       )}
 
-      {step === "completed" && <CompletionPage  userName={user?.name} passingScore={passingScore} score={score as number} />}
+      {step === "completed" && (
+        <CompletionPage
+          userName={user?.name}
+          passingScore={passingScore}
+          score={score as number}
+        />
+      )}
     </div>
   );
 };
