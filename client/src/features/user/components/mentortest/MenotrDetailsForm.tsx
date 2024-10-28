@@ -125,11 +125,14 @@ export const MentorDetailsSubmissionForm = () => {
         state: { testData: response },
       });
     } catch (error: any) {
+      console.log(error,"errie")
       toast({
         variant: "destructive",
         title: `${
           error.status === 404
             ? "For this stack currently no tests"
+            : error.status === 409
+            ? `${error.data.errors[0].message}`
             : "Uh oh! Something went wrong."
         }`,
       });
