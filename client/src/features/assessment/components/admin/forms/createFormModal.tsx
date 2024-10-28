@@ -19,6 +19,7 @@ import {
   AlertDialogCancel,
   AlertDialogFooter,
 } from "@/components/ui/alert-dialog";
+import { useCreateQuestionMutation } from "@/features/assessment/services/api/assessementApi";
 
 const formSchema = z.object({
   question: z
@@ -41,13 +42,17 @@ type FormData = z.infer<typeof formSchema>;
 
 const QuestionCreationForm = ({
   refetchQuestions,
-  onSubmitSuccess
+  onSubmitSuccess,
 }: {
   refetchQuestions: () => any;
   onSubmitSuccess: () => void;
 }) => {
   const { id } = useParams();
   const { toast } = useToast();
+
+  //APIhooks
+
+  const [createQuestion] = useCreateQuestionMutation();
 
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
@@ -59,19 +64,18 @@ const QuestionCreationForm = ({
   });
 
   const handleSubmit = async (data: FormData) => {
+    //this for getting correct option text that admin selectino
+    const selectedOptionIndex = data.correctAnswer as any;
+    const selectedOptionText = data.options[selectedOptionIndex];
+
+    const formattedData = {
+      ...data,
+      stackId: id as string,
+      correctAnswer: selectedOptionText as string,
+    };
     try {
-      //this for getting correct option text that admin selectino
-      const selectedOptionIndex = data.correctAnswer as any;
-      const selectedOptionText = data.options[selectedOptionIndex];
-
-      const formattedData = {
-        ...data,
-        stackId: id,
-        correctAnswer: selectedOptionText,
-      };
-
       console.log("Form data:", formattedData);
-
+      await createQuestion(formattedData);
       toast({
         title: "Success!",
         description: "Question created successfully",

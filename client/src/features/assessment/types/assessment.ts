@@ -16,3 +16,15 @@ export interface AllQuestionsByStackResponse {
     updatedAt: string,
     id: string
 }
+
+
+
+
+//question creation
+
+export interface CreateQuestionRequest {
+    stackId: string,
+    question: string,
+    options: string[],
+    correctAnswer: string,
+}
