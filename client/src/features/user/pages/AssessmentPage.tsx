@@ -7,6 +7,7 @@ import {
   useSubmitMentorMutation,
 } from "../services/api/mentorTestApi";
 import CompletionPage from "../components/mentortest/CompletionPage";
+import { usegetUser } from "@/hooks/usegetUser";
 
 const TOTAL_TIME = 300;
 const AssessmentPage = () => {
@@ -18,6 +19,11 @@ const AssessmentPage = () => {
   const [questions, setQuestions] = useState([]) as any;
   const [timeRemaining, setTimeRemaining] = useState<number>(0);
   const [score, setScore] = useState<number | null>(null);
+
+  const totalQuestions = questions.length;
+  const passingScore = Math.ceil(totalQuestions * 0.8);
+
+  const user = usegetUser();
 
   const handleTimeUp = async () => {
     await handleSubmitTest(answers);
@@ -108,7 +114,7 @@ const AssessmentPage = () => {
         />
       )}
 
-      {step === "completed" && <CompletionPage score={score as number} />}
+      {step === "completed" && <CompletionPage  userName={user?.name} passingScore={passingScore} score={score as number} />}
     </div>
   );
 };

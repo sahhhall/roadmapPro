@@ -6,9 +6,10 @@ import { useNavigate } from 'react-router-dom';
 interface ICompletionPageProps {
   userName?: string;
   score: number;
+  passingScore:number;
 }
 
-const CompletionPage: React.FC<ICompletionPageProps> = ({ userName = "Sahal Kk", score }) => {
+const CompletionPage: React.FC<ICompletionPageProps> = ({ userName = "Sahal Kk", score ,passingScore}) => {
   const navigate = useNavigate();
   return (
     <div className="min-h-screen bg-black flex items-center  text-white p-8">
@@ -21,7 +22,7 @@ const CompletionPage: React.FC<ICompletionPageProps> = ({ userName = "Sahal Kk",
           <div>
             <p className="text-gray-300 mb-2">Hey {userName},</p>
             <h2 className="text-4xl font-bold mb-4">
-              You {score >= 4 ? "passed" : "failed"} the test
+              You {score >= passingScore ? "passed" : "failed"} the test
             </h2>
           </div>
           
