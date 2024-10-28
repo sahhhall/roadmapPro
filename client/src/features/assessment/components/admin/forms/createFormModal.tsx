@@ -34,7 +34,10 @@ const formSchema = z.object({
         .min(1, "Option must not be empty")
         .max(200, "Option must not exceed 200 characters")
     )
-    .length(4, "Exactly 4 options are required"),
+    .length(4, "Exactly 4 options are required")
+    .refine((options) => new Set(options).size === options.length, {
+      message: "all options must be unique",
+    }),
   correctAnswer: z.string().min(1, "Please select the correct answer"),
 });
 
@@ -163,7 +166,10 @@ const QuestionCreationForm = ({
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <Button type="submit" variant="submit">
             {form.formState.isSubmitting ? (
-              <LoaderCircle className="animate-spin" />
+              <>
+                <LoaderCircle className="animate-spin  " />
+                Creating Question
+              </>
             ) : (
               "Create Question"
             )}

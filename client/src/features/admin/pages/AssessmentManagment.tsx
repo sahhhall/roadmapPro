@@ -28,7 +28,7 @@ const AssessmentManagment = () => {
         <div className="flex justify-between">
           <p></p>
           <div className="gap-2 flex">
-            <Button variant={"outline"}>Assessment Results</Button>        
+            <Button variant={"outline"} >Assessment Results</Button>        
           </div>
         </div>
         <StackList/>

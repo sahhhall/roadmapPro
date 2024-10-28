@@ -52,7 +52,7 @@ const formSchema = z.object({
   bio: z
     .string()
     .min(50, "Bio must be at least 50 characters")
-    .max(500, "Bio must not exceed 500 characters")
+    .max(1000, "Bio must not exceed 1000 characters")
     .refine((val) => val.trim().length > 0, "Bio is required"),
   linkedinUrl: z
     .string()
