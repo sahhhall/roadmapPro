@@ -19,6 +19,11 @@ const QuestionList = () => {
     skip: !id,
   });
   // console.log(questions, "data");
+
+
+  const handleDelete = (questionId: string) => {
+    console.log(questionId,"handleDelete")
+  }
   const [createDialogOpen, setCreateDialogOpen] = useState<boolean>(false);
   const openDialog = () => setCreateDialogOpen(true);
   return (
@@ -110,6 +115,7 @@ const QuestionList = () => {
                       <Button
                         variant="outline"
                         className="flex items-center gap-1"
+                        onClick={()=> handleDelete(q.id)}
                       >
                         <Trash2 className="w-4 h-4" />
                         Delete
