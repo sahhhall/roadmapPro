@@ -52,4 +52,17 @@ export class TestRepository implements ITestRepo {
         }
     }
 
+    async findAllTest(status?: string, result?: string ): Promise<Test[] | null> {
+        try {
+            const filter: any = {};
+            if(status) filter.status = status;
+            if(result) filter.result = result;
+            const tests = await TestDB.find(filter)
+            return tests
+        } catch (error: any) {
+            customLogger.error(error.message);
+            throw new Error(`DB error: fetch tests  ${error.message}`);
+        }
+    }
+
 }

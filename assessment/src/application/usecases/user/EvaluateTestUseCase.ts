@@ -31,7 +31,7 @@ export class EvaluateTest implements IEvaluateTestUseCase {
         console.log(passingScore);
         let result = 'pending' as any;
         let resultFeedback;
-        if (passingScore < score) {
+        if (score < passingScore) {
             result = 'failed';
             resultFeedback = 'you cant reach asssessment criteria level'
         }

@@ -22,6 +22,8 @@ import { IEvaluateTestUseCase } from "../../application/interfaces/user/IEvaluat
 import { EvaluateTest } from "../../application/usecases/user/EvaluateTestUseCase";
 import { IGetQuestionUseCase } from "../../application/interfaces/user/IGetQuestionUseCase";
 import { GetQuestionUseCase } from "../../application/usecases/user/GetQuestionUseCase";
+import { IGetAllTestsUseCase } from "../../application/interfaces/admin/IGetAllTestsUseCase";
+import { GetAllTestsUseCase } from "../../application/usecases/admin/GetAllTestsUseCase";
 
 
 
@@ -54,7 +56,7 @@ export class DIContainer {
     }
 
     public deleteStackUseCase(): IDeleteStackUseCase {
-        return new DeleteStackUseCase(this._stackRepositary,this._questionRepositary)
+        return new DeleteStackUseCase(this._stackRepositary, this._questionRepositary)
     }
 
 
@@ -82,8 +84,12 @@ export class DIContainer {
     public valuateTestUseCase(): IEvaluateTestUseCase {
         return new EvaluateTest(this._testRepositary, this._questionRepositary)
     }
-            //this for fetch one by one questionfor each reqiest when test change
+    //this for fetch one by one questionfor each reqiest when test change
     public getQuestionUseCase(): IGetQuestionUseCase {
         return new GetQuestionUseCase(this._questionRepositary)
+    }
+
+    public getAllTestUseCase(): IGetAllTestsUseCase {
+        return new GetAllTestsUseCase(this._testRepositary)
     }
 }
