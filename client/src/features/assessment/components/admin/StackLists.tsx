@@ -24,9 +24,8 @@ export const StackList = () => {
   const navigate = useNavigate();
 
   const { toast } = useToast();
-  const { data: stacks, isLoading, refetch } = useGetStacksQuery({});
+  const { data: stacks, refetch } = useGetStacksQuery({});
 
-  if (isLoading) return <p>Loading...</p>;
 
   const openQuesionsList = (id: string) => {
     navigate(`/admin/assessment-managment/${id}`);
