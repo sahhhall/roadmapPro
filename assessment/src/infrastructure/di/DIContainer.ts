@@ -24,6 +24,8 @@ import { IGetQuestionUseCase } from "../../application/interfaces/user/IGetQuest
 import { GetQuestionUseCase } from "../../application/usecases/user/GetQuestionUseCase";
 import { IGetAllTestsUseCase } from "../../application/interfaces/admin/IGetAllTestsUseCase";
 import { GetAllTestsUseCase } from "../../application/usecases/admin/GetAllTestsUseCase";
+import { IUpdateTestUseCase } from "../../application/interfaces/admin/IUpdateTestUseCase";
+import { UpdateTestUseCase } from "../../application/usecases/admin/UpdateTestUseCase";
 
 
 
@@ -89,7 +91,12 @@ export class DIContainer {
         return new GetQuestionUseCase(this._questionRepositary)
     }
 
+    //test admin
     public getAllTestUseCase(): IGetAllTestsUseCase {
         return new GetAllTestsUseCase(this._testRepositary)
+    }
+
+    public updateTestUseCase(): IUpdateTestUseCase {
+        return new UpdateTestUseCase(this._testRepositary);
     }
 }

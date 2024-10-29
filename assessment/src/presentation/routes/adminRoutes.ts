@@ -1,8 +1,8 @@
 import { validateRequest } from "@sahhhallroadmappro/common";
 import { Router } from "express";
 import { DIContainer } from "../../infrastructure/di/DIContainer";
-import { CreateStackController, GetAllQuestionsController, GetAllTestsController } from "../controllers/admin/index";
-import { CreateQuestionDTO, CreateStackDTO } from '../dto/index'
+import { CreateStackController, GetAllQuestionsController, GetAllTestsController, UpdateTestController } from "../controllers/admin/index";
+import { CreateQuestionDTO, CreateStackDTO, UpdateTestAdminDTO } from '../dto/index'
 import { GetAllStacksController } from "../controllers/admin/GetAllStacksController";
 import { DeleteStackController } from "../controllers/admin/DeleteStackController";
 import { CreateQuestionController } from "../controllers/admin/CreateQuestionController";
@@ -27,7 +27,7 @@ const getQuestionController = new GetAllQuestionsController(diContainer.getAllQu
 
 //tests
 const getAllTestsController = new GetAllTestsController(diContainer.getAllTestUseCase());
-
+const updateTestController = new UpdateTestController(diContainer.updateTestUseCase());
 router.post('/', validateRequest(CreateStackDTO), async (req, res, next) => {
     await createStackController.createStack(req, res, next)
 })
@@ -54,8 +54,12 @@ router.get('/questions/:stackId', async (req, res, next) => {
 })
 
 
-router.get('/tests',async (req, res, next) => {
+router.get('/tests', async (req, res, next) => {
     await getAllTestsController.getTests(req, res, next);
+})
+
+router.post('/tests', validateRequest(UpdateTestAdminDTO), async (req, res, next) => {
+    await updateTestController.updateTest(req, res, next);
 })
 
 export { router as adminRoutes }
