@@ -66,8 +66,9 @@ export class TestRepository implements ITestRepo {
                     : 0;
 
                 return {
-                    ...test, 
-                    percentage:percentage, 
+                    id: test._id,
+                    ...test,
+                    percentage: percentage,
                 };
             });
 

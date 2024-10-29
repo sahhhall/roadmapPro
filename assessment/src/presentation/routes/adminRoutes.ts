@@ -58,7 +58,7 @@ router.get('/tests', async (req, res, next) => {
     await getAllTestsController.getTests(req, res, next);
 })
 
-router.post('/tests', validateRequest(UpdateTestAdminDTO), async (req, res, next) => {
+router.put('/tests', validateRequest(UpdateTestAdminDTO), async (req, res, next) => {
     await updateTestController.updateTest(req, res, next);
 })
 

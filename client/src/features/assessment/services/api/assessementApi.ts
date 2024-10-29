@@ -66,4 +66,4 @@ const assessmentApiSlices = apiSlice.injectEndpoints({
 })
 
 
-export const { useCreateStackMutation, useGetStacksQuery, useGetQuestionsByStackIdQuery, useCreateQuestionMutation, useDeleteQuestionMutation, useDeleteStackMutation, useLazyGetTestsByResultQuery, useUpdateTestMutation } = assessmentApiSlices
+export const { useCreateStackMutation, useGetStacksQuery, useGetQuestionsByStackIdQuery, useCreateQuestionMutation, useDeleteQuestionMutation, useDeleteStackMutation, useGetTestsByResultQuery,useLazyGetTestsByResultQuery, useUpdateTestMutation } = assessmentApiSlices

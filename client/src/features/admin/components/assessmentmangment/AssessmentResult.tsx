@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -9,17 +9,35 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
-import { useLazyGetTestsByResultQuery } from "@/features/assessment/services/api/assessementApi";
+import { useGetTestsByResultQuery } from "@/features/assessment/services/api/assessementApi";
 import { dateFormatter } from "@/lib/formatters";
+import { AssessmentResultModal } from "../modal/AssessmentResultModal";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const AssessmentResultTable = () => {
-  const [getTests, { data: assessmentResults, isLoading }] =
-    useLazyGetTestsByResultQuery();
+  const [filter, setFilter] = useState("");
+  const [detailDialogOpen, setDetailsDialogOpen] = useState<boolean>(false);
+  const [selectedResult, setSelectedResult] = useState(null);
+  const openDialog = () => setDetailsDialogOpen(true);
 
+  const {
+    data: assessmentResults,
+    isLoading,
+    refetch,
+  } = useGetTestsByResultQuery({
+    result: filter,
+  });
   useEffect(() => {
-    getTests({ result: "" });
+    refetch();
   }, []);
 
+  //it for handle refetach
   const getScoreStyle = (percentage: string) => {
     if (percentage >= "80")
       return "bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm";
@@ -36,23 +54,44 @@ const AssessmentResultTable = () => {
   };
 
   if (isLoading) {
-    return <div className="p-4">
-      wait vro..
-    </div>;
+    return <div className="p-4">wait vro..</div>;
   }
-
+  const handleRowClick = (result: any) => {
+    setSelectedResult(result);
+    openDialog();
+  };
   return (
     <div className="p-4">
-      <div className="flex justify-between items-center mb-6">
+      <div className="flex justify-end  gap-3 items-center mb-6">
         <Input placeholder="search results.." className="w-[300px]" />
+        <Select
+          onValueChange={(value) => {
+            if (value === "all") {
+              setFilter("");
+              return;
+            }
+            setFilter(value);
+          }}
+        >
+          <SelectTrigger  className="w-[100px]">
+            <SelectValue placeholder="select" />
+          </SelectTrigger>
+          <SelectContent>
+            {["all", "pending", "failed", "passed"].map((status) => (
+              <SelectItem key={status} value={status}>
+                {status}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
       </div>
 
       <Table>
-        <TableCaption>A list of student assessment results.</TableCaption>
+        <TableCaption>A list of users assessment results.</TableCaption>
         <TableHeader className="bg-gray-100 dark:bg-black dark:border">
           <TableRow>
             <TableHead>UserId</TableHead>
-            <TableHead>Assessment</TableHead>
+            <TableHead>Stack</TableHead>
             <TableHead>Score</TableHead>
             <TableHead>Status</TableHead>
             <TableHead>Submission Date</TableHead>
@@ -60,7 +99,11 @@ const AssessmentResultTable = () => {
         </TableHeader>
         <TableBody>
           {assessmentResults?.map((result) => (
-            <TableRow key={result.id}>
+            <TableRow
+              key={result.id}
+              onClick={() => handleRowClick(result)}
+              className="cursor-pointer "
+            >
               <TableCell className="font-medium">
                 <span>{result.userId}</span>
               </TableCell>
@@ -80,6 +123,12 @@ const AssessmentResultTable = () => {
           ))}
         </TableBody>
       </Table>
+      <AssessmentResultModal
+        selectedResult={selectedResult}
+        dialogOpen={detailDialogOpen}
+        setDialogOpen={setDetailsDialogOpen}
+        onSuccess={() => refetch()}
+      />
     </div>
   );
 };
