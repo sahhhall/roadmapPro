@@ -42,9 +42,9 @@ export class TestRepository implements ITestRepo {
         }
     }
 
-    async findTestByUserId(userId: string,stackId: string): Promise<Test[] | null> {
+    async findTestByUserId(userId: string, stackId: string): Promise<Test[] | null> {
         try {
-            const tests = await TestDB.find({ userId: userId, stackId:stackId})
+            const tests = await TestDB.find({ userId: userId, stackId: stackId })
             return tests
         } catch (error: any) {
             customLogger.error(error.message);
@@ -52,13 +52,26 @@ export class TestRepository implements ITestRepo {
         }
     }
 
-    async findAllTest(status?: string, result?: string ): Promise<Test[] | null> {
+    async findAllTest(status?: string, result?: string): Promise<Test[] | null> {
         try {
             const filter: any = {};
-            if(status) filter.status = status;
-            if(result) filter.result = result;
-            const tests = await TestDB.find(filter)
-            return tests
+            if (status) filter.status = status;
+            if (result) filter.result = result;
+            const tests = await TestDB.find(filter).populate('stackId').lean();
+            //wihtout lean it inclue some things realte mongoob
+            const testsWithPercentage = tests?.map((test: any) => {
+                const totalQuestions = test.questions?.length || 0;
+                const percentage = totalQuestions > 0
+                    ? (test.score / totalQuestions) * 100
+                    : 0;
+
+                return {
+                    ...test, 
+                    percentage:percentage, 
+                };
+            });
+
+            return testsWithPercentage;
         } catch (error: any) {
             customLogger.error(error.message);
             throw new Error(`DB error: fetch tests  ${error.message}`);
