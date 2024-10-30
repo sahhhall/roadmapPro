@@ -5,10 +5,12 @@ import loggerMiddleware from './presentation/middleware/loggerMiddleware';
 import { IServerInterface } from './domain/interfaces/IServer';
 import { userRoutes } from './presentation/routes/userRoutes';
 import { grpcService } from './infrastructure/rpc/grpc/server';
+import { MentorApprovedConsumer } from './infrastructure/kafka/consumers/mentor-approved-consumer';
 
 
 
 export class App {
+    private mentorApprovedConsumer?: MentorApprovedConsumer;
     constructor(private server: IServerInterface) { }
 
     async initialize(): Promise<void> {
@@ -44,6 +46,9 @@ export class App {
     private async connectKafka() {
         try {
             await kafkaWrapper.connect();
+            const consumer = await kafkaWrapper.createConsumer('mentor-approved-group');
+            this.mentorApprovedConsumer =new MentorApprovedConsumer(consumer);
+            await this.mentorApprovedConsumer.listen()
         } catch (error) {
             console.log('some err connect with kafka', error);
         }
