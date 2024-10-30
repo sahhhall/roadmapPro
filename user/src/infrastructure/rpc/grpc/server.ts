@@ -3,17 +3,18 @@ import * as protoLoader from '@grpc/proto-loader';
 import path from 'path';
 
 import { CreateUserProfileRequest, CreateUserProfileResponse } from '@sahhhallroadmappro/common'
+import { UserRepository } from '../../repositories/UserRepositary';
 
 //loadin prorofile path currently on nodemodules that i created pacakge
-const PROTO_PATH = path.join(__dirname,'../../../../node_modules/@sahhhallroadmappro/common/src/protos/auth.proto');
+const PROTO_PATH = path.join(__dirname, '../../../../node_modules/@sahhhallroadmappro/common/src/protos/auth.proto');
 
 //it return ob
 const packageDefinition = protoLoader.loadSync(PROTO_PATH, {});
 
-console.log(packageDefinition,"package definitiob")
+console.log(packageDefinition, "package definitiob")
 // convert into grpc obje with what we neamed definition in there
 const userProto = (grpc.loadPackageDefinition(packageDefinition) as any).user;
-console.log(userProto,"userproto")
+console.log(userProto, "userproto")
 
 class UserServiceGrpc {
     private server: grpc.Server;
@@ -27,14 +28,22 @@ class UserServiceGrpc {
 
     private initializeService() {
         const userService = {
-            CreateUserProfile: (
+            CreateUserProfile: async (
                 call: grpc.ServerUnaryCall<CreateUserProfileRequest, CreateUserProfileResponse>,
                 callback: grpc.sendUnaryData<CreateUserProfileResponse>
             ) => {
-                const { userId, email, name, isGoogle, avatar } = call.request;
+                const { userId, email, name, isGoogle, avatar } = call.request as any;
                 console.log(`Received request: userId=${userId}, email=${email} ${name}`);
-
-                callback(null, { userId, success: true });
+                const userRepo = new UserRepository();
+                try {
+                    const createdUser = await userRepo.create({
+                        userId, email, name, isGoogle, avatar
+                    });
+                    callback(null, { userId: createdUser.id, success: true });
+                } catch (error: any) {
+                    console.error('Error creating user:', error.message);
+                    callback({ code: grpc.status.INTERNAL, message: ' creation failed' }, null);
+                }
             },
         };
         this.server.addService(userProto.UserService.service, userService);

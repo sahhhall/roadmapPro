@@ -1,7 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { winstonLogger } from '@sahhhallroadmappro/common';
 
-export const customLogger = winstonLogger('assessment-service');
+export const customLogger = winstonLogger('user-service');
 
 declare global {
     namespace Express {

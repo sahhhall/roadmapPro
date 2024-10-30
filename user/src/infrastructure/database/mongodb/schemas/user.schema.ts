@@ -6,6 +6,7 @@ interface UserAttr {
   email: string;
   avatar?: string;
   role?: string;
+  _id: string;
   // assessedSkills?: string[];
   // headline?: string;
   // bio?: string;
@@ -65,9 +66,9 @@ const userSchema = new Schema<UserDoc>(
 
 
 userSchema.statics.build = (attrs: UserAttr) => {
-  return new User(attrs);
+  return new Profile(attrs);
 };
 
-const User = mongoose.model<UserDoc, UserModel>("User", userSchema);
+const Profile = mongoose.model<UserDoc, UserModel>("Profile", userSchema);
 
-export { User };
+export { Profile };
