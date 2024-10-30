@@ -3,6 +3,7 @@ import { DIContainer } from "../../../infrastructure/di/DIContainer";
 import { UserCreatedPublisher } from "../../../infrastructure/kafka/producers/user-created-publisher";
 import { Producer } from "kafkajs";
 import kafkaWrapper from "../../../infrastructure/kafka/kafka-wrapper";
+import { registerUser } from "../../../infrastructure/rpc/grpc/client";
 
 
 
@@ -27,6 +28,14 @@ export class GoogleLoginController {
                 isAdmin: user.user!.isAdmin as boolean,
                 isGoogle: user.user!.isAdmin as boolean,
             })
+            const grpcResponse = await registerUser({
+                userId: user.user!.id,
+                name: user.user!.name,
+                email: user.user!.email,
+                avatar: user.user!.avatar,
+                isGoogle: user.user!.isGoogle,
+            });
+            console.log(grpcResponse,"grpcresponse from google")
             res.cookie(`user_accessToken`, user.accessToken, {
                 httpOnly: true,
                 secure: process.env.NODE_ENV !== "development",

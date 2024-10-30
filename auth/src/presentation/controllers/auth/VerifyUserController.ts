@@ -5,6 +5,7 @@ import { DIContainer } from "../../../infrastructure/di/DIContainer";
 import { UserCreatedPublisher } from "../../../infrastructure/kafka/producers/user-created-publisher";
 import kafkaWrapper from "../../../infrastructure/kafka/kafka-wrapper";
 import { Producer } from "kafkajs";
+import { registerUser } from "../../../infrastructure/rpc/grpc/client";
 
 
 export class OtpVerifyController {
@@ -31,6 +32,14 @@ export class OtpVerifyController {
                     isAdmin: response.user!.isAdmin as boolean,
                     isGoogle: response.user!.isAdmin as boolean,
                 })
+                const grpcResponse = await registerUser({
+                    userId: response.user!.id,
+                    name: response.user!.name,
+                    email: response.user!.email,
+                    avatar: response.user!.avatar,
+                    isGoogle: response.user!.isGoogle,
+                });
+                console.log(grpcResponse,"grpcresponse from normal")
                 res.cookie(`user_accessToken`, response.accessToken, {
                     httpOnly: true,
                     secure: process.env.NODE_ENV !== "development",

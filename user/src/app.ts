@@ -1,11 +1,12 @@
 import { connectDB, disconnectDB } from './infrastructure/database/mongodb/connection';
-import { errorHandler,userDtamiddleaware } from '@sahhhallroadmappro/common';
+import { errorHandler, userDtamiddleaware } from '@sahhhallroadmappro/common';
 import kafkaWrapper from './infrastructure/kafka/kafka-wrapper';
 import loggerMiddleware from './presentation/middleware/loggerMiddleware';
 import { IServerInterface } from './domain/interfaces/IServer';
 import { userRoutes } from './presentation/routes/userRoutes';
+import { grpcService } from './infrastructure/rpc/grpc/server';
 
- 
+
 
 export class App {
     constructor(private server: IServerInterface) { }
@@ -16,6 +17,7 @@ export class App {
         this.registerErrorHandler();
         await this.connectDB();
         await this.connectKafka();
+        await this.connectGrpc();
     }
 
     private registerMiddleware(): void {
@@ -46,7 +48,14 @@ export class App {
             console.log('some err connect with kafka', error);
         }
     }
-
+    private async connectGrpc(): Promise<void> {
+        try {
+            await grpcService.start();
+            console.log('gRPC server started successfully.');
+        } catch (error) {
+            console.error('Failed to start gRPC server:', error);
+        }
+    }
     async start(port: number): Promise<void> {
         await this.server.start(port)
     }

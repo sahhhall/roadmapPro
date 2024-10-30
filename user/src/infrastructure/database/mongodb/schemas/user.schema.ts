@@ -4,7 +4,6 @@ import mongoose, { Schema, Document, Model } from "mongoose";
 interface UserAttr {
   name: string;
   email: string;
-  password: string;
   avatar?: string;
   role?: string;
   // assessedSkills?: string[];
@@ -25,7 +24,6 @@ interface UserModel extends Model<UserDoc> {
 interface UserDoc extends Document {
   name: string;
   email: string;
-  password: string;
   avatar?: string;
   role: string;
   // assessedSkills?: string[];
