@@ -2,10 +2,11 @@ import { Mentor } from "../../domain/entities/User";
 import { MentorAttr, Mentor as MentorDB } from "../database/mongodb/schemas/mentor.schma";
 import { customLogger } from "../../presentation/middleware/loggerMiddleware";
 import mongoose, { Mongoose } from "mongoose";
+import { IMentorRepository } from "../../domain/interfaces/IMentorRepositary";
 
 
 
-export class MentorRepositary {
+export class MentorRepositary implements IMentorRepository {
     async createMentorProfile(data: MentorAttr): Promise<Mentor | null> {
         try {
             const newMentor = MentorDB.build({

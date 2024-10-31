@@ -1,16 +1,19 @@
 import { IMentorApprovalUseCase } from "../../application/interfaces/IMentorApprovalUseCase";
 import { MentorApprovalUseCase } from "../../application/usecases/MentorApprovalUseCase";
 import { IMentorRepository } from "../../domain/interfaces/IMentorRepositary";
+import { IUserRepository } from "../../domain/interfaces/IUserRepositary";
 import { MentorRepositary } from "../repositories/MentorRepositary";
+import { UserRepository } from "../repositories/UserRepositary";
 
 
 
 export class DIContainer {
     private static instance: DIContainer;
     private _mentorRepositary: IMentorRepository;
+    private _userProfileRepositary: IUserRepository;
     private constructor() {
         this._mentorRepositary = new MentorRepositary();
-
+        this._userProfileRepositary = new UserRepository();
     }
 
     public static getInstance(): DIContainer {
@@ -22,6 +25,6 @@ export class DIContainer {
 
     //for kafka
     public mentorApprovalUseCase(): IMentorApprovalUseCase {
-        return new MentorApprovalUseCase(this._mentorRepositary);
+        return new MentorApprovalUseCase(this._mentorRepositary,this._userProfileRepositary);
     }
 }
