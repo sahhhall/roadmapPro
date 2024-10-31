@@ -18,8 +18,8 @@ export class CreateTestUseCase implements ICreateTestUseCase {
         const currentDate = new Date();
         if (existingTestsByUser) {
             for (const existingTest of existingTestsByUser) {
-                if (existingTest.stackId == testData.stackId && existingTest.result === 'passed') {
-                    throw new ConflictError(`You already obtained this skill set`)
+                if (existingTest.result === 'passed' || existingTest.result ==='pending' ) {
+                    throw new ConflictError(`You can be only register one stack  assessment or your application might be on pending`)
                 }
                 const createdAt = new Date(existingTest.createdAt as any);
                 const timeDifference = currentDate.getTime() - createdAt.getTime();
