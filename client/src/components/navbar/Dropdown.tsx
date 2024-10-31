@@ -75,7 +75,7 @@ const Dropdown = ({ handleToggle }: DropdownProps) => {
           <DropdownMenuItem>
             <button
               className="items-center flex gap-2"
-              onClick={() => navigate("/profile")}
+              onClick={() => navigate("/profile/general")}
             >
               <User size={15} />
               <span>Profile</span>

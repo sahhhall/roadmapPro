@@ -31,6 +31,15 @@ const AssessmentPage = () => {
     await handleSubmitTest(answers);
   };
   useEffect(() => {
+
+    const disableBackButton = () => {
+      window.history.pushState(null,'',window.location.href);
+    }
+
+    window.onpopstate = () => {
+      window.history.go(1)
+    }
+    disableBackButton();
     const handleBeforeUnload = (event: BeforeUnloadEvent) => {
       if (!isTestCompleted) {
         event.preventDefault();
@@ -58,6 +67,7 @@ const AssessmentPage = () => {
     return () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
       window.removeEventListener("popstate", handleBackNavigation);
+      window.onpopstate = null
     };
   }, [isTestCompleted, answers]);
   useEffect(() => {

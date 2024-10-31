@@ -7,6 +7,8 @@ import RedirectLoggedIn from "@/router/protected/RedirectLoggedIn";
 import NotFound from "@/pages/NotFound";
 import RoadMapMangment from "@/features/admin/pages/RoadMapMangment";
 import WrappedDnDFlow from "@/features/roadmaps/pages/Flow";
+import GeneralPage from "@/features/user/pages/GeneralPage";
+import { ProfileLayout } from "@/features/user/layout/ProfileLayout";
 
 const Home = lazy(() => import("@/pages/HomePage"));
 const LoginPage = lazy(() => import("@/features/auth/pages/LoginPage"));
@@ -90,10 +92,36 @@ const routes = createBrowserRouter([
         element: (
           <UserProtected>
             <Suspense fallback={<div>Loading...</div>}>
-              <p>fadf</p>
+              <ProfileLayout />
             </Suspense>
           </UserProtected>
         ),
+        children: [
+          {
+            index: true,
+            element: (
+              <Suspense fallback={<div>Loading...</div>}>
+                <GeneralPage />
+              </Suspense>
+            ),
+          },
+          {
+            path: "general",
+            element: (
+              <Suspense fallback={<div>Loading...</div>}>
+                <GeneralPage />
+              </Suspense>
+            ),
+          },
+          {
+            path:"mentor",
+            element: (
+              <Suspense fallback={<div>Loading...</div>}>
+                <p>sdaf</p>
+              </Suspense>
+            ),
+          }
+        ],
       },
       {
         path: "/assessment/:id",
