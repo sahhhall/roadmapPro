@@ -35,5 +35,14 @@ export class UserRepository implements IUserRepository {
             throw new Error(`db error: ${error.message}`);
         }
     }
+    async getUserDetails(userId: string): Promise<User | null> {
+        try {
+            const userDetails = await Profile.findById(userId);
+            return userDetails;
+        } catch (error: any) {
+            customLogger.error(`db error to fetch user ${userId}: ${error.message}`);
+            throw new Error(`db error to fetch user: ${error.message}`);
+        }
+    }
 }
 

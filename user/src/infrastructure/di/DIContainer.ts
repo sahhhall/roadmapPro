@@ -1,4 +1,6 @@
+import { IGetUserDetailsUseCase } from "../../application/interfaces/IGetUserDetailsUseCase";
 import { IMentorApprovalUseCase } from "../../application/interfaces/IMentorApprovalUseCase";
+import {  GetUserDetailsUseCase } from "../../application/usecases/GetUserDetailsUseCase";
 import { MentorApprovalUseCase } from "../../application/usecases/MentorApprovalUseCase";
 import { IMentorRepository } from "../../domain/interfaces/IMentorRepositary";
 import { IUserRepository } from "../../domain/interfaces/IUserRepositary";
@@ -25,6 +27,12 @@ export class DIContainer {
 
     //for kafka
     public mentorApprovalUseCase(): IMentorApprovalUseCase {
-        return new MentorApprovalUseCase(this._mentorRepositary,this._userProfileRepositary);
+        return new MentorApprovalUseCase(this._mentorRepositary, this._userProfileRepositary);
+    }
+
+    //
+
+    public getUserDetailsUseCase(): IGetUserDetailsUseCase {
+        return new GetUserDetailsUseCase(this._userProfileRepositary);
     }
 }
