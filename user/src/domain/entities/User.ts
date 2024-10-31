@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 export class User {
     constructor(
         public name: string,
@@ -16,13 +18,14 @@ export class Mentor {
     constructor(
         public userId: string,
         public assessedSkills: string[],
+        public languages: string[],
         public headline: string,
         public bio: string,
         public githubUrl: string,
         public linkedinUrl: string,
-        public experience: string,
-        public sessionPrice: number = 0,
-        public totalEarnings: number = 0,
-        public totalMeetings: number = 0
+        public expirience: string,
+        public sessionPrice?: number,
+        public totalEarnings?: number,
+        public totalMeetings?: number,
     ) { }
 }

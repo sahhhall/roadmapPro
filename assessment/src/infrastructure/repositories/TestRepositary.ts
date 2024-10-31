@@ -15,9 +15,9 @@ export class TestRepository implements ITestRepo {
         }
     }
 
-    async updateTest(id: string, test: Partial<Test>): Promise<Test | null> {
+    async updateTest(id: string, test: Partial<Test>): Promise<any | null> {
         try {
-            return await TestDB.findByIdAndUpdate(id, test, { new: true });
+            return await TestDB.findByIdAndUpdate(id, test, { new: true }).populate('stackId');
         } catch (error: any) {
             customLogger.error(error.message);
             throw new Error(`DB error: update test - ${error.message}`);

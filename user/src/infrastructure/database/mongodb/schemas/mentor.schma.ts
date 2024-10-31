@@ -1,8 +1,9 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
 
 
-interface MentorAttr {
+export interface MentorAttr {
     assessedSkills: string[];
+    languages: string[];
     headline: string;
     bio: string;
     githubUrl: string;
@@ -11,6 +12,7 @@ interface MentorAttr {
     sessionPrice?: number;
     totalEarnings?: number;
     totalMeetings?: number;
+    userId: string;
 }
 
 
@@ -19,12 +21,13 @@ interface MentorModel extends Model<MentorDoc> {
 }
 
 interface MentorDoc extends Document {
-    userId: mongoose.Schema.Types.ObjectId;
+    userId: string;
     assessedSkills: string[];
     headline: string;
     bio: string;
     githubUrl: string;
     linkedinUrl: string;
+    languages: string[];
     expirience: string;
     sessionPrice?: number;
     totalEarnings?: number;
@@ -36,12 +39,13 @@ interface MentorDoc extends Document {
 
 
 
-const mentorSchema = new Schema<MentorDoc>(
+const mentorSchema = new Schema(
     {
         userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
         assessedSkills: { type: [String], required: true },
         headline: { type: String, required: true },
         bio: { type: String, required: true },
+        languages: { type: [String], required: true },
         githubUrl: { type: String, required: true },
         linkedinUrl: { type: String, required: true },
         expirience: { type: String, required: true },

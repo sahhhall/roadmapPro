@@ -6,6 +6,7 @@ import { IServerInterface } from './domain/interfaces/IServer';
 import { userRoutes } from './presentation/routes/userRoutes';
 import { grpcService } from './infrastructure/rpc/grpc/server';
 import { MentorApprovedConsumer } from './infrastructure/kafka/consumers/mentor-approved-consumer';
+import { DIContainer } from './infrastructure/di/DIContainer';
 
 
 
@@ -47,7 +48,13 @@ export class App {
         try {
             await kafkaWrapper.connect();
             const consumer = await kafkaWrapper.createConsumer('mentor-approved-group');
-            this.mentorApprovedConsumer =new MentorApprovedConsumer(consumer);
+
+            const diContainer = DIContainer.getInstance();
+            const mentorApprovalUseCase = diContainer.mentorApprovalUseCase();
+            this.mentorApprovedConsumer = new MentorApprovedConsumer(
+                consumer,
+                mentorApprovalUseCase
+            );
             await this.mentorApprovedConsumer.listen()
         } catch (error) {
             console.log('some err connect with kafka', error);
