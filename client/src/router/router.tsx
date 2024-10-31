@@ -11,28 +11,19 @@ import WrappedDnDFlow from "@/features/roadmaps/pages/Flow";
 const Home = lazy(() => import("@/pages/HomePage"));
 const LoginPage = lazy(() => import("@/features/auth/pages/LoginPage"));
 const SignupPage = lazy(() => import("@/features/auth/pages/SignupPage"));
-const ForgotPasswordPage = lazy(
-  () => import("@/features/auth/pages/Forgotpassword")
-);
+const ForgotPasswordPage = lazy(() => import("@/features/auth/pages/Forgotpassword"));
 const Resetpassword = lazy(() => import("@/features/auth/pages/Resetpassword"));
 const AdminLoginPage = lazy(() => import("@/features/admin/pages/LoginPage"));
 const AdminDashBoard = lazy(() => import("@/features/admin/pages/DashBoard"));
 const AdminLayout = lazy(() => import("@/features/admin/layout/AdminLayout"));
-const UserManagment = lazy(
-  () => import("@/features/admin/pages/UserManagment")
-);
-const RoadmapUserView = lazy(
-  () => import("@/features/roadmaps/pages/RoadmapUserView")
-);
-const AssessmentManagment = lazy(
-  () => import("@/features/admin/pages/AssessmentManagment")
-);
-const QuestionList = lazy(
-  () => import("@/features/admin/pages/QuestionListPage")
-);
-const AssessmentPage = lazy(
-  () => import("@/features/user/pages/AssessmentPage")
-);
+const UserManagment = lazy(() => import("@/features/admin/pages/UserManagment"));
+const RoadmapUserView = lazy(() => import("@/features/roadmaps/pages/RoadmapUserView"));
+const AssessmentManagment = lazy(() => import("@/features/admin/pages/AssessmentManagment"));
+const QuestionList = lazy(() => import("@/features/admin/pages/QuestionListPage"));
+const AssessmentPage = lazy(() => import("@/features/user/pages/AssessmentPage"));
+
+const MentorListing = lazy(()=> import("@/features/mentor/pages/MentorListing"));
+
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -114,6 +105,14 @@ const routes = createBrowserRouter([
           </UserProtected>
         ),
       },
+      {
+        path:'/explore-mentors',
+        element: (
+            <Suspense fallback={<div>Loading...</div>}>
+              <MentorListing />
+            </Suspense>
+        ),
+      }
     ],
   },
   {
