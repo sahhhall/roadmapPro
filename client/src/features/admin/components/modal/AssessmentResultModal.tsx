@@ -189,6 +189,12 @@ export const AssessmentResultModal = ({
               </span>
             </div>
             <div className="flex justify-between text-sm">
+              <span className="text-gray-500">Experience</span>
+              <span className="font-medium">
+                {selectedResult?.expirience} + years
+              </span>
+            </div>
+            <div className="flex justify-between text-sm">
               <span className="text-gray-500">Score</span>
               <span className="font-medium">{selectedResult?.percentage}%</span>
             </div>
