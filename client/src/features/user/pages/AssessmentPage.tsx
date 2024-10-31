@@ -83,9 +83,9 @@ const AssessmentPage = () => {
   const handleStart = async () => {
     if (testData[0]?.questions?.length > 0) {
       try {
-        const question = (await fetchQuestion(
+        const question = await fetchQuestion(
           testData[0].questions[0]?.questionId
-        ).unwrap()) as any;
+        ).unwrap() as any;
         setQuestions([question]);
       } catch (error) {
         console.log("error from aessemetn start question fetach", error);

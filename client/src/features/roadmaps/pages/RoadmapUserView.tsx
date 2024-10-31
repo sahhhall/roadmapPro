@@ -3,7 +3,7 @@ import { useGetRoadMapByIDQuery } from "../services/api/roadmapApi";
 import { ReactFlowProvider } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
 import Container from "@/components/Container";
-import { ArrowLeft, Bookmark, Share2 } from "lucide-react";
+import { ArrowLeft, Share2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { RoadmapFlow } from "@/features/roadmaps/components/view/RoadMapFlow";
 
@@ -19,12 +19,14 @@ const RoadmapUserView: React.FC = () => {
   const { data: roadmapData } = useGetRoadMapByIDQuery(id as string);
   console.log(roadmapData, "data");
   const navigate = useNavigate();
-
+  const handleConnectWithMentor = () => {
+    navigate("/explore-mentors", { state: { skill: roadmapData?.title.toLowerCase() } });
+  };
 
   return (
     <div className="dark:bg-gray-900 bg-gray-100 min-h-screen flex flex-col text-gray-900 dark:text-white">
       <div className="max-w-5xl mx-auto w-full mt-8 px-4 flex flex-col items-center">
-        <div className="w-full  flex flex-col space-y-4 max-w-2xl">
+        <div className="w-full  flex flex-col space-y-4 max-w-7xl">
           <div className="bg-white dark:bg-gray-800 rounded-lg p-4 flex flex-col">
             <div className="flex justify-between items-center space-x-2">
               <div className=" flex items-center  space-x-1">
@@ -36,15 +38,15 @@ const RoadmapUserView: React.FC = () => {
                 {/* <span className="text-xs text-gray-400 font-semibold">Back to Home</span> */}
               </div>
               <div className=" flex items-center space-x-2">
-                <Bookmark size={25} className="text-gray-400 cursor-pointer" />
-                <Button className="bg-indigo-600 text-white rounded-md px-3    text-sm font-medium flex items-center space-x-1">
+                {/* <Bookmark size={20} className="text-gray-400 cursor-pointer" /> */}
+                <Button className="bg-indigo-600 text-white rounded-md px-7    text-xs font-medium flex items-center space-x-1">
                   <Share2 size={16} />
                   <span>Share</span>
                 </Button>
               </div>
             </div>
             <div className="ms-3 mt-4">
-              <h1 className="mb-2  text-4xl font-bold ">
+              <h1 className="mb-2 text-xl  sm:text-3xl font-bold ">
                 {roadmapData?.title}
               </h1>
               <p className="text-sm  dark:text-gray-400  text-gray-600 mb-6">
@@ -64,7 +66,10 @@ const RoadmapUserView: React.FC = () => {
                 field.
               </p>
             </div>
-            <Button className=" text-white bg-indigo-600 rounded-md px-3 py-1 text-sm">
+            <Button
+              onClick={handleConnectWithMentor}
+              className=" text-white bg-indigo-600 rounded-md px-3 py-1 text-sm"
+            >
               Connect
             </Button>
           </div>
