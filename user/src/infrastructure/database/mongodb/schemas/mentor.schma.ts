@@ -41,7 +41,7 @@ interface MentorDoc extends Document {
 
 const mentorSchema = new Schema(
     {
-        userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: 'Profile', required: true },
         assessedSkills: { type: [String], required: true },
         headline: { type: String, required: true },
         bio: { type: String, required: true },

@@ -19,11 +19,28 @@ export class MentorRepositary implements IMentorRepository {
                 linkedinUrl: data.linkedinUrl,
                 assessedSkills: data.assessedSkills
             });
-             await newMentor.save();
-             return newMentor
+            await newMentor.save();
+            return newMentor
         } catch (error: any) {
             customLogger.error(`db error to save mentor: ${error.message}`);
             throw new Error(`db error to save mentro: ${error.message}`);
+        }
+    }
+
+    async getMentorsBySkill(skill: string): Promise<Mentor[] | null> {
+        try {
+            return await MentorDB.find({
+                assessedSkills: {
+                    $regex: new RegExp(`^${skill}$`, 'i')
+                }
+            }).populate({
+                path:'userId',
+                select: 'name email avatar '
+            })
+            .select('-updatedAt -totalEarnings');
+        } catch (error: any) {
+            customLogger.error(`db error to fetch mentros by ${skill}: ${error.message}`);
+            throw new Error(`db error to fetch mentros by ${skill}: ${error.message}`);
         }
     }
 }

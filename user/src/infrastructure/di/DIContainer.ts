@@ -1,7 +1,9 @@
-import { IGetUserDetailsUseCase } from "../../application/interfaces/IGetUserDetailsUseCase";
-import { IMentorApprovalUseCase } from "../../application/interfaces/IMentorApprovalUseCase";
-import {  GetUserDetailsUseCase } from "../../application/usecases/GetUserDetailsUseCase";
-import { MentorApprovalUseCase } from "../../application/usecases/MentorApprovalUseCase";
+import { IGetMentorsBySkillUseCase } from "../../application/interfaces/mentor/IGetMentorsBySkillUseCase";
+import { IGetUserDetailsUseCase } from "../../application/interfaces/user/IGetUserDetailsUseCase";
+import { IMentorApprovalUseCase } from "../../application/interfaces/user/IMentorApprovalUseCase";
+import { GetMentorsBySkillUseCase } from "../../application/usecases/mentor/GetMentorsBySkillUseCase";
+import { GetUserDetailsUseCase } from "../../application/usecases/user/GetUserDetailsUseCase";
+import { MentorApprovalUseCase } from "../../application/usecases/user/MentorApprovalUseCase";
 import { IMentorRepository } from "../../domain/interfaces/IMentorRepositary";
 import { IUserRepository } from "../../domain/interfaces/IUserRepositary";
 import { MentorRepositary } from "../repositories/MentorRepositary";
@@ -34,5 +36,12 @@ export class DIContainer {
 
     public getUserDetailsUseCase(): IGetUserDetailsUseCase {
         return new GetUserDetailsUseCase(this._userProfileRepositary);
+    };
+
+
+    //mentors
+
+    public getMentorsBySkillUseCase(): IGetMentorsBySkillUseCase {
+        return new GetMentorsBySkillUseCase(this._mentorRepositary);
     }
 }

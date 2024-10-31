@@ -1,5 +1,5 @@
 import { KafkaConsumer, MentorApprovedEvent, Topics } from "@sahhhallroadmappro/common";
-import { IMentorApprovalUseCase } from "../../../application/interfaces/IMentorApprovalUseCase";
+import { IMentorApprovalUseCase } from "../../../application/interfaces/user/IMentorApprovalUseCase";
 import { customLogger } from "../../../presentation/middleware/loggerMiddleware";
 import mongoose from "mongoose";
 

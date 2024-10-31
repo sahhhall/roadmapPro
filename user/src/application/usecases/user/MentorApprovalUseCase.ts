@@ -1,9 +1,9 @@
 
 
-import { IMentorRepository } from '../../domain/interfaces/IMentorRepositary'
-import { Mentor } from '../../domain/entities/User';
-import { IMentorApprovalUseCase } from '../interfaces/IMentorApprovalUseCase';
-import { IUserRepository } from '../../domain/interfaces/IUserRepositary';
+import { IMentorRepository } from '../../../domain/interfaces/IMentorRepositary'
+import { Mentor } from '../../../domain/entities/User';
+import { IMentorApprovalUseCase } from '../../interfaces/user/IMentorApprovalUseCase';
+import { IUserRepository } from '../../../domain/interfaces/IUserRepositary';
 
 
 export class MentorApprovalUseCase implements IMentorApprovalUseCase {

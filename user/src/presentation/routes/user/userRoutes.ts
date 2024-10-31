@@ -1,7 +1,7 @@
 
 import { Router } from "express";
-import { GetUserDetailsController } from "../controllers/GetUserDetailsController";
-import { DIContainer } from "../../infrastructure/di/DIContainer";
+import { GetUserDetailsController } from "../../controllers/user/GetUserDetailsController";
+import { DIContainer } from "../../../infrastructure/di/DIContainer";
 
 
 

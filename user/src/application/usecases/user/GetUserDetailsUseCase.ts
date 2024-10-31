@@ -1,9 +1,9 @@
 
 
 import { NotFoundError } from '@sahhhallroadmappro/common';
-import { User } from '../../domain/entities/User';
-import { IUserRepository } from '../../domain/interfaces/IUserRepositary';
-import { IGetUserDetailsUseCase } from '../interfaces/IGetUserDetailsUseCase';
+import { User } from '../../../domain/entities/User';
+import { IUserRepository } from '../../../domain/interfaces/IUserRepositary';
+import { IGetUserDetailsUseCase } from '../../interfaces/user/IGetUserDetailsUseCase';
 
 
 export class GetUserDetailsUseCase implements IGetUserDetailsUseCase {

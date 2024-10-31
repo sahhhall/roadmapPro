@@ -3,10 +3,11 @@ import { errorHandler, userDtamiddleaware } from '@sahhhallroadmappro/common';
 import kafkaWrapper from './infrastructure/kafka/kafka-wrapper';
 import loggerMiddleware from './presentation/middleware/loggerMiddleware';
 import { IServerInterface } from './domain/interfaces/IServer';
-import { userRoutes } from './presentation/routes/userRoutes';
+import { userRoutes } from './presentation/routes/user/userRoutes';
 import { grpcService } from './infrastructure/rpc/grpc/server';
 import { MentorApprovedConsumer } from './infrastructure/kafka/consumers/mentor-approved-consumer';
 import { DIContainer } from './infrastructure/di/DIContainer';
+import { mentorRoutes } from './presentation/routes/mentor/mentorRoutes';
 
 
 
@@ -30,6 +31,7 @@ export class App {
 
     private registerRoutes(): void {
         this.server.registerRoutes('/api/user', userRoutes);
+        this.server.registerRoutes('/api/mentor', mentorRoutes)
 
     }
     private registerErrorHandler(): void {

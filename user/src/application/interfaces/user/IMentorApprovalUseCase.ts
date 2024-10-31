@@ -1,4 +1,4 @@
-import { Mentor } from "../../domain/entities/User";
+import { Mentor } from "../../../domain/entities/User";
 
 
 export interface IMentorApprovalUseCase {

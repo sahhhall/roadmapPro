@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { HttpStatus } from '@sahhhallroadmappro/common';
-import { IGetUserDetailsUseCase } from '../../application/interfaces/IGetUserDetailsUseCase';
+import { IGetUserDetailsUseCase } from '../../../application/interfaces/user/IGetUserDetailsUseCase';
 
 
 export class GetUserDetailsController {
