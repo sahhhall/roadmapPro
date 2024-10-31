@@ -18,6 +18,9 @@ export class CreateTestUseCase implements ICreateTestUseCase {
         const currentDate = new Date();
         if (existingTestsByUser) {
             for (const existingTest of existingTestsByUser) {
+                if (existingTest.stackId == testData.stackId && existingTest.result === 'passed') {
+                    throw new ConflictError(`You already obtained this skill set`)
+                }
                 const createdAt = new Date(existingTest.createdAt as any);
                 const timeDifference = currentDate.getTime() - createdAt.getTime();
                 const daysDifference = timeDifference / (1000 * 3600 * 24);
