@@ -70,14 +70,22 @@ const roadmapApiSlice = apiSlice.injectEndpoints({
         }),
         updateRoadmapStatus: builder.mutation<RoadmMapsResponse, { adminFeedback: string; status: string; roadmapId: string }>({
             query: (data) => ({
-                url: roadmapEndPoints.updateRoadmapStatus, 
+                url: roadmapEndPoints.updateRoadmapStatus,
                 method: 'post',
                 body: data
             }),
-            invalidatesTags: ['Roadmap','RoadmapPublished']
+            invalidatesTags: ['Roadmap', 'RoadmapPublished']
+        }),
+        listUnlistRoadmap: builder.mutation<RoadmMapsResponse, { roadmapId: string }>({
+            query: (data) => ({
+                url: roadmapEndPoints.listunlist,
+                method: 'post',
+                body: data
+            }),
+            invalidatesTags: ['Roadmap', 'RoadmapPublished']
         }),
     })
 });
 
 
-export const { useCreateRoadmapMutation, useCreateNodeMutation, useSaveRoadMapMutation, useGetRoadmapsQuery, useGetRoadMapByIDQuery, useGetNodeDetailsByIDQuery, useLazyGetNodeDetailsByIDQuery, useGetRoadmapsPublishedQuery, useGetRoadmapsByStatusQuery,useUpdateRoadmapStatusMutation } = roadmapApiSlice
+export const { useCreateRoadmapMutation, useCreateNodeMutation, useSaveRoadMapMutation, useGetRoadmapsQuery, useGetRoadMapByIDQuery, useGetNodeDetailsByIDQuery, useLazyGetNodeDetailsByIDQuery, useGetRoadmapsPublishedQuery, useGetRoadmapsByStatusQuery, useUpdateRoadmapStatusMutation,useListUnlistRoadmapMutation } = roadmapApiSlice

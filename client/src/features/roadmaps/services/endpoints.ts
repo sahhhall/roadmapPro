@@ -6,6 +6,7 @@ export const roadmapEndPoints = {
     getRoadmapByRequest: 'api/admin/roadmap',
     getAllRoadMapsPublished: '/api/roadmap/published',
     updateRoadmapStatus: '/api/admin/roadmap/review',
+    listunlist: '/api/admin/roadmap/list-unlist',
     // getAllRequestedRoadmaps:'/api/roadmap/drafted',
     getRoadMapByID: (id: string) => `/api/roadmap/${id}`,
     getNodeDetailsByID:  (id: string) => `/api/roadmap/nodedetails/${id}`

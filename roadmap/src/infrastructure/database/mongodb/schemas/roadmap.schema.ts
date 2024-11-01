@@ -6,9 +6,10 @@ interface RoadMapAttr {
     title: string;
     description: string;
     status: 'drafted' | 'published' | 'rejected';
-    nodes?: mongoose.Types.ObjectId[]; 
-    edges?: mongoose.Types.ObjectId[];  
+    nodes?: mongoose.Types.ObjectId[];
+    edges?: mongoose.Types.ObjectId[];
     adminFeedback?: string;
+    isActive?: boolean;
 }
 
 
@@ -17,9 +18,10 @@ interface RoadMapDoc extends mongoose.Document {
     title: string;
     description: string;
     status: 'drafted' | 'published' | 'rejected';
-    nodes: mongoose.Types.ObjectId[]; 
-    edges: mongoose.Types.ObjectId[];  
+    nodes: mongoose.Types.ObjectId[];
+    edges: mongoose.Types.ObjectId[];
     adminFeedback: string;
+    isActive: boolean;
 }
 
 
@@ -31,7 +33,7 @@ interface RoadMapModel extends mongoose.Model<RoadMapDoc> {
 const roadmapSchema = new mongoose.Schema({
     userId: {
         type: mongoose.Schema.Types.ObjectId,
-        ref: 'User', 
+        ref: 'User',
         required: true
     },
     title: {
@@ -50,15 +52,19 @@ const roadmapSchema = new mongoose.Schema({
     nodes: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Node',
-        default:[]
+        default: []
     }],
     edges: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Edge',
-        default:[]
+        default: []
     }],
-    adminFeedback:{
+    adminFeedback: {
         type: String
+    },
+    isActive: {
+        type: Boolean,
+        default: true
     }
 }, {
     toJSON: {

@@ -1,5 +1,6 @@
 import { IAdminReview } from "../../application/interfaces/admin/IAdminReview";
 import { IGetRequestedRoadmaps } from "../../application/interfaces/admin/IGetRequestedRoadmaps";
+import { IStatusChangeUseCase } from "../../application/interfaces/admin/IStatusChangeUseCase";
 import { ICreateNodeUseCase } from "../../application/interfaces/ICreateNodeUseCase";
 import { IGetAllRoadMaps } from "../../application/interfaces/IGetAllRoadMaps";
 import { IGetNodeDetails } from "../../application/interfaces/IGetNodeDetails";
@@ -8,6 +9,7 @@ import { IRoadMapCreate } from "../../application/interfaces/IRoadmapCreate";
 import { ISaveRoadmap } from "../../application/interfaces/ISaveRoadMap";
 import { AdminReviewUseCase } from "../../application/usecases/admin/AdminReviewUseCase";
 import { GetRequestedRoadmaps } from "../../application/usecases/admin/GetRequestedRoadmaps";
+import { StatusChangeUseCase } from "../../application/usecases/admin/StatusChangeUseCase";
 import { CreateNodeUseCase } from "../../application/usecases/CreateNodeUseCase";
 import { GetListedRoadMaps } from "../../application/usecases/GetListedRoadmaps";
 import { GetNodeDetails } from "../../application/usecases/GetNodeDetails";
@@ -67,5 +69,9 @@ export class DIContainer {
 
     public getAllDraftedRoadmaps(): IGetRequestedRoadmaps {
         return new GetRequestedRoadmaps(this._roadmapRepositary)
+    }
+
+    public roadmapActiveChnage(): IStatusChangeUseCase {
+        return new StatusChangeUseCase(this._roadmapRepositary)
     }
 }

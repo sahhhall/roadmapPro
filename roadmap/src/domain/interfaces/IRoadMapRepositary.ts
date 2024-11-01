@@ -32,4 +32,6 @@ export interface IRoadMapRepository {
         edges: Edge[],
         nodeDetails: NodeDetails[]
     ): Promise<Roadmap | null>;
+
+    updateRoadmapActiveStatus(id: string, isActive: boolean): Promise<Roadmap | null>;
 }

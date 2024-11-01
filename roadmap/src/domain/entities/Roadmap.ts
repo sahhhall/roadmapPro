@@ -10,6 +10,7 @@ export class Roadmap {
         public edges: mongoose.Types.ObjectId[] = [],
         public adminFeedback: string = '',
         public id?: string,
+        public isActive?: boolean,
         public createdAt?: Date,
         public updatedAt?: Date
     ) { }

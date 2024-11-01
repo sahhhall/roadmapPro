@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   useGetRoadmapsByStatusQuery,
+  useListUnlistRoadmapMutation,
 } from "@/features/roadmaps/services/api/roadmapApi";
 import {
   Card,
@@ -23,13 +24,13 @@ import {
 
 const RoadMaps = () => {
   const [statusFilter, setStatusFilter] = useState("published");
-  const { 
-    data = [], 
-    isLoading, 
-    error, 
-    refetch 
+  const {
+    data = [],
+    isLoading,
+    error,
+    refetch,
   } = useGetRoadmapsByStatusQuery({ status: statusFilter });
-
+  const [listUnlistRoadmap] = useListUnlistRoadmapMutation();
   useEffect(() => {
     refetch();
   }, [statusFilter]);
@@ -38,9 +39,16 @@ const RoadMaps = () => {
     const url = `http://localhost:5173/roadmap/${id}`;
     window.open(url, "_blank");
   };
+  const handleListUnlist = async (roadmapId: string) => {
+    try {
+      await listUnlistRoadmap({ roadmapId: roadmapId }).unwrap();
+      refetch();
+    } catch (error) {
+      console.error("Failed to update roadmap status:", error);
+    }
+  };
 
-  if (isLoading)
-    return <div className="text-center py-10">Loading </div>;
+  if (isLoading) return <div className="text-center py-10">Loading </div>;
   if (error)
     return (
       <div className="text-center py-10 text-red-500">
@@ -86,15 +94,22 @@ const RoadMaps = () => {
               </p>
             </CardContent>
             <CardFooter className="flex justify-between items-center">
-              <Button 
-                onClick={() => openRoadmapInNewTab(roadmap.id)} 
-                variant="outline" 
+              <Button
+                onClick={() => openRoadmapInNewTab(roadmap.id)}
+                variant="outline"
                 className="flex items-center"
               >
                 <MapPin size={16} className="mr-2" />
                 View Roadmap
               </Button>
-              <Button variant="destructive">Unlist</Button>
+              {roadmap.status === "published" && (
+                <Button
+                  variant={"destructive"}
+                  onClick={() => handleListUnlist(roadmap.id)}
+                >
+                  {roadmap.isActive ? "Unlist" : "List"}
+                </Button>
+              )}
             </CardFooter>
           </Card>
         ))}

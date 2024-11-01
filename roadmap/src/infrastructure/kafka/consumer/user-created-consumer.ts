@@ -2,7 +2,7 @@ import { KafkaConsumer, UserCreateEvent, Topics } from '@sahhhallroadmappro/comm
 import { User } from '../../database/mongodb';
 
 export class UserCreatedConsumer extends KafkaConsumer<UserCreateEvent> {
-    topic: Topics = Topics.userCreated;
+    topic: Topics.userCreated = Topics.userCreated;
     groupId: string = 'user-created-group';
     async onMessage(data: { id: string; name: string; email: string; role: string; avatar: string; }): Promise<void> {
         console.log(data, "from roadmap")

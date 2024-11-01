@@ -15,6 +15,7 @@ export interface RoadmapResponse {
     edges: Array<any>;
     adminFeedback: string;
     createdAt: string;
+    isActive: boolean;
 }
 
 
@@ -117,6 +118,7 @@ export interface RoadmMapsResponse {
     createdAt: string;
     updatedAt: string;
     id: string;
+    isActive: boolean;
 }
 
 

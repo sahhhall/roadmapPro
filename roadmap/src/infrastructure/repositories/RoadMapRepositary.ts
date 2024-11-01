@@ -188,7 +188,8 @@ export class RoadMapRepository implements IRoadMapRepository {
     async getAllPublishdRoadmaps() {
         try {
             const roadmaps = await RoadMap.find({
-                status: { $nin: ['rejected', 'drafted'] }
+                status: { $nin: ['rejected', 'drafted'] },
+                isActive: true
             });
             return roadmaps;
         } catch (error: any) {
@@ -204,6 +205,19 @@ export class RoadMapRepository implements IRoadMapRepository {
             return roadmaps;
         } catch (error: any) {
             throw new Error(`db error, get all: ${error.message}`);
+        }
+    }
+
+    async updateRoadmapActiveStatus(id: string, isActive: boolean): Promise<Roadmap | null> {
+        try {
+            const updatedRoadmap = await RoadMap.findByIdAndUpdate(
+                id,
+                { isActive: !isActive },
+                { new: true }
+            );
+            return updatedRoadmap;
+        } catch (error: any) {
+            throw new Error(`db error,update status: ${error.message}`);
         }
     }
 
