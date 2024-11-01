@@ -27,7 +27,7 @@ router.post('/review', validateRequest(ReviewRoadmapDTO), async (req, res, next)
     await reviewRoadmapController.reviewRoadmap(req, res, next);
 })
 
-router.post('/list-unlist', async (req, res, next) => {
+router.put('/list-unlist', async (req, res, next) => {
     await activeChangeController.changeActive(req, res, next);
 })
 

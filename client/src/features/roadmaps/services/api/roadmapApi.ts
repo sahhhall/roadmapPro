@@ -79,7 +79,7 @@ const roadmapApiSlice = apiSlice.injectEndpoints({
         listUnlistRoadmap: builder.mutation<RoadmMapsResponse, { roadmapId: string }>({
             query: (data) => ({
                 url: roadmapEndPoints.listunlist,
-                method: 'post',
+                method: 'put',
                 body: data
             }),
             invalidatesTags: ['Roadmap', 'RoadmapPublished']
