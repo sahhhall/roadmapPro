@@ -15,8 +15,8 @@ importers:
         specifier: ^0.7.13
         version: 0.7.13
       '@sahhhallroadmappro/common':
-        specifier: ^1.0.42
-        version: 1.0.42
+        specifier: ^1.0.44
+        version: 1.0.44
       '@types/bcrypt':
         specifier: ^5.0.2
         version: 5.0.2
@@ -259,8 +259,8 @@ packages:
     peerDependencies:
       '@redis/client': ^1.0.0
 
-  '@sahhhallroadmappro/common@1.0.42':
-    resolution: {integrity: sha512-GB/qO0czO0usIJFc5HXyPXqDcoENMK9CQBO7QCVz+7bGnOA9OevfFKYm6o646KX5g4bJzbWMEC8OuMPgjEXOjw==}
+  '@sahhhallroadmappro/common@1.0.44':
+    resolution: {integrity: sha512-AM6QwVMmZ/yScTEGCvwqw5K1mBmTfWN4RXgp/PWtx6hfwxjFUh+BMTcs0kDqTYUmvJx5P/hs7El9vnL4I8sipQ==}
 
   '@tsconfig/node10@1.0.11':
     resolution: {integrity: sha512-DcRjDCujK/kCk/cUe8Xz8ZSpm8mS3mNNpta+jGCA6USEDfktlNvm1+IuZ9eTcDbNk41BHwpHHeW+N1lKCz4zOw==}
@@ -1778,7 +1778,7 @@ snapshots:
     dependencies:
       '@redis/client': 1.6.0
 
-  '@sahhhallroadmappro/common@1.0.42':
+  '@sahhhallroadmappro/common@1.0.44':
     dependencies:
       '@grpc/grpc-js': 1.12.2
       '@grpc/proto-loader': 0.7.13
