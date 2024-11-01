@@ -7,7 +7,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { PlusCircle, Settings, Trash2, Edit2, CircleCheck } from "lucide-react";
+import { PlusCircle, Settings, Trash2, CircleCheck } from "lucide-react";
 import {
   useDeleteQuestionMutation,
   useGetQuestionsByStackIdQuery,
@@ -132,13 +132,13 @@ const QuestionList = () => {
                       ))}
                     </CardContent>
                     <CardFooter className="flex justify-end gap-2 mt-4">
-                      <Button
+                      {/* <Button
                         variant="outline"
                         className="flex items-center gap-1"
                       >
                         <Edit2 className="w-4   h-4" />
                         Edit
-                      </Button>
+                      </Button> */}
                       <Button
                         variant="outline"
                         className="flex items-center gap-1"

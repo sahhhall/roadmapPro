@@ -58,13 +58,13 @@ export const StackList = () => {
   return (
     <Container className="mx-auto px-7 py-8">
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-5">
-        <div className="lg:col-span-1 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-100 dark:bg-transparent border border-1-black bg-gray-50 rounded-lg p-6">
-          <h2 className="text-sm font-semibold text-blue-900 mb-6">
+        <div className="lg:col-span-1 dark:bg-gradient-to-br dark:from-transparent bg-gradient-to-br from-blue-50 to-indigo-50 dark:border-gray-900 border-blue-100 dark:bg-transparent border border-1-black bg-gray-50 rounded-lg p-6">
+          <h2 className="text-sm font-semibold dark:text-white text-blue-900 mb-6">
             Assessment Management
           </h2>
           <div className="space-y-6">
             <div className="space-y-2">
-              <div className="flex items-center text-blue-800 gap-2 text-xs">
+              <div className="flex items-center dark:text-white text-blue-800 gap-2 text-xs">
                 <PlusCircle className="w-3 h-3" />
                 <h3 className="font-semibold">Create Stacks</h3>
               </div>
@@ -75,7 +75,7 @@ export const StackList = () => {
             </div>
 
             <div className="space-y-2">
-              <div className="flex items-center text-blue-800 gap-2 text-xs">
+              <div className="flex items-center dark:text-white  text-blue-800 gap-2 text-xs">
                 <ListChecks className="w-3 h-3" />
                 <h3 className="font-semibold">Add Questions</h3>
               </div>
@@ -86,7 +86,7 @@ export const StackList = () => {
             </div>
 
             <div className="space-y-2">
-              <div className="flex items-center text-blue-800 gap-2 text-xs">
+              <div className="flex items-center dark:text-white  text-blue-800 gap-2 text-xs">
                 <BookOpen className="w-3 h-3" />
                 <h3 className="font-semibold">Manage Assessments</h3>
               </div>
@@ -97,7 +97,7 @@ export const StackList = () => {
             </div>
 
             <div className="space-y-2">
-              <div className="flex items-center text-blue-800 gap-2 text-xs">
+              <div className="flex items-center dark:text-white  text-blue-800 gap-2 text-xs">
                 <Settings className="w-3 h-3" />
                 <h3 className="font-semibold">Configure Settings</h3>
               </div>

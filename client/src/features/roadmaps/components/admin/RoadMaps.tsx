@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
   useGetRoadmapsByStatusQuery,
@@ -12,19 +13,34 @@ import {
 } from "@/components/ui/card";
 import { User, MapPin } from "lucide-react";
 import Container from "@/components/Container";
-import { useEffect } from "react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 const RoadMaps = () => {
-  const { data = [], isLoading, error,refetch } = useGetRoadmapsByStatusQuery({status:'published'});
-  useEffect(()=> {
-    refetch()
-  },[])
+  const [statusFilter, setStatusFilter] = useState("published");
+  const { 
+    data = [], 
+    isLoading, 
+    error, 
+    refetch 
+  } = useGetRoadmapsByStatusQuery({ status: statusFilter });
+
+  useEffect(() => {
+    refetch();
+  }, [statusFilter]);
+
   const openRoadmapInNewTab = (id: string) => {
     const url = `http://localhost:5173/roadmap/${id}`;
     window.open(url, "_blank");
   };
+
   if (isLoading)
-    return <div className="text-center py-10">Loading roadmaps...</div>;
+    return <div className="text-center py-10">Loading </div>;
   if (error)
     return (
       <div className="text-center py-10 text-red-500">
@@ -33,7 +49,22 @@ const RoadMaps = () => {
     );
 
   return (
-    <Container className=" mx-auto px-7 py-8">
+    <Container className="mx-auto px-7 py-8">
+      <div className="mb-6">
+        <Select
+          value={statusFilter}
+          onValueChange={(value) => setStatusFilter(value)}
+        >
+          <SelectTrigger className="w-[200px]">
+            <SelectValue placeholder="Filter by status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="published">Published</SelectItem>
+            <SelectItem value="rejected">Rejected</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {data.map((roadmap) => (
           <Card
@@ -50,12 +81,16 @@ const RoadMaps = () => {
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <p className=" text-xs text-gray-700 dark:text-white">
+              <p className="text-xs text-gray-700 dark:text-white">
                 {roadmap.description}
               </p>
             </CardContent>
             <CardFooter className="flex justify-between items-center">
-              <Button onClick={() => openRoadmapInNewTab(roadmap.id)} variant="outline" className="flex items-center">
+              <Button 
+                onClick={() => openRoadmapInNewTab(roadmap.id)} 
+                variant="outline" 
+                className="flex items-center"
+              >
                 <MapPin size={16} className="mr-2" />
                 View Roadmap
               </Button>

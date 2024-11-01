@@ -5,7 +5,6 @@ import {
   BreadcrumbList,
   BreadcrumbSeparator,
 } from "@/components/ui/breadcrumb";
-import { Button } from "@/components/ui/button";
 import QuestionList from "@/features/assessment/components/admin/QuestionList";
 
 import { Link } from "react-router-dom";
@@ -28,9 +27,6 @@ const QuestionListPage = () => {
       <main>
         <div className="flex justify-between">
           <p></p>
-          <div className="gap-2 flex">
-            <Button variant={"outline"}>Assessment Results</Button>        
-          </div>
         </div>
         <QuestionList/>
       </main>
