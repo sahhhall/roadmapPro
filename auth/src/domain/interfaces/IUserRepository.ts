@@ -12,4 +12,5 @@ export interface IUserRepository {
     update(user: User): Promise<void>;
     fetchUsers(): Promise<User[] | null>
     partialUpdate(email: string, password: string): Promise<boolean>
+    genericUpdate(userId: string, updateData: Partial<User>): Promise<User | null>
 }

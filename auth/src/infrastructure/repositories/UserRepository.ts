@@ -52,4 +52,9 @@ export class UserRepository implements IUserRepository {
             return null
         }
     }
+
+    async genericUpdate(userId: string, updateData: Partial<User>): Promise<User | null> {
+        const updatedUser = await Auth.findByIdAndUpdate(userId, { $set: updateData }, { new: true });
+        return updatedUser;
+    }
 }

@@ -27,6 +27,7 @@ class KafkaWrapper {
         this._consumer = this._kafka.consumer({ groupId });
         await this._consumer.connect();
         console.log('consumer connected');
+        return this.consumer
     }
 
     get consumer() {

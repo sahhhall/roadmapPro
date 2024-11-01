@@ -6,8 +6,11 @@ import { errorHandler } from '@sahhhallroadmappro/common';
 import { IServerInterface } from './domain/interfaces/IServer';
 import loggerMiddleware from './presentation/middlewares/loggerMiddleware';
 import kafkaWrapper from './infrastructure/kafka/kafka-wrapper';
+import { DIContainer } from './infrastructure/di/DIContainer';
+import { MentorRoleUpdatedConsumer } from './infrastructure/kafka/consumers/mentor-role-updated-consumer';
 
 export class App {
+    private mentorApprovedConsumer?: MentorRoleUpdatedConsumer;
     constructor(private server: IServerInterface) { }
 
     async initialize(): Promise<void> {
@@ -42,6 +45,14 @@ export class App {
     private async connectKafka() {
         try {
             await kafkaWrapper.connect();
+            const consumer = await kafkaWrapper.createConsumer('mentor-role-update-group');
+
+            const mentorApprovalUseCase = DIContainer.updateRoleAuthUseCase();
+            this.mentorApprovedConsumer = new MentorRoleUpdatedConsumer(
+                consumer,
+                mentorApprovalUseCase
+            );
+            await this.mentorApprovedConsumer.listen();
         } catch (error) {
             console.log('some err connect with kafka', error);
         }

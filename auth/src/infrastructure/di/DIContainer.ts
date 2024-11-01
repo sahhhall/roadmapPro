@@ -19,6 +19,7 @@ import { SendLinkResetPassword } from "../../application/usecases/user/SendLinkR
 import { VerifyPasswordReset } from "../../application/usecases/user/VerifyPasswordReset";
 import { RefreshToken } from "../../application/usecases/user/RefreshToken";
 import { AdminRefreshToken } from "../../application/usecases/admin/AdminRefreshToken";
+import { UpdateAuthRole } from "../../application/usecases/user/UpdateAuthRole";
 
 
 class DIContainer {
@@ -87,6 +88,10 @@ class DIContainer {
     }
     static adminRefeshTokenUseCase() {
         return new AdminRefreshToken(this._jwtService)
+    }
+
+    static updateRoleAuthUseCase() {
+        return new UpdateAuthRole(this._authRepository)
     }
 }
 
