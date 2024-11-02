@@ -26,6 +26,9 @@ const AssessmentPage = lazy(() => import("@/features/user/pages/AssessmentPage")
 
 const MentorListing = lazy(()=> import("@/features/mentor/pages/MentorListing"));
 
+
+const ProfileAvailabilty = lazy(()=> import('@/features/user/pages/MentorAvailabilityPage'))
+
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -114,12 +117,20 @@ const routes = createBrowserRouter([
             ),
           },
           {
-            path:"mentor",
+            path:"roadmaps",
             element: (
               <Suspense fallback={<div>Loading...</div>}>
                 <p>sdaf</p>
               </Suspense>
             ),
+          },
+          {
+            path:'availablity',
+            element: (
+               <Suspense fallback={<div>Loading...</div>}>
+                <ProfileAvailabilty/>
+               </Suspense>
+            )
           }
         ],
       },

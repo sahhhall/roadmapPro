@@ -2,5 +2,6 @@
 
 export const SidebarItemsProfile = [
     { path: "general", label: "General" },
-    { path: "mentor", label: "Mentor" },
+    { path: "roadmaps", label: "Roadmaps" },
+    { path: 'availablity', label: "Availability" }
 ]
