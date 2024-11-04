@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { HttpStatus } from '@sahhhallroadmappro/common';
+import { BadRequestError, HttpStatus } from '@sahhhallroadmappro/common';
 import { IAvailibilityUpdateUseCase } from '../../../application/interfaces/mentor/IAvailibilityUpdateUseCase';
 
 
@@ -9,6 +9,9 @@ export class UpdateSlotAvailbilityController {
     async updateSlot(req: Request, res: Response, next: NextFunction) {
         try {
             const { mentorId, weeklySchedule } = req.body;
+            // if (mentorId != req.user?.id) {
+            //     throw new BadRequestError('go and change your slot');
+            // }
             const slotAvailbilityUpdation = await this.availbilitySlotUpdateUseCase.execute({ mentorId, weeklySchedule });
             return res.status(HttpStatus.CREATED).json(slotAvailbilityUpdation)
         } catch (error) {
