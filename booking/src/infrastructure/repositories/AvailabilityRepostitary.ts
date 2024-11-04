@@ -7,9 +7,9 @@ import { Availability } from "../database/mongodb/schemas/availability.schema"
 
 export class AvailabilityRepository implements IAvailbilityRepositary {
 
-    async getAvailibilityByMentorId(mentorId: string): Promise<AvailabilityEntity | null> {
+    async getAvailibilityByMentorId(mentorId: string): Promise<AvailabilityEntity> {
         try {
-            return await Availability.findById(mentorId)
+            return await Availability.findOne({mentorId:mentorId}) as AvailabilityEntity
         } catch (error: any) {
             customLogger.error(`DB error: create availabilut ,${error.message}`);
             throw new Error(`DB error: create availabilut - ${error.message}`);
@@ -33,6 +33,7 @@ export class AvailabilityRepository implements IAvailbilityRepositary {
 
     async update(mentorId: string, updatedFields: Partial<AvailabilityEntity>): Promise<AvailabilityEntity | null> {
         try {
+            console.log(updatedFields.weeklySchedule?.monday.timeSlots,"in ddb updatefield")
             //here data will be added into fields from use case
             const availability = await Availability.findOneAndUpdate(
                 { mentorId },

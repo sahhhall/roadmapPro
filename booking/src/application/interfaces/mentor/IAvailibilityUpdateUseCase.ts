@@ -1,4 +1,4 @@
-import { AvailabilityEntity } from "../../domain/entities/Booking";
+import { AvailabilityEntity } from "../../../domain/entities/Booking";
 
 
 export interface IAvailibilityUpdateUseCase {

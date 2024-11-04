@@ -2,7 +2,7 @@ import { AvailabilityEntity } from "../entities/Booking";
 
 
 export interface IAvailbilityRepositary {
-    getAvailibilityByMentorId(mentorId: string): Promise<AvailabilityEntity | null>
+    getAvailibilityByMentorId(mentorId: string): Promise<AvailabilityEntity >
 
     create(attrs: Partial<AvailabilityEntity>): Promise<AvailabilityEntity | null>
 

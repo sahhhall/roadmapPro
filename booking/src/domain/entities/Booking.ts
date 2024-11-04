@@ -1,8 +1,9 @@
 export class TimeSlotEntity {
     constructor(
         public startTime: string,
-        public endTime: string
-    ) {}
+        public endTime: string,
+        public isBooked?: boolean
+    ) { }
 }
 
 
@@ -10,7 +11,7 @@ export class DailyScheduleEntity {
     constructor(
         public isAvailable: boolean,
         public timeSlots: TimeSlotEntity[] = []
-    ) {}
+    ) { }
 }
 
 //////////////////////////////////////////////////////////
@@ -22,7 +23,7 @@ export class WeeklyScheduleEntity {
         public wednesday: DailyScheduleEntity,
         public thursday: DailyScheduleEntity,
         public friday: DailyScheduleEntity
-    ) {}
+    ) { }
 }
 
 ////////////////////////////////////////////////////////
@@ -33,7 +34,7 @@ export class AvailabilityEntity {
         public pricePerSession: number,
         public createdAt?: Date,
         public updatedAt?: Date,
-    ) {}
+    ) { }
 }
 
 export class BookingEntity {
@@ -49,5 +50,5 @@ export class BookingEntity {
         public cancelledAt?: Date,
         public createdAt?: Date,
         public updatedAt?: Date,
-    ) {}
+    ) { }
 }

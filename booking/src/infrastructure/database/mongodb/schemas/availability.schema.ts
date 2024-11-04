@@ -3,7 +3,8 @@ import { dailyScheduleSchema } from "./dailyschedule.schema";
 
 interface TimeSlot {
     startTime: string,
-    endTime: string
+    endTime: string,
+    isBooked: boolean
 }
 
 interface DailySchedule {
