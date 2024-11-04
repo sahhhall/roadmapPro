@@ -8,4 +8,5 @@ const router = Router()
 
 
 
-export { router as userRoutes }
+
+export { router as availabilityRoutes }

@@ -22,13 +22,13 @@ interface WeeklySchedule {
 
 
 
-interface AvailabilityAttr {
+export interface AvailabilityAttr {
     mentorId: string;
     weeklySchedule: WeeklySchedule;
     pricePerSession: number;
 }
 
-interface AvailabilityDoc extends Document {
+export interface AvailabilityDoc extends Document {
     mentorId: string;
     weeklySchedule: WeeklySchedule;
     pricePerSession: number;

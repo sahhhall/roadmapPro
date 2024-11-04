@@ -3,7 +3,7 @@ import { errorHandler, userDtamiddleaware } from '@sahhhallroadmappro/common';
 import kafkaWrapper from './infrastructure/kafka/kafka-wrapper';
 import loggerMiddleware from './presentation/middleware/loggerMiddleware';
 import { IServerInterface } from './domain/interfaces/IServer';
-import { userRoutes } from './presentation/routes/userRoutes';
+import { availabilityRoutes } from './presentation/routes/availbilityRoutes';
 import { UserCreatedConsumer } from './infrastructure/kafka/consumers/user-created-consumer';
 import { DIContainer } from './infrastructure/di/DIContainer';
 
@@ -27,7 +27,7 @@ export class App {
     }
 
     private registerRoutes(): void {
-        this.server.registerRoutes('/api/user', userRoutes);
+        this.server.registerRoutes('/api/mentors/availability', availabilityRoutes);
 
     }
     private registerErrorHandler(): void {
