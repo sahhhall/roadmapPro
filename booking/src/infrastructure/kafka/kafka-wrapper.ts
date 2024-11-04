@@ -7,7 +7,7 @@ class KafkaWrapper {
     private _consumer?: Consumer;
     constructor() {
         this._kafka = new Kafka({
-            clientId: 'auth-service',
+            clientId: 'booking-service',
             brokers: ['localhost:9092']
         })
     }

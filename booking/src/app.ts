@@ -1,13 +1,16 @@
 import { connectDB, disconnectDB } from './infrastructure/database/mongodb/connection';
-import { errorHandler,userDtamiddleaware } from '@sahhhallroadmappro/common';
+import { errorHandler, userDtamiddleaware } from '@sahhhallroadmappro/common';
 import kafkaWrapper from './infrastructure/kafka/kafka-wrapper';
 import loggerMiddleware from './presentation/middleware/loggerMiddleware';
 import { IServerInterface } from './domain/interfaces/IServer';
 import { userRoutes } from './presentation/routes/userRoutes';
+import { UserCreatedConsumer } from './infrastructure/kafka/consumers/user-created-consumer';
+import { DIContainer } from './infrastructure/di/DIContainer';
 
- 
+
 
 export class App {
+    private userCreatedConsumer?: UserCreatedConsumer;
     constructor(private server: IServerInterface) { }
 
     async initialize(): Promise<void> {
@@ -42,6 +45,14 @@ export class App {
     private async connectKafka() {
         try {
             await kafkaWrapper.connect();
+            const consumer = await kafkaWrapper.createConsumer('booking-service-group');
+            const diContainer = DIContainer.getInstance();
+            const userCreatedUseCase = diContainer.userCreatedUseCase();
+            this.userCreatedConsumer = new UserCreatedConsumer(
+                consumer,
+                userCreatedUseCase
+            );
+            await this.userCreatedConsumer.listen()
         } catch (error) {
             console.log('some err connect with kafka', error);
         }
