@@ -35,6 +35,8 @@ export class AvailabilityRepository implements IAvailbilityRepositary {
         try {
             console.log(updatedFields.weeklySchedule?.monday.timeSlots,"in ddb updatefield")
             //here data will be added into fields from use case
+            //it kinda generic
+            ///whereever set set like { price: newdata} and snent like from use case 
             const availability = await Availability.findOneAndUpdate(
                 { mentorId },
                 { $set: updatedFields },
@@ -44,20 +46,6 @@ export class AvailabilityRepository implements IAvailbilityRepositary {
         } catch (error: any) {
             customLogger.error(`DB error: update availbilit for ${mentorId} ,${error.message}`);
             throw new Error(`DB error: update availbilit for  - ${error.message}`);
-        }
-    }
-
-    async updatePrice(mentorId: string, price: string): Promise<AvailabilityEntity | null> {
-        try {
-            const availability = await Availability.findOneAndUpdate(
-                { mentorId },
-                { $set: { pricePerSession: price } },
-                { new: true }
-            );
-            return availability
-        } catch (error: any) {
-            customLogger.error(`DB error: update price for ${mentorId} ,${error.message}`);
-            throw new Error(`DB error: update price for  - ${error.message}`);
         }
     }
 

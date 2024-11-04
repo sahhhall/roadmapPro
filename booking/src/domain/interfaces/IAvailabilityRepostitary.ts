@@ -8,5 +8,4 @@ export interface IAvailbilityRepositary {
 
     update(mentorId: string, updateFileds: Partial<AvailabilityEntity>): Promise<AvailabilityEntity | null>
 
-    updatePrice(mentorId: string, price: string): Promise<AvailabilityEntity | null>
 }

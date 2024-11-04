@@ -4,11 +4,12 @@ import { AvailabilityUseCase } from "../../application/usecases/mentor/Availabil
 import { UserCreatedUseCase } from "../../application/usecases/UserCreatedUseCase";
 import { IAvailbilityRepositary } from "../../domain/interfaces/IAvailabilityRepostitary";
 import { IUserRepository } from "../../domain/interfaces/IUserRepositary";
-import { Availability } from "../database/mongodb/schemas/availability.schema";
 import { AvailabilityRepository } from "../repositories/AvailabilityRepostitary";
 import { UserRepository } from "../repositories/UserRepositary";
 import { IPriceUpdateUseCase } from "../../application/interfaces/mentor/IPriceUpdateUseCase";
 import { PriceUpdateUseCase } from "../../application/usecases/mentor/PriceUpdateUseCase";
+import { IGetAvailableSlotsUseCase } from "../../application/interfaces/user/IGetAvailableSlotsUseCase";
+import { GetAvailableSlotsUseCase } from "../../application/usecases/user/GetAvailableSlotsUseCase";
 
 
 
@@ -41,5 +42,9 @@ export class DIContainer {
 
     public priceUpdateUseCase(): IPriceUpdateUseCase {
         return new PriceUpdateUseCase(this._availabilityRepositary)
+    }
+
+    public getAvailableSlotsUseCase(): IGetAvailableSlotsUseCase {
+        return new GetAvailableSlotsUseCase(this._availabilityRepositary)
     }
 }
