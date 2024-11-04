@@ -7,6 +7,8 @@ import { IUserRepository } from "../../domain/interfaces/IUserRepositary";
 import { Availability } from "../database/mongodb/schemas/availability.schema";
 import { AvailabilityRepository } from "../repositories/AvailabilityRepostitary";
 import { UserRepository } from "../repositories/UserRepositary";
+import { IPriceUpdateUseCase } from "../../application/interfaces/mentor/IPriceUpdateUseCase";
+import { PriceUpdateUseCase } from "../../application/usecases/mentor/PriceUpdateUseCase";
 
 
 
@@ -35,5 +37,9 @@ export class DIContainer {
 
     public updateSlotAvailabilityUseCase(): IAvailibilityUpdateUseCase {
         return new AvailabilityUseCase(this._availabilityRepositary);
+    }
+
+    public priceUpdateUseCase(): IPriceUpdateUseCase {
+        return new PriceUpdateUseCase(this._availabilityRepositary)
     }
 }
