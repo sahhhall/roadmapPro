@@ -96,5 +96,12 @@ export const ROUTES = [
             target: 'http://localhost:3002/api/assessment',
             changeOrigin: true,
         }
+    },
+    {
+        url:'/api/mentor',
+        proxy: {
+            target: 'http://localhost:3003/api/mentor',
+            changeOrigin: true,
+        }
     }
 ];
