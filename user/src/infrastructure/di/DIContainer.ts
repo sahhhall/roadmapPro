@@ -1,6 +1,8 @@
+import { IGetMentorDetailsByIdUseCase } from "../../application/interfaces/mentor/IGetMentorDetailsByIdUseCase";
 import { IGetMentorsBySkillUseCase } from "../../application/interfaces/mentor/IGetMentorsBySkillUseCase";
 import { IGetUserDetailsUseCase } from "../../application/interfaces/user/IGetUserDetailsUseCase";
 import { IMentorApprovalUseCase } from "../../application/interfaces/user/IMentorApprovalUseCase";
+import { GetMentorDetailsByIdUseCase } from "../../application/usecases/mentor/GetMentorDetailsByIdUseCase";
 import { GetMentorsBySkillUseCase } from "../../application/usecases/mentor/GetMentorsBySkillUseCase";
 import { GetUserDetailsUseCase } from "../../application/usecases/user/GetUserDetailsUseCase";
 import { MentorApprovalUseCase } from "../../application/usecases/user/MentorApprovalUseCase";
@@ -43,5 +45,9 @@ export class DIContainer {
 
     public getMentorsBySkillUseCase(): IGetMentorsBySkillUseCase {
         return new GetMentorsBySkillUseCase(this._mentorRepositary);
+    }
+
+    public getMentorByIdUseCase(): IGetMentorDetailsByIdUseCase {
+        return new GetMentorDetailsByIdUseCase(this._mentorRepositary)
     }
 }

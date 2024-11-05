@@ -89,7 +89,7 @@ export const ROUTES = [
             target: 'http://localhost:3001/api/roadmap',
             changeOrigin: true,
         }
-    },  {
+    }, {
         url: '/api/assessment',
         auth: 'user',
         proxy: {
@@ -98,9 +98,26 @@ export const ROUTES = [
         }
     },
     {
-        url:'/api/mentor',
+        url: '/api/mentors',
+        auth: false,
+        proxy: {
+            target: 'http://localhost:3004/api/mentors',
+            changeOrigin: true,
+        }
+    },
+    {
+        url: '/api/mentor',
+        auth: false,
         proxy: {
             target: 'http://localhost:3003/api/mentor',
+            changeOrigin: true,
+        }
+    },
+    {
+        url: '/api/user',
+        auth: false,
+        proxy: {
+            target: 'http://localhost:3003/api/user',
             changeOrigin: true,
         }
     }

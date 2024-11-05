@@ -1,6 +1,7 @@
-import express from 'express';
+import express, { NextFunction, Request, Response } from 'express';
 import { ROUTES } from './routes/routes';
 import { setupRateLimit } from './ratelimit/ratelimit';
+import axios from 'axios';
 import { setupProxies } from './proxy/proxy';
 import { setupAuth } from './auth/auth';
 import cookieParser from 'cookie-parser';
@@ -27,6 +28,28 @@ app.use(loggingMiddleware);
 
 app.use(cookieParser());
 // setupRateLimit(app, ROUTES);
+
+// app.get('/api/mentor/mentor-profile/:mentorId', async (req: Request, res: Response, next: NextFunction) => {
+//   try {
+
+//     const [mentorData, availibilityData] = await Promise.all([
+//       axios.get('http://localhost:3002/api/admin/assessment'),
+//       axios.get('http://localhost:3001/api/admin/roadmap'),
+
+//     ]);
+
+//     const combinedData = {
+//       assessment: assessmentData.data,
+//       roadmap: roadmapData.data,
+//       auth: authData.data
+//     };
+
+//     res.json(combinedData);
+//   } catch (error) {
+//     console.error('Error aggregating services:', error);
+//   }
+// });
+
 setupAuth(app, ROUTES);
 setupProxies(app, ROUTES);
 

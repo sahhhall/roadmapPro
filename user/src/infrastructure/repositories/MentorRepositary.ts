@@ -34,13 +34,25 @@ export class MentorRepositary implements IMentorRepository {
                     $regex: new RegExp(`^${skill}$`, 'i')
                 }
             }).populate({
-                path:'userId',
+                path: 'userId',
                 select: 'name email avatar '
             })
-            .select('-updatedAt -totalEarnings');
+                .select('-updatedAt -totalEarnings');
         } catch (error: any) {
             customLogger.error(`db error to fetch mentros by ${skill}: ${error.message}`);
             throw new Error(`db error to fetch mentros by ${skill}: ${error.message}`);
+        }
+    }
+
+    async getMentorByid(mentorId: string): Promise<Mentor | null> {
+        try {
+            return await MentorDB.findOne({ userId: mentorId }).populate({
+                path: 'userId',
+                select: 'name email avatar '
+            })
+        } catch (error: any) {
+            customLogger.error(`db error to fetch mentr by ${mentorId}: ${error.message}`);
+            throw new Error(`db error to fetch mentr by ${mentorId}: ${error.message}`);
         }
     }
 }

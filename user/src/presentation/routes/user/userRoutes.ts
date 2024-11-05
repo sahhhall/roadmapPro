@@ -16,4 +16,5 @@ router.get('/:userId', async (req, res, next) => {
     await getUserDetailsController.getUser(req, res, next);
 })
 
+
 export { router as userRoutes }

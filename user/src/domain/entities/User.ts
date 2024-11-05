@@ -1,5 +1,3 @@
-import mongoose from "mongoose";
-
 export class User {
     constructor(
         public name: string,

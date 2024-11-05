@@ -10,8 +10,10 @@ const mentorApi = apiSlice.injectEndpoints({
                 url: MentorEndpoints.getMentorsBySkill(skill),
                 method: 'get',
             })
-        })
+        }),
+        
     })
+
 })
 
 
