@@ -21,3 +21,43 @@ export interface GetMentorsResponse {
     createdAt: string;
     id: string;
 }
+
+
+
+
+
+
+
+///////////////////////////
+
+
+interface TimeSlot {
+    startTime: string;
+    endTime: string;
+    isBooked: boolean;
+}
+
+
+interface DailySchedule {
+    isAvailable: boolean;
+    timeSlots: TimeSlot[];
+}
+
+
+export interface WeeklySchedule {
+    monday: DailySchedule;
+    tuesday: DailySchedule;
+    wednesday: DailySchedule;
+    thursday: DailySchedule;
+    friday: DailySchedule;
+}
+
+
+export interface MentorAvailabilityResponse {
+    weeklySchedule: WeeklySchedule;
+    mentorId: string;
+    pricePerSession: number;
+    createdAt: string;
+    updatedAt: string;
+    id: string;
+}

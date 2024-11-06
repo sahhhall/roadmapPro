@@ -1,9 +1,28 @@
 import Container from "@/components/Container";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { ChevronLeft, ChevronRight, LinkedinIcon } from "lucide-react";
-import { useRef, useState } from "react";
+import {
+  ChevronLeft,
+  ChevronRight,
+  GithubIcon,
+  LinkedinIcon,
+} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
+import {
+  useGetAvailabilityOfMentorQuery,
+  useGetMentorDetailsQuery,
+} from "../services/api/mentorApi";
+import { availabilityArrange } from "@/features/mentor/libs/availbilityutil";
+import { WeeklySchedule } from "../types/mentor";
+
+
+interface TimeSlot {
+  startTime: string;
+  endTime: string;
+  isBooked: boolean;
+  date: string;
+}
 
 const mockUsers = {
   1: {
@@ -16,16 +35,7 @@ const mockUsers = {
     bio: "I have experience of interviewing over 500+ excellent candidates at Microsoft and Tower Research...",
     languages: ["English", "Hindi"],
     skills: ["Java", "JavaScript", "SQL", "Python", "React", "Node.js"],
-    availableDates: [
-      "Nov 4",
-      "Nov 5",
-      "Nov 6",
-      "Nov 7",
-      "Nov 4",
-      "Nov 5",
-      "Nov 6",
-      "Nov 7",
-    ],
+
     availableSlots: ["10:00 AM", "2:00 PM", "5:00 PM"],
   },
   2: {
@@ -46,13 +56,48 @@ const MentorProfile = () => {
   const { mentorId } = useParams();
   const mentor = mockUsers[1] || {};
 
+  const { data: mentorDetails, isLoading: mentorLoading } =
+    useGetMentorDetailsQuery(mentorId!);
+  const { data: availabilityData, isLoading: availabilityLoading } =
+    useGetAvailabilityOfMentorQuery(mentorId!);
+
   const dateRef = useRef(null);
 
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
-
+  const [availableDates, setAvailableDates] = useState<string[]>([]);
+  const [currentDayTimeSlots, setCurrentDayTimeSlots] = useState<TimeSlot[]>([]);
   const { toast } = useToast();
+  useEffect(() => {
+    if (availabilityData) {
+      // this for getting possible avaialble freee days for a mentor to book in this month utill
+      const dates = availabilityArrange(availabilityData.weeklySchedule);
+      setAvailableDates(dates);
+    }
 
+    // this trigger hwen a date selects and the primary gaol of adding date here to get
+    // rid of dupilcate selection like when user select one time if not date added that will 
+    // also select same time diff dates 
+
+    if (selectedDate && availabilityData?.weeklySchedule) {
+      
+      // here in array like [month, dateofdat, day ] so i want week day to get 
+      const dayOfWeek = selectedDate.split(" ").at(-1)?.toLowerCase() as keyof WeeklySchedule;
+      
+      const daySchedule = availabilityData?.weeklySchedule[dayOfWeek]  ;
+      if (daySchedule && daySchedule.isAvailable && daySchedule.timeSlots) {
+        //added concat for giving if only give date that will select all time that inside a daya
+        const timeSlotsWithDate = daySchedule.timeSlots.map(slot => ({
+          ...slot,
+          date: `${selectedDate} ${slot.startTime} ${slot.endTime}`
+        }));
+        setCurrentDayTimeSlots(timeSlotsWithDate);
+        console.log(currentDayTimeSlots)
+      } else {
+        setCurrentDayTimeSlots([]);
+      }
+    }
+  }, [availabilityData, selectedDate]);
   const handleSelectTime = (slot: string) => {
     setSelectedTime(slot);
   };
@@ -61,19 +106,25 @@ const MentorProfile = () => {
     setSelectedDate(date);
   };
 
+  const formatTimeSlot = (slot: TimeSlot) => {
+    return `${slot.startTime} - ${slot.endTime}`;
+  };
+
+  const handleRedirect = (url: string) => {
+    window.open(url, "_blank");
+  };
+
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log(selectedDate, selectedTime, "date and time");
+    console.log( selectedTime, "date and time");
     if (!selectedDate || !selectedTime) {
       toast({
         variant: "destructive",
         title: "Uh oh! Select Properly.",
         description: "Select one Date and Time.",
       });
-      return
+      return;
     }
-    
-
   };
   //   const scroll = (direction) => {
   //     const container = dateRef.current;
@@ -91,6 +142,9 @@ const MentorProfile = () => {
   //       behavior: "smooth",
   //     });
   //   };
+  if (mentorLoading || availabilityLoading) {
+    return <>loading bro please wait</>;
+  }
   return (
     <div className="relative flex">
       <div className="w-full sm:w-3/4 min-h-screen pb-20">
@@ -100,18 +154,37 @@ const MentorProfile = () => {
             <div className="w-full h-48 sm:h-64 rounded-t-lg relative">
               <div className="absolute inset-0  rounded-t-lg">
                 <img
-                  src={"https://github.com/shadcn.png"}
+                  src={
+                    mentorDetails?.userId?.avatar
+                      ? mentorDetails.userId.avatar
+                      : "https://github.com/shadcn.png"
+                  }
                   alt="cover"
                   className="w-full h-full object-cover rounded-t-lg opacity-20"
                 />
               </div>
-              <div className="absolute right-3 -bottom-6 ">
-                <LinkedinIcon className="w-4 h-4 text-[#0077B5]" />
+              <div className="absolute flex gap-4 right-3 -bottom-6 ">
+                <GithubIcon
+                  onClick={() =>
+                    handleRedirect(mentorDetails?.githubUrl as string)
+                  }
+                  className="w-4 hover:cursor-pointer h-4 text-[#0077B5]"
+                />
+                <LinkedinIcon
+                  onClick={() =>
+                    handleRedirect(mentorDetails?.linkedinUrl as string)
+                  }
+                  className="w-4 hover:cursor-pointer h-4 text-[#0077B5]"
+                />
               </div>
               <div className="absolute -bottom-10 left-6">
                 <div className="w-20 h-20 rounded-full border-4 border-white dark:border-gray-800 overflow-hidden bg-white">
                   <img
-                    src={"https://github.com/shadcn.png"}
+                    src={
+                      mentorDetails?.userId?.avatar
+                        ? mentorDetails.userId.avatar
+                        : "https://github.com/shadcn.png"
+                    }
                     alt="profile"
                     className="w-full h-full object-cover"
                   />
@@ -122,22 +195,15 @@ const MentorProfile = () => {
             <div className="pb-9 pt-16  px-6">
               <div className="space-y-4">
                 <div>
-                  <h1 className="text-2xl font-bold">{mentor?.name}</h1>
-                  {mentor?.role === "mentor" && (
-                    <>
-                      <p className="text-gray-800 text-xs font-medium dark:text-gray-400">
-                        {/* {user!.headline as any || */}
-                        {
-                          "Database Engineer @ Netflix | Former Full Stack Engineer @ Google | Ex-Meta |"
-                        }
-                      </p>
-                      <p className="text-gray-600 text-xs dark:text-gray-400">
-                        {
-                          /* {user!.expirience as any|| "7+ Years expirience"} */ "7+ Years expirience"
-                        }
-                      </p>
-                    </>
-                  )}
+                  <h1 className="text-2xl font-bold">
+                    {mentorDetails?.userId?.name}
+                  </h1>
+                  <p className="text-gray-800 text-xs font-medium dark:text-gray-400">
+                    {mentorDetails?.headline}
+                  </p>
+                  <p className="text-gray-600 text-xs dark:text-gray-400">
+                    {`${mentorDetails?.expirience}+ Years expirience`}
+                  </p>
                 </div>
               </div>
             </div>
@@ -150,10 +216,7 @@ const MentorProfile = () => {
                 <div>
                   <h2 className="text-xl font-semibold mb-3">About</h2>
                   <p className="text-gray-600 dark:text-gray-400 text-sm">
-                    {/* {user?.bio || */}
-                    {
-                      "I have experience of interviewing over 500+ excellent candidates at Microsoft and Tower Research. Apart from that, I also have formal mentorship experience having mentored students in programmes like Microsoft Code.fund.do, Codess, Engage 2020-21 ( I was also the main organiser in Microsoft India for this ), and having mentored over 15 interns in my experience, I believe I can help you with your goals. With the recently changing circumstances in tech industry, the best investment would be in skillset, be it technical or social, and I believe that is where my mentorship would help, in firstly quantifying goals appropriate for the current setups"
-                    }
+                    {mentorDetails?.bio}
                   </p>
                 </div>
 
@@ -162,7 +225,7 @@ const MentorProfile = () => {
                     Languages That He Speak
                   </h3>
                   <div className="flex flex-wrap gap-2">
-                    {["english", "hindi"].map((language) => (
+                    {mentorDetails?.languages.map((language) => (
                       <span className="text-xs px-2 py-1 dark:border dark:bg-transparent bg-gray-100 rounded-md">
                         {language}
                       </span>
@@ -174,20 +237,19 @@ const MentorProfile = () => {
           )}
 
           {/* for mentors specific skill they achived  */}
-          {mentor?.role === "mentor" && (
-            <div className="w-full mt-4 shadow-sm dark:border-gray-800 bg-white border border-gray-100 dark:bg-black rounded-lg">
-              <div className=" p-3 flex-wrap items-center space-x-2   ">
-                {["java", "js"].slice(0, 6).map((skill) => (
-                  <span
-                    key={skill}
-                    className="px-2 py-1 dark:bg-transparent dark:border bg-blue-50 text-blue-700 rounded-md text-xs"
-                  >
-                    {skill}
-                  </span>
-                ))}
-              </div>
+
+          <div className="w-full mt-4 shadow-sm dark:border-gray-800 bg-white border border-gray-100 dark:bg-black rounded-lg">
+            <div className=" p-3 flex-wrap items-center space-x-2   ">
+              {mentorDetails?.assessedSkills?.map((skill) => (
+                <span
+                  key={skill}
+                  className="px-2 py-1 dark:bg-transparent dark:border bg-blue-50 text-blue-700 rounded-md text-xs"
+                >
+                  {skill}
+                </span>
+              ))}
             </div>
-          )}
+          </div>
         </Container>
       </div>
 
@@ -225,19 +287,23 @@ const MentorProfile = () => {
                 ref={dateRef}
                 className="grid grid-flow-col auto-cols-max overflow-x-auto scrollbar-hide pb-4 gap-3"
               >
-                {mentor.availableDates.map((date, index) => (
-                  <button
-                    key={index}
-                    onClick={() => handleSelectedDate(date)}
-                    className={`border ${
-                      selectedDate === date && "border-blue-500"
-                    } rounded-lg p-2 text-center hover:border-blue-500 cursor-pointer`}
-                  >
-                    <div className="text-sm text-gray-500">MON</div>
-                    <div className="font-medium">{date}</div>
-                    <div className="text-xs text-green-500">13 Slots</div>
-                  </button>
-                ))}
+                {availableDates &&
+                  availableDates.map((date: string) => {
+                    const [_, day, weekday] = date.split(" ");
+                    return (
+                      <button
+                        key={date}
+                        onClick={() => handleSelectedDate(date)}
+                        className={`border ${
+                          selectedDate === date && "border-blue-500"
+                        } rounded-lg p-2 text-center hover:border-blue-500 cursor-pointer`}
+                      >
+                        <div className="text-sm text-gray-500">{weekday}</div>
+                        <div className="font-medium">{day}</div>
+                        <div className="text-xs text-green-500">13 Slots</div>
+                      </button>
+                    );
+                  })}
               </div>
             </div>
             <hr />
@@ -259,15 +325,15 @@ const MentorProfile = () => {
                 </div>
               </div>
               <div className="grid pt-3 pb-3 grid-flow-col auto-cols-max overflow-x-auto scrollbar-hide gap-3">
-                {mentor.availableSlots.map((slot, index) => (
+                {currentDayTimeSlots?.map((slot, index) => (
                   <button
                     key={index}
-                    onClick={() => handleSelectTime(slot)}
+                    onClick={() => handleSelectTime(slot.date)}
                     className={` ${
-                      selectedTime === slot && "border-blue-500"
+                      selectedTime === slot.date && "border-blue-500"
                     } border rounded-lg p-2 text-center hover:border-blue-500 cursor-pointer`}
                   >
-                    {slot}
+                     {formatTimeSlot(slot)}
                   </button>
                 ))}
               </div>

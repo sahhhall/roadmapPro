@@ -21,7 +21,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
+const clientBaseUrl = import.meta.env.VITE_BASE_CLIENT_URL;
 const RoadMaps = () => {
   const [statusFilter, setStatusFilter] = useState("published");
   const {
@@ -36,7 +36,7 @@ const RoadMaps = () => {
   }, [statusFilter]);
 
   const openRoadmapInNewTab = (id: string) => {
-    const url = `http://localhost:5173/roadmap/${id}`;
+    const url = `${clientBaseUrl}/roadmap/${id}`;
     window.open(url, "_blank");
   };
   const handleListUnlist = async (roadmapId: string) => {
