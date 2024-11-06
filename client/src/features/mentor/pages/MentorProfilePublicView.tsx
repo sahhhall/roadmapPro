@@ -16,7 +16,6 @@ import {
 import { availabilityArrange } from "@/features/mentor/libs/availbilityutil";
 import { WeeklySchedule } from "../types/mentor";
 
-
 interface TimeSlot {
   startTime: string;
   endTime: string;
@@ -24,49 +23,24 @@ interface TimeSlot {
   date: string;
 }
 
-const mockUsers = {
-  1: {
-    avatar: "/images/avatar1.jpg",
-    name: "Jane Doe",
-    role: "mentor",
-    headline:
-      "Database Engineer @ Netflix | Former Full Stack Engineer @ Google | Ex-Meta |",
-    experience: "7+ Years experience",
-    bio: "I have experience of interviewing over 500+ excellent candidates at Microsoft and Tower Research...",
-    languages: ["English", "Hindi"],
-    skills: ["Java", "JavaScript", "SQL", "Python", "React", "Node.js"],
-
-    availableSlots: ["10:00 AM", "2:00 PM", "5:00 PM"],
-  },
-  2: {
-    avatar: "/images/avatar2.jpg",
-    name: "John Smith",
-    role: "mentor",
-    headline: "Senior Developer @ Amazon | Former Engineer @ LinkedIn",
-    experience: "5+ Years experience",
-    bio: "Passionate about mentoring and helping developers succeed...",
-    languages: ["English", "Spanish"],
-    skills: ["C#", ".NET", "Angular", "Azure", "TypeScript", "MongoDB"],
-    availableDates: ["Nov 8", "Nov 9", "Nov 10", "Nov 11"],
-    availableSlots: ["11:00 AM", "3:00 PM", "6:00 PM"],
-  },
-};
-
 const MentorProfile = () => {
   const { mentorId } = useParams();
-  const mentor = mockUsers[1] || {};
 
-  const { data: mentorDetails, isLoading: mentorLoading } =
-    useGetMentorDetailsQuery(mentorId!);
-  const { data: availabilityData, isLoading: availabilityLoading } =
-    useGetAvailabilityOfMentorQuery(mentorId!);
+  const { data: mentorDetails, isLoading: mentorLoading } = useGetMentorDetailsQuery(mentorId!);
+  const { data: availabilityData, isLoading: availabilityLoading } = useGetAvailabilityOfMentorQuery(mentorId!);
 
+  
   const dateRef = useRef(null);
 
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [selectedTime, setSelectedTime] = useState<string | null>(null);
   const [availableDates, setAvailableDates] = useState<string[]>([]);
-  const [currentDayTimeSlots, setCurrentDayTimeSlots] = useState<TimeSlot[]>([]);
+  const [currentDayTimeSlots, setCurrentDayTimeSlots] = useState<TimeSlot[]>(
+    []
+  );
+  const [booked, setBokked] = useState([
+    "November 7 THURSDAY 11:00 AM 12:00 PM",
+  ]);
   const { toast } = useToast();
   useEffect(() => {
     if (availabilityData) {
@@ -76,23 +50,31 @@ const MentorProfile = () => {
     }
 
     // this trigger hwen a date selects and the primary gaol of adding date here to get
-    // rid of dupilcate selection like when user select one time if not date added that will 
-    // also select same time diff dates 
+    // rid of dupilcate selection like when user select one time if not date added that will
+    // also select same time diff dates
 
     if (selectedDate && availabilityData?.weeklySchedule) {
-      
-      // here in array like [month, dateofdat, day ] so i want week day to get 
-      const dayOfWeek = selectedDate.split(" ").at(-1)?.toLowerCase() as keyof WeeklySchedule;
-      
-      const daySchedule = availabilityData?.weeklySchedule[dayOfWeek]  ;
+      // here in array like [month, dateofdat, day ] so i want week day to get
+      const dayOfWeek = selectedDate
+        .split(" ")
+        .at(-1)
+        ?.toLowerCase() as keyof WeeklySchedule;
+
+      const daySchedule = availabilityData?.weeklySchedule[dayOfWeek];
       if (daySchedule && daySchedule.isAvailable && daySchedule.timeSlots) {
         //added concat for giving if only give date that will select all time that inside a daya
-        const timeSlotsWithDate = daySchedule.timeSlots.map(slot => ({
-          ...slot,
-          date: `${selectedDate} ${slot.startTime} ${slot.endTime}`
-        }));
+        const timeSlotsWithDate = daySchedule.timeSlots
+          .map((slot) => {
+            const slotDateTime = `${selectedDate} ${slot.startTime} ${slot.endTime}`;
+            return {
+              ...slot,
+              date: slotDateTime,
+              isBooked: booked.includes(slotDateTime),
+            };
+          })
+          .filter((slot) => !slot.isBooked);
         setCurrentDayTimeSlots(timeSlotsWithDate);
-        console.log(currentDayTimeSlots)
+        console.log(currentDayTimeSlots);
       } else {
         setCurrentDayTimeSlots([]);
       }
@@ -116,7 +98,7 @@ const MentorProfile = () => {
 
   const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log( selectedTime, "date and time");
+    console.log(selectedTime, "date and time");
     if (!selectedDate || !selectedTime) {
       toast({
         variant: "destructive",
@@ -210,31 +192,30 @@ const MentorProfile = () => {
           </div>
 
           {/* div for about (in db bio)  */}
-          {mentor?.role === "mentor" && (
-            <div className="w-full mt-4 shadow-sm dark:border-gray-800 bg-white border border-gray-100 dark:bg-black  rounded-lg">
-              <div className="p-6 space-y-6">
-                <div>
-                  <h2 className="text-xl font-semibold mb-3">About</h2>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm">
-                    {mentorDetails?.bio}
-                  </p>
-                </div>
 
-                <div className="space-y-4">
-                  <h3 className="text-base font-semibold mb-2">
-                    Languages That He Speak
-                  </h3>
-                  <div className="flex flex-wrap gap-2">
-                    {mentorDetails?.languages.map((language) => (
-                      <span className="text-xs px-2 py-1 dark:border dark:bg-transparent bg-gray-100 rounded-md">
-                        {language}
-                      </span>
-                    ))}
-                  </div>
+          <div className="w-full mt-4 shadow-sm dark:border-gray-800 bg-white border border-gray-100 dark:bg-black  rounded-lg">
+            <div className="p-6 space-y-6">
+              <div>
+                <h2 className="text-xl font-semibold mb-3">About</h2>
+                <p className="text-gray-600 dark:text-gray-400 text-sm">
+                  {mentorDetails?.bio}
+                </p>
+              </div>
+
+              <div className="space-y-4">
+                <h3 className="text-base font-semibold mb-2">
+                  Languages That He Speak
+                </h3>
+                <div className="flex flex-wrap gap-2">
+                  {mentorDetails?.languages.map((language) => (
+                    <span className="text-xs px-2 py-1 dark:border dark:bg-transparent bg-gray-100 rounded-md">
+                      {language}
+                    </span>
+                  ))}
                 </div>
               </div>
             </div>
-          )}
+          </div>
 
           {/* for mentors specific skill they achived  */}
 
@@ -262,7 +243,7 @@ const MentorProfile = () => {
                 Book a Free 1:1 Trial:
               </h2>
               <p className="text-gray-600 text-xs dark:text-gray-400">
-                To Plan Your Mentorship with {mentor.name}
+                To Plan Your Mentorship with {mentorDetails?.userId.name}
               </p>
             </div>
             <hr />
@@ -333,7 +314,7 @@ const MentorProfile = () => {
                       selectedTime === slot.date && "border-blue-500"
                     } border rounded-lg p-2 text-center hover:border-blue-500 cursor-pointer`}
                   >
-                     {formatTimeSlot(slot)}
+                    {formatTimeSlot(slot)}
                   </button>
                 ))}
               </div>
