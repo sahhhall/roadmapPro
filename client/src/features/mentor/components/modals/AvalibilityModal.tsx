@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Switch } from "@/components/ui/switch";
-import { Loader2Icon, Moon } from "lucide-react";
+import { IndianRupee, Loader2Icon, Moon } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -23,12 +23,12 @@ import {
   useUpdateMentorAvailibilityMutation,
 } from "@/features/mentor/services/api/mentorApi";
 import { usegetUser } from "@/hooks/usegetUser";
-import {
-  convertTo24HourFormat,
-  generateTimeSlots,
-} from "@/features/mentor/libs/timeHelpers";
+import {convertTo24HourFormat,generateTimeSlots,} from "@/features/mentor/libs/timeHelpers";
 import { timeOptions } from "@/features/mentor/libs/constants";
+import { Input } from "@/components/ui/input";
+import { z } from "zod";
 
+const hourPriceValidation = z.number().gte(100).positive()
 interface IAvailabilityModalProps {
   dialogOpen: boolean;
   setDialogOpen: (open: boolean) => void;
@@ -47,15 +47,16 @@ export const AvailabilityModal: React.FC<IAvailabilityModalProps> = ({
   const { toast } = useToast();
   const user = usegetUser();
 
-  const [availability, setAvailability] = useState<
-    Record<string, DayAvailability>
-  >({
+  const [availability, setAvailability] = useState<Record<string, DayAvailability>>({
     monday: { isAvailable: false, from: "10:00", to: "17:00" },
     tuesday: { isAvailable: false, from: "10:00", to: "17:00" },
     wednesday: { isAvailable: false, from: "10:00", to: "17:00" },
     thursday: { isAvailable: false, from: "10:00", to: "17:00" },
     friday: { isAvailable: false, from: "10:00", to: "17:00" },
   });
+  const [price, setPrice] = useState<number>(0);
+  const [priceValidationErr, setPriceValidationErr] = useState<string|null>(null); 
+
 
   const shouldFetchForAvailbility = dialogOpen && user?.role == "mentor";
 
@@ -120,6 +121,9 @@ export const AvailabilityModal: React.FC<IAvailabilityModalProps> = ({
       );
 
       setAvailability(newAvailability);
+      if (myAvailibilityData?.pricePerSession) {
+        setPrice(myAvailibilityData.pricePerSession);
+      }
     }
   }, [myAvailibilityData]);
 
@@ -165,6 +169,16 @@ export const AvailabilityModal: React.FC<IAvailabilityModalProps> = ({
     });
   };
   const handleSubmit = async () => {
+
+    try {
+      hourPriceValidation.parse(price);
+      setPriceValidationErr(null);
+    } catch (err) {
+      const zodError = err as z.ZodError<number>;
+      setPriceValidationErr(zodError.issues[0].message);
+      console.log(priceValidationErr)
+      return;
+    }
     const weeklySchedule: any = {};
     Object.entries(availability).forEach(([day, availability]) => {
       weeklySchedule[day] = {
@@ -178,13 +192,14 @@ export const AvailabilityModal: React.FC<IAvailabilityModalProps> = ({
     const payload = {
       mentorId: user?.id as string,
       weeklySchedule,
+      pricePerSession: price
     };
     try {
       await triggerMentorAvailbility(payload).unwrap();
       setDialogOpen(false);
       toast({
         title: "Availability Updated",
-        description: "Your time slots have been successfully updated."
+        description: "Your time slots have been successfully updated.",
       });
     } catch (error: any) {
       console.error("Failed to update availbility", error);
@@ -201,7 +216,7 @@ export const AvailabilityModal: React.FC<IAvailabilityModalProps> = ({
 
   return (
     <AlertDialog open={dialogOpen} onOpenChange={setDialogOpen}>
-      <AlertDialogContent className="sm:max-w-md ">
+      <AlertDialogContent className=" sm:max-w-md ">
         <AlertDialogHeader>
           <AlertDialogTitle className="text-xl font-bold">
             Availability
@@ -210,8 +225,29 @@ export const AvailabilityModal: React.FC<IAvailabilityModalProps> = ({
             You will receive bookings in your local timezone: Asia/Calcutta
           </div>
         </AlertDialogHeader>
+        <div className="mb-6">
+          <label htmlFor="price" className="block text-sm font-medium mb-2">
+            Hourly Rate
+          </label>
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+              <IndianRupee className="h-4 w-4 text-gray-400" />
+            </div>
+            <Input
+              id="price"
+              type="number"
+              value={price}
+              onChange={(e) => setPrice(parseFloat(e.target.value) || 0)}
+              className={`pl-8 ${priceValidationErr ? 'border-red-500' : ''}`}
+              placeholder="Enter your hourly rate"
+              min={100}
+              step={100}
+            />
+          </div>
+        </div>
 
-        <div className="space-y-4 my-4   ">
+        {/* list the availbility mangement  */}
+        <div className="space-y-4 my-4">
           {Object.entries(availability).map(
             ([day, { isAvailable, from, to }]) => (
               <div key={day} className="flex items-center space-x-4">
