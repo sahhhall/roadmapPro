@@ -37,7 +37,7 @@ export class DIContainer {
     //
 
     public getUserDetailsUseCase(): IGetUserDetailsUseCase {
-        return new GetUserDetailsUseCase(this._userProfileRepositary);
+        return new GetUserDetailsUseCase(this._userProfileRepositary,this._mentorRepositary);
     };
 
 
