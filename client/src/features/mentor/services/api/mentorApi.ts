@@ -22,18 +22,20 @@ const mentorApi = apiSlice.injectEndpoints({
                 url: MentorEndpoints.getAvailbilityOfMentor(mentorId),
                 method: 'get',
             }),
+            providesTags: ["AvailbilityMentor"]
         }),
 
         updateMentorAvailibility: builder.mutation<any, UpdateMentorAvailbilityRequest>({
-            query: (data)=> ({
+            query: (data) => ({
                 url: MentorEndpoints.updateMentorAvailbility,
                 method: 'put',
-                body:data
-            })
+                body: data,
+            }),
+            invalidatesTags: ["AvailbilityMentor"]
         })
     })
 
 })
 
 
-export const { useGetMentorsBySkillQuery,useGetAvailabilityOfMentorQuery,useGetMentorDetailsQuery,useUpdateMentorAvailibilityMutation } = mentorApi;
+export const { useGetMentorsBySkillQuery, useGetAvailabilityOfMentorQuery, useGetMentorDetailsQuery, useUpdateMentorAvailibilityMutation } = mentorApi;
