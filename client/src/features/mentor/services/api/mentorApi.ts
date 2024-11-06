@@ -1,6 +1,6 @@
 import { apiSlice } from "@/redux/slices/apiSlice";
 import { MentorEndpoints } from "@/features/mentor/services/endPoints";
-import { GetMentorsResponse, MentorAvailabilityResponse } from "@/features/mentor/types/mentor";
+import { GetMentorsResponse, MentorAvailabilityResponse, UpdateMentorAvailbilityRequest } from "@/features/mentor/types/mentor";
 
 
 const mentorApi = apiSlice.injectEndpoints({
@@ -23,9 +23,17 @@ const mentorApi = apiSlice.injectEndpoints({
                 method: 'get',
             }),
         }),
+
+        updateMentorAvailibility: builder.mutation<any, UpdateMentorAvailbilityRequest>({
+            query: (data)=> ({
+                url: MentorEndpoints.updateMentorAvailbility,
+                method: 'put',
+                body:data
+            })
+        })
     })
 
 })
 
 
-export const { useGetMentorsBySkillQuery,useGetAvailabilityOfMentorQuery,useGetMentorDetailsQuery } = mentorApi;
+export const { useGetMentorsBySkillQuery,useGetAvailabilityOfMentorQuery,useGetMentorDetailsQuery,useUpdateMentorAvailibilityMutation } = mentorApi;

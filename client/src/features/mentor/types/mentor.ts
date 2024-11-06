@@ -15,7 +15,7 @@ export interface GetMentorsResponse {
     languages: string[];
     githubUrl: string;
     linkedinUrl: string;
-    expirience: string; 
+    expirience: string;
     sessionPrice: number;
     totalMeetings: number;
     createdAt: string;
@@ -34,7 +34,7 @@ export interface GetMentorsResponse {
 interface TimeSlot {
     startTime: string;
     endTime: string;
-    isBooked: boolean;
+    isBooked: boolean | undefined;
 }
 
 
@@ -60,4 +60,12 @@ export interface MentorAvailabilityResponse {
     createdAt: string;
     updatedAt: string;
     id: string;
+}
+
+
+///availbility updation
+
+export interface UpdateMentorAvailbilityRequest {
+    mentorId: string;
+    weeklySchedule: WeeklySchedule
 }

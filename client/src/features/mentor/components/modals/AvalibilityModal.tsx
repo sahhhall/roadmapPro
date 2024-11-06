@@ -10,17 +10,23 @@ import {
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
 import { Switch } from "@/components/ui/switch";
-import { Moon } from "lucide-react";
+import { Loader2Icon, Moon } from "lucide-react";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from "@/components/ui/select";
-import { useGetAvailabilityOfMentorQuery } from "@/features/mentor/services/api/mentorApi";
+import {
+  useGetAvailabilityOfMentorQuery,
+  useUpdateMentorAvailibilityMutation,
+} from "@/features/mentor/services/api/mentorApi";
 import { usegetUser } from "@/hooks/usegetUser";
-import {  convertTo24HourFormat, generateTimeSlots } from "@/features/mentor/libs/timeHelpers";
+import {
+  convertTo24HourFormat,
+  generateTimeSlots,
+} from "@/features/mentor/libs/timeHelpers";
 import { timeOptions } from "@/features/mentor/libs/constants";
 
 interface IAvailabilityModalProps {
@@ -33,10 +39,6 @@ interface DayAvailability {
   from: string;
   to: string;
 }
-
-
-
-
 
 export const AvailabilityModal: React.FC<IAvailabilityModalProps> = ({
   dialogOpen,
@@ -56,14 +58,18 @@ export const AvailabilityModal: React.FC<IAvailabilityModalProps> = ({
   });
 
   const shouldFetchForAvailbility = dialogOpen && user?.role == "mentor";
+
   const { data: myAvailibilityData } = useGetAvailabilityOfMentorQuery(
     user?.id!,
     { skip: !shouldFetchForAvailbility }
   );
+  const [triggerMentorAvailbility, { isLoading }] =
+    useUpdateMentorAvailibilityMutation();
+
   useEffect(() => {
     if (myAvailibilityData?.weeklySchedule) {
       const newAvailability = { ...availability };
-      // key as first arr value and key=> value as second array 
+      // key as first arr value and key=> value as second array
       Object.entries(myAvailibilityData.weeklySchedule).forEach(
         ([day, schedule]) => {
           // here i want get short name fo that day then only
@@ -158,13 +164,8 @@ export const AvailabilityModal: React.FC<IAvailabilityModalProps> = ({
       return updatedAvailbility;
     });
   };
-  const handleSubmit = () => {
-    // toast({
-    //   title: "Availability updated",
-    //   description: "Your availability settings have been saved.",
-    // });
+  const handleSubmit = async () => {
     const weeklySchedule: any = {};
-console.log(availability,"a")
     Object.entries(availability).forEach(([day, availability]) => {
       weeklySchedule[day] = {
         isAvailable: availability.isAvailable,
@@ -175,11 +176,27 @@ console.log(availability,"a")
     });
 
     const payload = {
-      mentorId: user?.id,
+      mentorId: user?.id as string,
       weeklySchedule,
     };
-    console.log(payload, "avialbility");
-    // setDialogOpen(false);
+    try {
+      await triggerMentorAvailbility(payload).unwrap();
+      setDialogOpen(false);
+      toast({
+        title: "Availability Updated",
+        description: "Your time slots have been successfully updated."
+      });
+    } catch (error: any) {
+      console.error("Failed to update availbility", error);
+      const errorMessage =
+        error?.data?.message ||
+        "An unexpected error occurred. Please try again later.";
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: errorMessage,
+      });
+    }
   };
 
   return (
@@ -277,7 +294,7 @@ console.log(availability,"a")
         <AlertDialogFooter>
           <AlertDialogCancel>Close</AlertDialogCancel>
           <Button onClick={handleSubmit} variant="default">
-            Save
+            {isLoading ? <Loader2Icon className=" animate-spin " /> : "Save"}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
