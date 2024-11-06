@@ -1,9 +1,14 @@
 import Container from "@/components/Container";
+import { Button } from "@/components/ui/button";
+import AvailabilityModal from "@/features/mentor/components/modals/AvalibilityModal";
 import { usegetUser } from "@/hooks/usegetUser";
-import {  LinkedinIcon } from "lucide-react";
+import { LinkedinIcon } from "lucide-react";
+import { useState } from "react";
 const GeneralPage = () => {
   const user = usegetUser();
-
+  const [availibilityDialogOpen, setAvailibilityDialogOpen] =
+    useState<boolean>(false);
+  const openavailibilityDialog = () => setAvailibilityDialogOpen(true);
   return (
     <Container className="">
       {/* div for contenet like profile and user name and headlin  */}
@@ -99,6 +104,24 @@ const GeneralPage = () => {
           </div>
         </div>
       )}
+
+      {user?.role === "mentor" && (
+        <div className="w-full mt-4 shadow-sm dark:border-gray-800 bg-white border border-gray-100 dark:bg-black rounded-lg">
+          <div className=" p-3 flex-wrap items-center space-x-2   ">
+            <Button
+              onClick={openavailibilityDialog}
+              className="w-full border-blue-100"
+              variant={"outline"}
+            >
+              Create Stack
+            </Button>
+          </div>
+        </div>
+      )}
+      <AvailabilityModal
+        setDialogOpen={setAvailibilityDialogOpen}
+        dialogOpen={availibilityDialogOpen}
+      />
     </Container>
   );
 };
