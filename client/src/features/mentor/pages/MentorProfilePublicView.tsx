@@ -325,7 +325,7 @@ const MentorProfile = () => {
               variant={"submit"}
               className="w-full"
             >
-              Book Now
+              Book Now for {availabilityData?.pricePerSession}
             </Button>
             {/* footer for booking div  */}
             <div className="text-sm text-gray-500">

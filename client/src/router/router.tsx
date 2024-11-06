@@ -27,7 +27,7 @@ const AssessmentPage = lazy(() => import("@/features/user/pages/AssessmentPage")
 const MentorListing = lazy(()=> import("@/features/mentor/pages/MentorListing"));
 const MentorProfile = lazy(()=> import('@/features/mentor/pages/MentorProfilePublicView'));
 
-const ProfileAvailabilty = lazy(()=> import('@/features/user/pages/MentorAvailabilityPage'));
+const BookingsPage = lazy(()=> import('@/features/user/pages/BookingsPage'));
 
 const routes = createBrowserRouter([
   {
@@ -125,10 +125,10 @@ const routes = createBrowserRouter([
             ),
           },
           {
-            path:'availablity',
+            path:'bookings',
             element: (
                <Suspense fallback={<div>Loading...</div>}>
-                <ProfileAvailabilty/>
+                <BookingsPage/>
                </Suspense>
             )
           }
