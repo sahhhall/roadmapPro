@@ -35,8 +35,15 @@ const mentorTestApi = apiSlice.injectEndpoints({
             })
         }),
 
+        getUserDetails: builder.query<any,any>({
+            query: (id) => ({
+                url: AssessmentTestEndpoints.getUserDetails(id),
+                method: 'get',
+            })
+        })
+
     })
 })
 
 
-export const { useGetAllAvalibleStacksQuery, useRegisterTestMutation, useLazyGetQuestionQuery, useSubmitMentorMutation } = mentorTestApi;
+export const { useGetAllAvalibleStacksQuery, useRegisterTestMutation, useLazyGetQuestionQuery, useSubmitMentorMutation ,useGetUserDetailsQuery } = mentorTestApi;

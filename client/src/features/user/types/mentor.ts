@@ -63,3 +63,46 @@ export interface TestSubmissionRequest {
     id: string;
     questions: QuestionTest[];
 }
+
+
+
+
+
+
+
+
+//
+
+export interface IUserDetailsResponse {
+    id: string;
+    name: string;
+    email: string;
+    role: string;
+    isGoogle: boolean;
+    lastNameChange: Date | null;
+    createdAt: Date;
+    updatedAt: Date;
+}
+
+
+export interface IMentorDetailsResponse {
+    userId: {
+        name: string;
+        email: string;
+        avatar: string;
+        id: string;
+    };
+    assessedSkills: string[];
+    headline: string;
+    bio: string;
+    languages: string[];
+    githubUrl: string;
+    linkedinUrl: string;
+    experience: string;
+    sessionPrice: number;
+    totalEarnings: number;
+    totalMeetings: number;
+    createdAt: Date;
+    updatedAt: Date;
+    id: string;
+}
