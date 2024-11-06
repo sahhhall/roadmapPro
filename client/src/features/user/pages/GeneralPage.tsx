@@ -113,7 +113,7 @@ const GeneralPage = () => {
               className="w-full border-blue-100"
               variant={"outline"}
             >
-              Create Stack
+              Manage Availability
             </Button>
           </div>
         </div>

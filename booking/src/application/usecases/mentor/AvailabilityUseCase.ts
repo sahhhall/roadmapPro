@@ -6,7 +6,7 @@ import { IAvailbilityRepositary } from '../../../domain/interfaces/IAvailability
 
 export class AvailabilityUseCase implements IAvailibilityUpdateUseCase {
     constructor(private availabilityRepositary: IAvailbilityRepositary) { }
-    async execute(data: Pick<AvailabilityEntity, 'mentorId' | 'weeklySchedule'>): Promise<AvailabilityEntity | null> {
+    async execute(data: Pick<AvailabilityEntity, 'mentorId' | 'weeklySchedule' | 'pricePerSession'>): Promise<AvailabilityEntity | null> {
         let availability = await this.availabilityRepositary.getAvailibilityByMentorId(data.mentorId) as any;
         if (!availability) {
             const emtpySchedule: WeeklyScheduleEntity = {
@@ -23,12 +23,12 @@ export class AvailabilityUseCase implements IAvailibilityUpdateUseCase {
                 pricePerSession: 0
             })
         };
-
+        const oldprice = availability.pricePerSession || 0;
         const updatedSchedule = {
             ...availability!.weeklySchedule,
             ...data.weeklySchedule
         };
-        let updatedAvailbility = await this.availabilityRepositary.update(data.mentorId, { weeklySchedule: updatedSchedule });
+        let updatedAvailbility = await this.availabilityRepositary.update(data.mentorId, { weeklySchedule: updatedSchedule, pricePerSession: data?.pricePerSession ? data.pricePerSession : oldprice });
         return updatedAvailbility
 
     }

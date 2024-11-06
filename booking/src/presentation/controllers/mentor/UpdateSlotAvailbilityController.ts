@@ -8,11 +8,11 @@ export class UpdateSlotAvailbilityController {
 
     async updateSlot(req: Request, res: Response, next: NextFunction) {
         try {
-            const { mentorId, weeklySchedule } = req.body;
+            const { mentorId, weeklySchedule, pricePerSession } = req.body;
             // if (mentorId != req.user?.id) {
             //     throw new BadRequestError('go and change your slot');
             // }
-            const slotAvailbilityUpdation = await this.availbilitySlotUpdateUseCase.execute({ mentorId, weeklySchedule });
+            const slotAvailbilityUpdation = await this.availbilitySlotUpdateUseCase.execute({ mentorId, weeklySchedule,pricePerSession });
             return res.status(HttpStatus.CREATED).json(slotAvailbilityUpdation)
         } catch (error) {
             next(error)
