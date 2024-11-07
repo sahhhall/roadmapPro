@@ -6,6 +6,7 @@ import { IServerInterface } from './domain/interfaces/IServer';
 import { availabilityRoutes } from './presentation/routes/availbilityRoutes';
 import { UserCreatedConsumer } from './infrastructure/kafka/consumers/user-created-consumer';
 import { DIContainer } from './infrastructure/di/DIContainer';
+import { bookingRoutes } from './presentation/routes/bookingRoutes';
 
 
 
@@ -28,6 +29,7 @@ export class App {
 
     private registerRoutes(): void {
         this.server.registerRoutes('/api/mentors/availability', availabilityRoutes);
+        this.server.registerRoutes('/api/bookings', bookingRoutes);
 
     }
     private registerErrorHandler(): void {

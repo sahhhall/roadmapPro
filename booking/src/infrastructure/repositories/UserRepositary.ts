@@ -33,6 +33,14 @@ export class UserRepository implements IUserRepository {
         }
     }
 
-
+    async getUser(id: string): Promise<User | any> {
+        try {
+            const user = await UserBooking.findById(id);
+            return user
+        } catch (error:any) {
+            customLogger.error(`db error to fetch user booking-service: ${error.message}`);
+            throw new Error(`db error to fetch user booking-service: ${error.message}`);
+        }
+    }
 }
 

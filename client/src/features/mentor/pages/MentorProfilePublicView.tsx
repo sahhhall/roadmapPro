@@ -26,10 +26,11 @@ interface TimeSlot {
 const MentorProfile = () => {
   const { mentorId } = useParams();
 
-  const { data: mentorDetails, isLoading: mentorLoading } = useGetMentorDetailsQuery(mentorId!);
-  const { data: availabilityData, isLoading: availabilityLoading } = useGetAvailabilityOfMentorQuery(mentorId!);
+  const { data: mentorDetails, isLoading: mentorLoading } =
+    useGetMentorDetailsQuery(mentorId!);
+  const { data: availabilityData, isLoading: availabilityLoading } =
+    useGetAvailabilityOfMentorQuery(mentorId!);
 
-  
   const dateRef = useRef(null);
 
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -219,12 +220,12 @@ const MentorProfile = () => {
 
           {/* for mentors specific skill they achived  */}
 
-          <div className="w-full mt-4 shadow-sm dark:border-gray-800 bg-white border border-gray-100 dark:bg-black rounded-lg">
-            <div className=" p-3 flex-wrap items-center space-x-2   ">
+          <div className="min-w-full mt-4 shadow-sm border border-gray-200 dark:border-gray-800 bg-white dark:bg-black rounded-lg">
+            <div className="p-3 flex flex-wrap gap-2 items-center">
               {mentorDetails?.assessedSkills?.map((skill) => (
                 <span
                   key={skill}
-                  className="px-2 py-1 dark:bg-transparent dark:border bg-blue-50 text-blue-700 rounded-md text-xs"
+                  className="px-2 py-1 bg-blue-50 dark:bg-gray-900 border border-blue-200 dark:border-gray-700 text-blue-700 dark:text-blue-300 text-xs rounded hover:bg-blue-100 dark:hover:bg-gray-800 transition"
                 >
                   {skill}
                 </span>

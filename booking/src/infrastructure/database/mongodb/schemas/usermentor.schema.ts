@@ -10,7 +10,7 @@ interface UserAttr {
 }
 
 
-interface UserDoc extends Document {
+export interface UserDoc extends Document {
     role: string; 
     _id: string; 
     email: string;

@@ -15,8 +15,8 @@ importers:
         specifier: ^0.7.13
         version: 0.7.13
       '@sahhhallroadmappro/common':
-        specifier: ^1.0.48
-        version: 1.0.48
+        specifier: ^1.0.49
+        version: 1.0.49
       '@types/bcrypt':
         specifier: ^5.0.2
         version: 5.0.2
@@ -47,6 +47,9 @@ importers:
       mongoose:
         specifier: ^8.6.3
         version: 8.8.0
+      uuid:
+        specifier: ^11.0.2
+        version: 11.0.2
     devDependencies:
       '@types/cookie-parser':
         specifier: ^1.4.7
@@ -215,8 +218,8 @@ packages:
   '@protobufjs/utf8@1.1.0':
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
 
-  '@sahhhallroadmappro/common@1.0.48':
-    resolution: {integrity: sha512-iPf8yP99OjcW3O4nl8IrrpuCU8UYsi0kykD+TpswTJVPVr1yJq7s7mv7ZG1Z0Qt+PIBgb+LH4vWabtTbz6h0qw==}
+  '@sahhhallroadmappro/common@1.0.49':
+    resolution: {integrity: sha512-lfCzijtGNvYTFiBlBeVpF1FZVJzT7MMP8RPXF0kToP24flbLiAOMofUkiogW0C8eP9bWMQmNogEhfinOZIjc2Q==}
 
   '@tsconfig/node10@1.0.11':
     resolution: {integrity: sha512-DcRjDCujK/kCk/cUe8Xz8ZSpm8mS3mNNpta+jGCA6USEDfktlNvm1+IuZ9eTcDbNk41BHwpHHeW+N1lKCz4zOw==}
@@ -1416,6 +1419,10 @@ packages:
     resolution: {integrity: sha512-pMZTvIkT1d+TFGvDOqodOclx0QWkkgi6Tdoa8gC8ffGAAqz9pzPTZWAybbsHHoED/ztMtkv/VoYTYyShUn81hA==}
     engines: {node: '>= 0.4.0'}
 
+  uuid@11.0.2:
+    resolution: {integrity: sha512-14FfcOJmqdjbBPdDjFQyk/SdT4NySW4eM0zcG+HqbHP5jzuH56xO3J1DGhgs/cEMCfwYi3HQI1gnTO62iaG+tQ==}
+    hasBin: true
+
   v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
 
@@ -1628,7 +1635,7 @@ snapshots:
 
   '@protobufjs/utf8@1.1.0': {}
 
-  '@sahhhallroadmappro/common@1.0.48':
+  '@sahhhallroadmappro/common@1.0.49':
     dependencies:
       '@grpc/grpc-js': 1.12.2
       '@grpc/proto-loader': 0.7.13
@@ -2853,6 +2860,8 @@ snapshots:
   util-deprecate@1.0.2: {}
 
   utils-merge@1.0.1: {}
+
+  uuid@11.0.2: {}
 
   v8-compile-cache-lib@3.0.1: {}
 

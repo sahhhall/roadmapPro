@@ -1,27 +1,30 @@
 import mongoose, { Schema, Document, Model } from "mongoose";
-
+import { UserDoc } from "./usermentor.schema";
+import { BookinStatus } from '@sahhhallroadmappro/common'
 
 interface BookingAttr {
     menteeId: string;
     mentorId: string;
-    startTime: Date;
-    endTime: Date;
+    startTime: string;
+    endTime: string;
     date: Date;
-    status?: 'pending' | 'confirmed' | 'completed' | 'cancelled';
+    status?:BookinStatus;
     paymentStatus?: 'pending' | 'paid' | 'refunded';
+    expiresAt: Date;
     videoCallLink?: string;
     cancelledAt?: Date;
 }
 
 
 interface BookingDoc extends Document {
-    menteeId: string;
-    mentorId: string;
-    startTime: Date;
+    menteeId: UserDoc;
+    mentorId: UserDoc;
+    startTime: string;
     date: Date;
-    endTime: Date;
-    status: 'pending' | 'confirmed' | 'completed' | 'cancelled';
+    endTime: string;
+    status: BookinStatus;
     paymentStatus: 'pending' | 'paid' | 'refunded';
+    expiresAt: Date;
     videoCallLink?: string;
     cancelledAt?: Date;
 }
@@ -34,20 +37,23 @@ interface BookingModel extends Model<BookingDoc> {
 
 const bookingSchema = new Schema<BookingDoc>(
     {
-        menteeId: { type: String, required: true },
-        mentorId: { type: String, required: true },
+        menteeId: { type: mongoose.Schema.Types.ObjectId, ref: 'UserBooking' },
+        mentorId: { type: mongoose.Schema.Types.ObjectId, ref: 'UserBooking' },
         date: { type: Date, required: true },
-        startTime: { type: Date, required: true },
-        endTime: { type: Date, required: true },
+        startTime: { type: String, required: true },
+        endTime: { type: String, required: true },
         status: {
             type: String,
-            enum: ['pending', 'confirmed', 'completed', 'cancelled'],
-            default: 'pending'
+            enum: Object.values(BookinStatus),
+            default: BookinStatus.Created
         },
         paymentStatus: {
             type: String,
             enum: ['pending', 'paid', 'refunded'],
             default: 'pending'
+        },
+        expiresAt: {
+            type: mongoose.Schema.Types.Date,
         },
         videoCallLink: { type: String },
         cancelledAt: { type: Date },

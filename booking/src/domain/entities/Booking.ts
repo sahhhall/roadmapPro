@@ -1,3 +1,6 @@
+import { BookinStatus } from "@sahhhallroadmappro/common";
+
+
 export class TimeSlotEntity {
     constructor(
         public startTime: string,
@@ -39,13 +42,14 @@ export class AvailabilityEntity {
 
 export class BookingEntity {
     constructor(
-        public menteeId: string,
-        public mentorId: string,
-        public startTime: Date,
-        public endTime: Date,
+        public menteeId: any,
+        public mentorId: any,
+        public startTime: string,
+        public endTime: string,
         public date: Date,
-        public status: 'pending' | 'confirmed' | 'completed' | 'cancelled' = 'pending',
+        public status: BookinStatus = BookinStatus.Created,
         public paymentStatus: 'pending' | 'paid' | 'refunded' = 'pending',
+        public expiresAt: Date,
         public videoCallLink?: string,
         public cancelledAt?: Date,
         public createdAt?: Date,
