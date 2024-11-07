@@ -16,6 +16,8 @@ import { IBookingRepositary } from "../../domain/interfaces/IBookingRepositary";
 import { BookingRepositary } from "../repositories/BookingRepositary";
 import { IBookingEventUpdateStatusUseCase } from "../../application/interfaces/user/IBookingEventUpdateStatusUseCase";
 import { BookingEventUpdateUseCase } from "../../application/usecases/user/BookingEventUpdateStatusUseCase";
+import { GetMentorAllBookingDetailsUseCase } from "../../application/usecases/mentor/GetMentorAllBookingDetailsUseCase";
+import { IGetMentorAllBookingDetailsUseCase } from "../../application/interfaces/mentor/IGetMentorAllBookingDetailsUseCase";
 
 
 
@@ -65,5 +67,9 @@ export class DIContainer {
 
     public updateStatusExipiredBooking(): IBookingEventUpdateStatusUseCase {
         return new BookingEventUpdateUseCase(this._bookingRepositary)
+    }
+
+    public getAllBookingByMentorId(): IGetMentorAllBookingDetailsUseCase {
+        return new GetMentorAllBookingDetailsUseCase(this._bookingRepositary)
     }
 }

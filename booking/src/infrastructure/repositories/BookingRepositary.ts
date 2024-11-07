@@ -42,9 +42,13 @@ export class BookingRepositary implements IBookingRepositary {
         }
     };
 
-    async findByMentorId(mentorId: string): Promise<BookingEntity[]> {
+    async findByMentorId(mentorId: string, status?: string): Promise<BookingEntity[]> {
         try {
-            const bookings = await Booking.find({ mentorId });
+            const query: any = { mentorId };
+            if (status) {
+                query.status = status
+            }
+            const bookings = await Booking.find(query);
             return bookings
         } catch (error: any) {
             customLogger.error(`db error to find bookings booking booking-service: ${error.message}`);
