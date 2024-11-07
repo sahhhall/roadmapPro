@@ -1,6 +1,6 @@
 import { apiSlice } from "@/redux/slices/apiSlice";
 import { MentorEndpoints } from "@/features/mentor/services/endPoints";
-import { GetMentorsResponse, MentorAvailabilityResponse, UpdateMentorAvailbilityRequest } from "@/features/mentor/types/mentor";
+import { GetMentorsResponse, ICreateBookingRequest, MentorAvailabilityResponse, UpdateMentorAvailbilityRequest } from "@/features/mentor/types/mentor";
 
 
 const mentorApi = apiSlice.injectEndpoints({
@@ -32,7 +32,16 @@ const mentorApi = apiSlice.injectEndpoints({
                 body: data,
             }),
             invalidatesTags: ["AvailbilityMentor"]
+        }),
+
+        createBooking: builder.mutation<any, ICreateBookingRequest> ({
+            query: (data) => ({
+                url: MentorEndpoints.createBooking,
+                method: 'post',
+                body: data,
+            }),
         })
+        
     })
 
 })

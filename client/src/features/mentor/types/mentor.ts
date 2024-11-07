@@ -69,3 +69,14 @@ export interface UpdateMentorAvailbilityRequest {
     mentorId: string;
     weeklySchedule: WeeklySchedule
 }
+
+///
+
+
+export interface ICreateBookingRequest {
+    mentorId: string;
+    menteeId: string;
+    startTime: string;
+    endTime: string;
+    date: string | Date;
+}

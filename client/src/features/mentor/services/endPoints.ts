@@ -3,5 +3,8 @@ export const MentorEndpoints = {
     getMentorDetails: (mentorId: string) => `/api/mentor/details/${mentorId}`,
     getAvailbilityOfMentor: (mentorId: string) => `/api/mentors/availability/${mentorId}`,
 
-    updateMentorAvailbility: `/api/mentors/availability`
+    updateMentorAvailbility: `/api/mentors/availability`,
+    
+    createBooking: '/api/bookings',
+    fetchMentorBookings: (mentorId: string) => `/api/bookings/${mentorId}`
 }
