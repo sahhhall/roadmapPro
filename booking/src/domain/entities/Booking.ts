@@ -50,6 +50,7 @@ export class BookingEntity {
         public status: BookinStatus = BookinStatus.Created,
         public paymentStatus: 'pending' | 'paid' | 'refunded' = 'pending',
         public expiresAt: Date,
+        public id: string,
         public videoCallLink?: string,
         public cancelledAt?: Date,
         public createdAt?: Date,

@@ -26,6 +26,7 @@ interface BookingDoc extends Document {
     paymentStatus: 'pending' | 'paid' | 'refunded';
     expiresAt: Date;
     videoCallLink?: string;
+    id: string;
     cancelledAt?: Date;
 }
 

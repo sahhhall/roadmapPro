@@ -7,11 +7,13 @@ import { availabilityRoutes } from './presentation/routes/availbilityRoutes';
 import { UserCreatedConsumer } from './infrastructure/kafka/consumers/user-created-consumer';
 import { DIContainer } from './infrastructure/di/DIContainer';
 import { bookingRoutes } from './presentation/routes/bookingRoutes';
+import { ExpirationCompletedConsumer } from './infrastructure/kafka/consumers/expiration-completed-consumer';
 
 
 
 export class App {
     private userCreatedConsumer?: UserCreatedConsumer;
+    private bookingExpiration?: ExpirationCompletedConsumer;
     constructor(private server: IServerInterface) { }
 
     async initialize(): Promise<void> {
@@ -48,12 +50,15 @@ export class App {
         try {
             await kafkaWrapper.connect();
             const consumer = await kafkaWrapper.createConsumer('booking-service-group');
+            const consumer2 = await kafkaWrapper.createConsumer('expiration-completed-group')
             const diContainer = DIContainer.getInstance();
             const userCreatedUseCase = diContainer.userCreatedUseCase();
             this.userCreatedConsumer = new UserCreatedConsumer(
                 consumer,
                 userCreatedUseCase
             );
+            this.bookingExpiration = new ExpirationCompletedConsumer(consumer2);
+            await this.bookingExpiration.listen();
             await this.userCreatedConsumer.listen()
         } catch (error) {
             console.log('some err connect with kafka', error);

@@ -1,5 +1,4 @@
 import { KafkaConsumer, UserCreateEvent, Topics } from '@sahhhallroadmappro/common';
-import { UserBooking } from '../../database/mongodb/schemas/usermentor.schema';
 import { IUserCreatedUseCase } from '../../../application/interfaces/IUserCreatedUseCase';
 
 export class UserCreatedConsumer extends KafkaConsumer<UserCreateEvent> {
