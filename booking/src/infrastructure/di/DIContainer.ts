@@ -14,6 +14,8 @@ import { ICreateBookingUseCase } from "../../application/interfaces/user/ICreate
 import { CreateBookingUseCase } from "../../application/usecases/user/CreateBookingUseCase";
 import { IBookingRepositary } from "../../domain/interfaces/IBookingRepositary";
 import { BookingRepositary } from "../repositories/BookingRepositary";
+import { IBookingEventUpdateStatusUseCase } from "../../application/interfaces/user/IBookingEventUpdateStatusUseCase";
+import { BookingEventUpdateUseCase } from "../../application/usecases/user/BookingEventUpdateStatusUseCase";
 
 
 
@@ -58,6 +60,10 @@ export class DIContainer {
     //booking
 
     public createBookingUseCase(): ICreateBookingUseCase {
-        return new CreateBookingUseCase(this._bookingRepositary,this._availabilityRepositary)
+        return new CreateBookingUseCase(this._bookingRepositary, this._availabilityRepositary)
     };
+
+    public updateStatusExipiredBooking(): IBookingEventUpdateStatusUseCase {
+        return new BookingEventUpdateUseCase(this._bookingRepositary)
+    }
 }

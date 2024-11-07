@@ -11,7 +11,7 @@ export class BookingRepositary implements IBookingRepositary {
     async create(booking: Partial<BookingEntity>, expireAt: Date): Promise<BookingEntity> {
         try {
             const roomId = uuidv4();
-            const baseUrl = process.env.FRONT_END_BASE_URL+`/meet` || 'http://localhost:5173/meet';
+            const baseUrl = process.env.FRONT_END_BASE_URL + `/meet` || 'http://localhost:5173/meet';
             const newBooking = await Booking.build({
                 menteeId: booking!.menteeId as string,
                 mentorId: booking!.mentorId as string,
@@ -84,7 +84,20 @@ export class BookingRepositary implements IBookingRepositary {
     //         throw new Error(`db error to find bookings by mentee booking booking-service: ${error.message}`);
     //     }
     // }
-
+    async updateStatus(bookingId: string, newStatus: string): Promise<BookingEntity | null> {
+        try {
+            const booking = await Booking.findByIdAndUpdate(bookingId, {
+                $set: { status: newStatus },
+            }, {
+                new: true
+            });
+            await booking!.save();
+            return booking;
+        } catch (error: any) {
+            customLogger.error(`db error updating booking status booking-service: ${error.message}`);
+            throw new Error(`db error updating booking status booking-service: ${error.message}`);
+        }
+    }
 
 }
 

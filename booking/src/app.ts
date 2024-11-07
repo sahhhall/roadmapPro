@@ -53,11 +53,12 @@ export class App {
             const consumer2 = await kafkaWrapper.createConsumer('expiration-completed-group')
             const diContainer = DIContainer.getInstance();
             const userCreatedUseCase = diContainer.userCreatedUseCase();
+            const updateStatusExipredBookings = diContainer.updateStatusExipiredBooking();
             this.userCreatedConsumer = new UserCreatedConsumer(
                 consumer,
                 userCreatedUseCase
             );
-            this.bookingExpiration = new ExpirationCompletedConsumer(consumer2);
+            this.bookingExpiration = new ExpirationCompletedConsumer(consumer2, updateStatusExipredBookings);
             await this.bookingExpiration.listen();
             await this.userCreatedConsumer.listen()
         } catch (error) {

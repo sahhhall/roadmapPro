@@ -1,5 +1,6 @@
 import { KafkaConsumer, UserCreateEvent, Topics } from '@sahhhallroadmappro/common';
 import { IUserCreatedUseCase } from '../../../application/interfaces/IUserCreatedUseCase';
+import { customLogger } from '../../../presentation/middleware/loggerMiddleware';
 
 export class UserCreatedConsumer extends KafkaConsumer<UserCreateEvent> {
     topic: Topics.userCreated = Topics.userCreated;
@@ -18,7 +19,7 @@ export class UserCreatedConsumer extends KafkaConsumer<UserCreateEvent> {
                 avatar: data.avatar
             };
            const createdUser = await this.userCreatedUseCase.execute(userData)
-           console.log("user created in booking-service",createdUser)
+           customLogger.debug("user created in booking-service",createdUser)
         } catch (error) {
             console.log('err saving user the data db', error);
         }
