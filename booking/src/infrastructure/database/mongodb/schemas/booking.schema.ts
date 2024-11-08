@@ -5,9 +5,7 @@ import { BookinStatus } from '@sahhhallroadmappro/common'
 interface BookingAttr {
     menteeId: string;
     mentorId: string;
-    startTime: string;
-    endTime: string;
-    date: Date;
+    date: string;
     status?:BookinStatus;
     paymentStatus?: 'pending' | 'paid' | 'refunded';
     expiresAt: Date;
@@ -19,9 +17,7 @@ interface BookingAttr {
 interface BookingDoc extends Document {
     menteeId: UserDoc;
     mentorId: UserDoc;
-    startTime: string;
-    date: Date;
-    endTime: string;
+    date: string;
     status: BookinStatus;
     paymentStatus: 'pending' | 'paid' | 'refunded';
     expiresAt: Date;
@@ -40,9 +36,7 @@ const bookingSchema = new Schema<BookingDoc>(
     {
         menteeId: { type: mongoose.Schema.Types.ObjectId, ref: 'UserBooking' },
         mentorId: { type: mongoose.Schema.Types.ObjectId, ref: 'UserBooking' },
-        date: { type: Date, required: true },
-        startTime: { type: String, required: true },
-        endTime: { type: String, required: true },
+        date: { type: String, required: true },
         status: {
             type: String,
             enum: Object.values(BookinStatus),

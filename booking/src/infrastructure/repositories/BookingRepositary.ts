@@ -12,12 +12,11 @@ export class BookingRepositary implements IBookingRepositary {
         try {
             const roomId = uuidv4();
             const baseUrl = process.env.FRONT_END_BASE_URL + `/meet` || 'http://localhost:5173/meet';
+            console.log(booking.date,"from db" )
             const newBooking = await Booking.build({
                 menteeId: booking!.menteeId as string,
                 mentorId: booking!.mentorId as string,
-                startTime: booking!.startTime as string,
-                endTime: booking!.endTime as string,
-                date: booking!.date as Date,
+                date: booking!.date as string,
                 status: BookinStatus.Created,
                 expiresAt: expireAt,
                 videoCallLink: `${baseUrl}/${roomId}`

@@ -80,3 +80,21 @@ export interface ICreateBookingRequest {
     endTime: string;
     date: string | Date;
 }
+
+
+
+ 
+export  interface IGetMenotrsBookingsResponse {
+    menteeId: string;
+    mentorId: string;
+    date: string;
+    startTime: string;
+    endTime: string;
+    status: 'created' | 'cancelled' | 'completed'; 
+    paymentStatus: "pending" | "completed"; 
+    expiresAt: string; 
+    videoCallLink: string;
+    createdAt: string; 
+    updatedAt: string; 
+    id: string;
+}

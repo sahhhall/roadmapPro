@@ -44,9 +44,7 @@ export class BookingEntity {
     constructor(
         public menteeId: any,
         public mentorId: any,
-        public startTime: string,
-        public endTime: string,
-        public date: Date,
+        public date: string,
         public status: BookinStatus = BookinStatus.Created,
         public paymentStatus: 'pending' | 'paid' | 'refunded' = 'pending',
         public expiresAt: Date,

@@ -4,7 +4,13 @@ export const MentorEndpoints = {
     getAvailbilityOfMentor: (mentorId: string) => `/api/mentors/availability/${mentorId}`,
 
     updateMentorAvailbility: `/api/mentors/availability`,
-    
+
     createBooking: '/api/bookings',
-    fetchMentorBookings: (mentorId: string) => `/api/bookings/${mentorId}`
+    fetchMentorBookings: (mentorId: string, status?: string) => {
+        let url = `/api/bookings/${mentorId}`;
+        if (status) {
+            url += `?status=${status}`;
+        }
+        return url;
+    }
 }

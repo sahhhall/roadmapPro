@@ -10,11 +10,11 @@ export class CreateBookingController {
 
     async create(req: Request, res: Response, next: NextFunction) {
         try {
-            const { menteeId, mentorId, startTime, endTime, date } = req.body;
+            const { menteeId, mentorId, date } = req.body;
             // if( menteeId !==req.user?.id ){
             //     throw new BadRequestError('come with you account vrroo')
             // }
-            const bookedData = await this.createBookingUseCase.execute({ menteeId, mentorId, startTime, endTime, date });
+            const bookedData = await this.createBookingUseCase.execute({ menteeId, mentorId, date });
             await new BookingCreatedProducer(kafkaWrapper.producer).produce({
                 bookingId:bookedData?.id as string,
                 expiresAt: bookedData?.expiresAt as any

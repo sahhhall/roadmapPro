@@ -1,8 +1,10 @@
 
 const BookingsPage = () => {
-  return (
-    <div>MentorAvailabilityPage</div>
-  )
+ return (
+  <>
+  <p>dsaf</p>
+  </>
+ ) 
 }
 
 export default BookingsPage

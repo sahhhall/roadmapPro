@@ -11,14 +11,6 @@ export class CreateBookingDTO {
   mentorId!: string;
 
   @IsNotEmpty()
-  @IsString()
-  startTime!: string;
-
-  @IsNotEmpty()
-  @IsString()
-  endTime!: string;
-
-  @IsNotEmpty()
   @IsDateString()
   date!: string;
 }

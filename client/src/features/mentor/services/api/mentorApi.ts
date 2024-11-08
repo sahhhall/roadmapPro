@@ -1,6 +1,6 @@
 import { apiSlice } from "@/redux/slices/apiSlice";
 import { MentorEndpoints } from "@/features/mentor/services/endPoints";
-import { GetMentorsResponse, ICreateBookingRequest, MentorAvailabilityResponse, UpdateMentorAvailbilityRequest } from "@/features/mentor/types/mentor";
+import { GetMentorsResponse, ICreateBookingRequest, IGetMenotrsBookingsResponse, MentorAvailabilityResponse, UpdateMentorAvailbilityRequest } from "@/features/mentor/types/mentor";
 
 
 const mentorApi = apiSlice.injectEndpoints({
@@ -34,17 +34,24 @@ const mentorApi = apiSlice.injectEndpoints({
             invalidatesTags: ["AvailbilityMentor"]
         }),
 
-        createBooking: builder.mutation<any, ICreateBookingRequest> ({
+        createBooking: builder.mutation<any, ICreateBookingRequest>({
             query: (data) => ({
                 url: MentorEndpoints.createBooking,
                 method: 'post',
                 body: data,
             }),
-        })
-        
+        }),
+
+        fetchMentorBookingsById: builder.query<IGetMenotrsBookingsResponse[], { mentorId: string; status?: string }>({
+            query: ({ mentorId, status }) => ({
+                url: MentorEndpoints.fetchMentorBookings(mentorId, status),
+                method: 'get',
+            }),
+        }),
+
     })
 
 })
 
 
-export const { useGetMentorsBySkillQuery, useGetAvailabilityOfMentorQuery, useGetMentorDetailsQuery, useUpdateMentorAvailibilityMutation } = mentorApi;
+export const { useGetMentorsBySkillQuery, useGetAvailabilityOfMentorQuery, useGetMentorDetailsQuery, useUpdateMentorAvailibilityMutation, useFetchMentorBookingsByIdQuery } = mentorApi;
