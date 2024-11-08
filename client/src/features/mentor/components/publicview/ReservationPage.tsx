@@ -1,19 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { IMentorDetailsResponse } from "@/features/user/types/mentor";
-import { PaymentSummary } from "./PaymentSummary";
+import { PaymentSummary } from "@/features/mentor/components/publicview/PaymentSummary";
 import { Timer } from "lucide-react";
+import ExpiryModal from "@/features/mentor/components/modals/ExpiryModal";
+import { getDayYearByDateString } from "@/features/mentor/libs/timeHelpers";
 
 interface IReservationProps {
   mentorDetails: IMentorDetailsResponse | undefined;
+  price: number;
+  bookedDate: string;
+  setIsReserved: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const ReservationPage: React.FC<IReservationProps> = ({ mentorDetails }) => {
+const ReservationPage: React.FC<IReservationProps> = ({
+  mentorDetails,
+  price,
+  bookedDate,
+  setIsReserved
+}) => {
   const [expire, setExpire] = useState<number>(300);
+  const [expiryDialog, setExpiryModal] = useState<boolean>(false);
+  const setOpenExipiry = () => setExpiryModal(true);
+ 
+      
+ 
   useEffect(() => {
     const timer = setInterval(() => {
       setExpire((prevExpire) => {
         if (prevExpire <= 1) {
           clearInterval(timer);
+          setOpenExipiry();
           return 0;
         }
         return prevExpire - 1;
@@ -23,14 +39,13 @@ const ReservationPage: React.FC<IReservationProps> = ({ mentorDetails }) => {
     return () => clearInterval(timer);
   }, []);
 
-
   return (
     <div className="relative  min-h-screen  flex-col w-full  items-center flex pb-20">
       <div className="mt-16 flex">
         <div className="flex pt-5">
           <Timer className="w-4 h-4 text-red-600 dark:text-red-400" />
           <p className="text-sm font-medium text-red-600 dark:text-red-400">
-            Session expires in {expire}
+            {expire === 0 ? "Session expired" : `Session expires in ${expire}`}
           </p>
         </div>
       </div>
@@ -54,7 +69,7 @@ const ReservationPage: React.FC<IReservationProps> = ({ mentorDetails }) => {
                   {mentorDetails?.bio}
                 </p>
                 <hr className="my-4 border-gray-200 dark:border-gray-700" />
-                <p className="text-gray-500">Fri, 9 Nov, 10:00 PM</p>
+                <p className="text-gray-500">{getDayYearByDateString(bookedDate)}</p>
               </div>
             </div>
           </div>
@@ -62,10 +77,11 @@ const ReservationPage: React.FC<IReservationProps> = ({ mentorDetails }) => {
 
         <div className="w-full items-center   lg-flex-end  lg:w-3/4">
           <div className="  border dark:border-gray-800 border-gray-100 shadow-sm bg-white dark:bg-black rounded-lg">
-            <PaymentSummary  />
+            <PaymentSummary price={price} />
           </div>
         </div>
       </div>
+      <ExpiryModal setIsReserved={setIsReserved} open={expiryDialog} setDialogExpiry={setExpiryModal} />
     </div>
   );
 };

@@ -22,7 +22,8 @@ const mentorApi = apiSlice.injectEndpoints({
                 url: MentorEndpoints.getAvailbilityOfMentor(mentorId),
                 method: 'get',
             }),
-            providesTags: ["AvailbilityMentor"]
+            providesTags: ["AvailbilityMentor"],
+            keepUnusedDataFor: 0, 
         }),
 
         updateMentorAvailibility: builder.mutation<any, UpdateMentorAvailbilityRequest>({
@@ -48,7 +49,8 @@ const mentorApi = apiSlice.injectEndpoints({
                 url: MentorEndpoints.fetchMentorBookings(mentorId, status),
                 method: 'get',
             }),
-            providesTags: ['BookingData']
+            providesTags: ['BookingData'],
+            keepUnusedDataFor: 0, 
         }),
 
     })

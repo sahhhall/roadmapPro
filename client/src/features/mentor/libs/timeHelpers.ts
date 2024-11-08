@@ -34,4 +34,17 @@ export const generateTimeSlots = (from: string, to: string) => {
     }
     return slots
   };
+
+  //will get timestap that will converted into normall day and time
+  export const getDayYearByDateString = (timestamp: string) => {
+    const date = new Date(timestamp);
+    const daysOfWeek = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const dayOfWeek = daysOfWeek[date.getDay()];
+    const day = date.getDate();
+    const year = date.getFullYear();
+    const hour = date.getHours();
+    const minutes = date.getMinutes();
+    return `${dayOfWeek} ${day} ${year} ${hour}:${minutes} `
+
+  }
   

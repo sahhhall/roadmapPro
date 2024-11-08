@@ -8,11 +8,11 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { IndianRupee } from "lucide-react";
-export const PaymentSummary = () => (
+export const PaymentSummary = ({ price }: { price: number }) => (
   <Card className="w-full  h-full shadow-none">
     <CardHeader>
       <CardTitle>Booking Summary</CardTitle>
-     <CardDescription>
+      <CardDescription>
         Review your booking details and complete the payment.
       </CardDescription>
     </CardHeader>
@@ -44,14 +44,14 @@ export const PaymentSummary = () => (
             </label>
             <p className="text-lg font-semibold items-center flex">
               <IndianRupee className="w-4 h-4" />
-              444
+              {price}
             </p>
           </div>
         </div>
       </div>
     </CardContent>
     <CardFooter className="flex w-full">
-      <Button variant={'submit'} className="w-full">
+      <Button variant={"submit"} className="w-full">
         Proceed to Pay &nbsp; <IndianRupee className="w-3 h-3" />
         444
       </Button>

@@ -37,10 +37,14 @@ const MentorProfile = () => {
 
   const { data: mentorDetails, isLoading: mentorLoading } =
     useGetMentorDetailsQuery(mentorId!);
-  const { data: availabilityData, isLoading: availabilityLoading } =
-    useGetAvailabilityOfMentorQuery(mentorId!);
+  const {
+    data: availabilityData,
+    isLoading: availabilityLoading,
+  } = useGetAvailabilityOfMentorQuery(mentorId!,{
+    skip:false
+  });
   //only need know created if there is completed that will take care by validation only show upcomings days
-  const { data: bookingDetailsOfMentor, isLoading: mentorBookingDetails } =
+  const { data: bookingDetailsOfMentor, isLoading: mentorBookingDetails , refetch: refetchBookinData,} =
     useFetchMentorBookingsByIdQuery({
       mentorId: mentorId!,
       status: "created",
@@ -59,9 +63,12 @@ const MentorProfile = () => {
   const [isReserved, setIsReserved] = useState<boolean>(false);
   const [booked, setBooked] = useState<string[]>([]);
 
-  console.log(selectedDate,"s",selectedTime,"t")
+  console.log(selectedDate, "s", selectedTime, "t");
   const { toast } = useToast();
 
+  useEffect(() => {
+    refetchBookinData();
+  }, [refetchBookinData]);
   useEffect(() => {
     if (availabilityData) {
       // this for getting possible avaialble freee days for a mentor to book in this month utill
@@ -100,7 +107,7 @@ const MentorProfile = () => {
                 ? 12
                 : 0)
             }:00`;
-            console.log(slotStartTime,"slotstattime")
+            console.log(slotStartTime, "slotstattime");
             return {
               ...slot,
               date: slotStartTime,
@@ -113,12 +120,12 @@ const MentorProfile = () => {
         setCurrentDayTimeSlots([]);
       }
     }
-  }, [availabilityData, selectedDate,bookingDetailsOfMentor]);
+  }, [availabilityData, selectedDate, bookingDetailsOfMentor]);
   useEffect(() => {
     if (bookingDetailsOfMentor) {
       const bookedDates = bookingDetailsOfMentor.map((detail) => detail.date);
       setBooked(bookedDates);
-      console.log(booked,"booked")
+      console.log(booked, "booked");
     }
   }, [bookingDetailsOfMentor]);
 
@@ -200,7 +207,12 @@ const MentorProfile = () => {
       {isReserved ? (
         <div className="relative  flex-col  items-center">
           <div className="w-full items-center min-h-screen pb-20">
-            <ReservationPage mentorDetails={mentorDetails as any} />
+            <ReservationPage
+              price={availabilityData?.pricePerSession as any}
+              bookedDate={selectedTime as any}
+              mentorDetails={mentorDetails as any}
+              setIsReserved={setIsReserved as any}
+            />
           </div>
         </div>
       ) : (
@@ -412,6 +424,7 @@ const MentorProfile = () => {
                   </div>
 
                   <Button
+                    disabled={!selectedDate || !selectedTime}
                     onClick={handleSubmit}
                     variant={"submit"}
                     className="w-full hover:opacity-85 hover:transition-opacity hover:cursor-pointer"
