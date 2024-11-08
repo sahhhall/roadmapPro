@@ -34,12 +34,13 @@ const mentorApi = apiSlice.injectEndpoints({
             invalidatesTags: ["AvailbilityMentor"]
         }),
 
-        createBooking: builder.mutation<any, ICreateBookingRequest>({
+        createBooking: builder.mutation<IGetMenotrsBookingsResponse, ICreateBookingRequest>({
             query: (data) => ({
                 url: MentorEndpoints.createBooking,
                 method: 'post',
                 body: data,
             }),
+            invalidatesTags: ['BookingData']
         }),
 
         fetchMentorBookingsById: builder.query<IGetMenotrsBookingsResponse[], { mentorId: string; status?: string }>({
@@ -47,6 +48,7 @@ const mentorApi = apiSlice.injectEndpoints({
                 url: MentorEndpoints.fetchMentorBookings(mentorId, status),
                 method: 'get',
             }),
+            providesTags: ['BookingData']
         }),
 
     })
@@ -54,4 +56,11 @@ const mentorApi = apiSlice.injectEndpoints({
 })
 
 
-export const { useGetMentorsBySkillQuery, useGetAvailabilityOfMentorQuery, useGetMentorDetailsQuery, useUpdateMentorAvailibilityMutation, useFetchMentorBookingsByIdQuery } = mentorApi;
+export const {
+    useGetMentorsBySkillQuery,
+    useGetAvailabilityOfMentorQuery,
+    useGetMentorDetailsQuery,
+    useUpdateMentorAvailibilityMutation,
+    useFetchMentorBookingsByIdQuery,
+    useCreateBookingMutation
+} = mentorApi;

@@ -5,27 +5,23 @@ import {
   ChevronLeft,
   ChevronRight,
   GithubIcon,
-  IndianRupee,
   LinkedinIcon,
 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import {
+  useCreateBookingMutation,
   useFetchMentorBookingsByIdQuery,
   useGetAvailabilityOfMentorQuery,
   useGetMentorDetailsQuery,
 } from "../services/api/mentorApi";
 import { availabilityArrange } from "@/features/mentor/libs/availbilityutil";
-import { WeeklySchedule } from "../types/mentor";
-import ReservationPage from "../components/publicview/ReservationPage";
+import { WeeklySchedule } from "@/features/mentor/types/mentor";
+import ReservationPage from "@/features/mentor/components/publicview/ReservationPage";
+import { usegetUser } from "@/hooks/usegetUser";
+import { ToastAction } from "@/components/ui/toast";
+import Spinner from "@/components/animated/spinner";
+const baseURL = import.meta.env.VITE_BASE_CLIENT_URL;
 
 interface TimeSlot {
   startTime: string;
@@ -37,6 +33,8 @@ interface TimeSlot {
 const MentorProfile = () => {
   const { mentorId } = useParams();
 
+  const user = usegetUser();
+
   const { data: mentorDetails, isLoading: mentorLoading } =
     useGetMentorDetailsQuery(mentorId!);
   const { data: availabilityData, isLoading: availabilityLoading } =
@@ -47,7 +45,9 @@ const MentorProfile = () => {
       mentorId: mentorId!,
       status: "created",
     });
-  console.log(bookingDetailsOfMentor, "bookingDetailsOfMentor");
+  const [createBooking, { isLoading: createBookingIsLoading }] =
+    useCreateBookingMutation();
+
   const dateRef = useRef(null);
 
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
@@ -57,9 +57,11 @@ const MentorProfile = () => {
     []
   );
   const [isReserved, setIsReserved] = useState<boolean>(false);
+  const [booked, setBooked] = useState<string[]>([]);
 
-  const [booked, setBooked] = useState(["2024-11-10T10:00"]);
+  console.log(selectedDate,"s",selectedTime,"t")
   const { toast } = useToast();
+
   useEffect(() => {
     if (availabilityData) {
       // this for getting possible avaialble freee days for a mentor to book in this month utill
@@ -98,8 +100,7 @@ const MentorProfile = () => {
                 ? 12
                 : 0)
             }:00`;
-            console.log(slotStartTime, "slorte");
-            console.log(slotStartTime);
+            console.log(slotStartTime,"slotstattime")
             return {
               ...slot,
               date: slotStartTime,
@@ -112,7 +113,15 @@ const MentorProfile = () => {
         setCurrentDayTimeSlots([]);
       }
     }
-  }, [availabilityData, selectedDate]);
+  }, [availabilityData, selectedDate,bookingDetailsOfMentor]);
+  useEffect(() => {
+    if (bookingDetailsOfMentor) {
+      const bookedDates = bookingDetailsOfMentor.map((detail) => detail.date);
+      setBooked(bookedDates);
+      console.log(booked,"booked")
+    }
+  }, [bookingDetailsOfMentor]);
+
   const handleSelectTime = (slot: string) => {
     setSelectedTime(slot);
   };
@@ -129,9 +138,8 @@ const MentorProfile = () => {
     window.open(url, "_blank");
   };
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    console.log(selectedTime,selectedTime?.split('T').at(-1), "date and time",);
     if (!selectedDate || !selectedTime) {
       toast({
         variant: "destructive",
@@ -140,23 +148,50 @@ const MentorProfile = () => {
       });
       return;
     }
+    if (!user?.id) {
+      toast({
+        variant: "destructive",
+        title: "Please log in to book a session.",
+        description: "You need to log in to proceed with the booking.",
+        action: (
+          <ToastAction
+            altText="Go to login"
+            onClick={() => (window.location.href = `${baseURL}/login`)}
+          >
+            Login
+          </ToastAction>
+        ),
+      });
+      return;
+    }
+    const createBookingPayload = {
+      menteeId: user?.id as string,
+      mentorId: mentorId?.toString() as string,
+      date: selectedTime as string,
+    };
+    try {
+      await createBooking(createBookingPayload).unwrap();
+      setIsReserved(!isReserved);
+    } catch (error: any) {
+      console.log(error);
+      const errorMessage =
+        error?.data?.message ||
+        "An unexpected error occurred. Please try again later.";
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: errorMessage,
+      });
+    }
   };
-  //   const scroll = (direction) => {
-  //     const container = dateRef.current;
-  //     if (!container) return;
+  if (createBookingIsLoading) {
+    return (
+      <>
+        <Spinner />
+      </>
+    );
+  }
 
-  //     const scrollAmount = 200;
-  //     const currentScroll = container.scrollLeft;
-  //     const newScroll =
-  //       direction === "left"
-  //         ? currentScroll - scrollAmount
-  //         : currentScroll + scrollAmount;
-
-  //     container.scrollTo({
-  //       left: newScroll,
-  //       behavior: "smooth",
-  //     });
-  //   };
   if (mentorLoading || availabilityLoading || mentorBookingDetails) {
     return <>loading bro please wait</>;
   }
@@ -352,24 +387,34 @@ const MentorProfile = () => {
                       </div>
                     </div>
                     <div className="grid pt-3 pb-3 grid-flow-col auto-cols-max overflow-x-auto scrollbar-hide gap-3">
-                      {currentDayTimeSlots?.map((slot, index) => (
-                        <button
-                          key={index}
-                          onClick={() => handleSelectTime(slot.date)}
-                          className={` ${
-                            selectedTime === slot.date && "border-blue-500"
-                          } border rounded-lg p-2 text-center hover:border-blue-500 cursor-pointer`}
-                        >
-                          {formatTimeSlot(slot)}
-                        </button>
-                      ))}
+                      {currentDayTimeSlots && currentDayTimeSlots.length > 0 ? (
+                        currentDayTimeSlots.map((slot, index) => (
+                          <button
+                            key={index}
+                            onClick={() => handleSelectTime(slot.date)}
+                            className={`${
+                              selectedTime === slot.date && "border-blue-500"
+                            } border rounded-lg p-2 text-center hover:border-blue-500 cursor-pointer`}
+                          >
+                            {formatTimeSlot(slot)}
+                          </button>
+                        ))
+                      ) : (
+                        <div className="flex items-center justify-center w-full p-4">
+                          <p className="text-gray-500 dark:text-gray-400 text-sm">
+                            {selectedDate
+                              ? "No time slots available for this date"
+                              : "Select a date to view available time slots"}
+                          </p>
+                        </div>
+                      )}
                     </div>
                   </div>
 
                   <Button
                     onClick={handleSubmit}
                     variant={"submit"}
-                    className="w-full"
+                    className="w-full hover:opacity-85 hover:transition-opacity hover:cursor-pointer"
                   >
                     Book Now
                   </Button>

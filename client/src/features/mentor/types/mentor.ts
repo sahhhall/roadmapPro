@@ -76,8 +76,6 @@ export interface UpdateMentorAvailbilityRequest {
 export interface ICreateBookingRequest {
     mentorId: string;
     menteeId: string;
-    startTime: string;
-    endTime: string;
     date: string | Date;
 }
 
@@ -88,8 +86,6 @@ export  interface IGetMenotrsBookingsResponse {
     menteeId: string;
     mentorId: string;
     date: string;
-    startTime: string;
-    endTime: string;
     status: 'created' | 'cancelled' | 'completed'; 
     paymentStatus: "pending" | "completed"; 
     expiresAt: string; 
