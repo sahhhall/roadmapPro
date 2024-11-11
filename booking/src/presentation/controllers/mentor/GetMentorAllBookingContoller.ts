@@ -8,8 +8,7 @@ export class GetMentorAllBookingContoller {
     async getBookings(req: Request, res: Response, next: NextFunction) {
         try {
             const { mentorId } = req.params; 
-            const { status } = req.query;
-            const bookings = await this.getAllDetailByMentor.execute(mentorId,status as string);
+            const bookings = await this.getAllDetailByMentor.execute(mentorId);
             return res.status(HttpStatus.OK).json(bookings);
         } catch (error) {
             next(error);

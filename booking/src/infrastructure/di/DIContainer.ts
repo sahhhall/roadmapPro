@@ -18,6 +18,8 @@ import { IBookingEventUpdateStatusUseCase } from "../../application/interfaces/u
 import { BookingEventUpdateUseCase } from "../../application/usecases/user/BookingEventUpdateStatusUseCase";
 import { GetMentorAllBookingDetailsUseCase } from "../../application/usecases/mentor/GetMentorAllBookingDetailsUseCase";
 import { IGetMentorAllBookingDetailsUseCase } from "../../application/interfaces/mentor/IGetMentorAllBookingDetailsUseCase";
+import { IGetMyAllBookingByUserMentor } from "../../application/interfaces/IGetMyAllBookingByUserMentor";
+import { GetMyAllBookingByUserMentor } from "../../application/usecases/GetMyAllBookingByUserMentor";
 
 
 
@@ -71,5 +73,9 @@ export class DIContainer {
 
     public getAllBookingByMentorId(): IGetMentorAllBookingDetailsUseCase {
         return new GetMentorAllBookingDetailsUseCase(this._bookingRepositary)
+    }
+
+    public getAllBookingToProfile(): IGetMyAllBookingByUserMentor {
+        return new GetMyAllBookingByUserMentor(this._bookingRepositary)
     }
 }
