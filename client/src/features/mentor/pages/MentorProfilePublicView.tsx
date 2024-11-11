@@ -15,8 +15,19 @@ import {
   useGetAvailabilityOfMentorQuery,
   useGetMentorDetailsQuery,
 } from "../services/api/mentorApi";
+import {
+  AlertDialog,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 import { availabilityArrange } from "@/features/mentor/libs/availbilityutil";
-import { IGetMenotrsBookingsResponse, WeeklySchedule } from "@/features/mentor/types/mentor";
+import {
+  IGetMenotrsBookingsResponse,
+  WeeklySchedule,
+} from "@/features/mentor/types/mentor";
 import ReservationPage from "@/features/mentor/components/publicview/ReservationPage";
 import { usegetUser } from "@/hooks/usegetUser";
 import { ToastAction } from "@/components/ui/toast";
@@ -37,18 +48,19 @@ const MentorProfile = () => {
 
   const { data: mentorDetails, isLoading: mentorLoading } =
     useGetMentorDetailsQuery(mentorId!);
-  const {
-    data: availabilityData,
-    isLoading: availabilityLoading,
-  } = useGetAvailabilityOfMentorQuery(mentorId!,{
-    skip:false
-  });
-  //only need know created if there is completed that will take care by validation only show upcomings days
-  const { data: bookingDetailsOfMentor, isLoading: mentorBookingDetails , refetch: refetchBookinData,} =
-    useFetchMentorBookingsByIdQuery({
-      mentorId: mentorId!,
-      status: "created",
+  const { data: availabilityData, isLoading: availabilityLoading } =
+    useGetAvailabilityOfMentorQuery(mentorId!, {
+      skip: false,
     });
+  //only need know created if there is completed that will take care by validation only show upcomings days
+  const {
+    data: bookingDetailsOfMentor,
+    isLoading: mentorBookingDetails,
+    refetch: refetchBookinData,
+  } = useFetchMentorBookingsByIdQuery({
+    mentorId: mentorId!,
+    status: "created",
+  });
   const [createBooking, { isLoading: createBookingIsLoading }] =
     useCreateBookingMutation();
 
@@ -63,6 +75,8 @@ const MentorProfile = () => {
   const [isReserved, setIsReserved] = useState<boolean>(false);
   const [booked, setBooked] = useState<string[]>([]);
   const [bookingData, setBookingData] = useState<IGetMenotrsBookingsResponse>();
+  //for showing already anyone take seats liek confilt
+  const [showUnavailableDialog, setShowUnavailableDialog] = useState(false);
 
   console.log(selectedDate, "s", selectedTime, "t");
   const { toast } = useToast();
@@ -179,18 +193,23 @@ const MentorProfile = () => {
     };
     try {
       const response = await createBooking(createBookingPayload).unwrap();
-      setBookingData(response)
+      setBookingData(response);
       setIsReserved(!isReserved);
     } catch (error: any) {
       console.log(error);
-      const errorMessage =
-        error?.data?.message ||
-        "An unexpected error occurred. Please try again later.";
-      toast({
-        variant: "destructive",
-        title: "Uh oh! Something went wrong.",
-        description: errorMessage,
-      });
+      if (error.status === 409) {
+        setShowUnavailableDialog(true);
+        refetchBookinData();
+      } else {
+        const errorMessage =
+          error?.data?.errors[0] ||
+          "An unexpected error occurred. Please try again later.";
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Something went wrong.",
+          description: errorMessage,
+        });
+      }
     }
   };
   if (createBookingIsLoading) {
@@ -448,6 +467,29 @@ const MentorProfile = () => {
                 </div>
               </div>
             </div>
+            {/* need to refactor  */}
+            <AlertDialog
+              open={showUnavailableDialog}
+              onOpenChange={setShowUnavailableDialog}
+            >
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Slot Unavailable</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    Unfortunately, this slot is no longer available. Please
+                    select a different time slot to continue.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <Button
+                    onClick={() => setShowUnavailableDialog(false)}
+                    variant={"outline"}
+                  >
+                    Choose Another Slot
+                  </Button>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
         </>
       )}
