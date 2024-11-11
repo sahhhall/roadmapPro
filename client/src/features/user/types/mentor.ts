@@ -117,10 +117,15 @@ export interface IMentorDetailsResponse {
 
 
 
-
+ interface mentorData {
+    role: string;
+    email: string;
+    name: string;
+    id: string;
+}
 export  interface IGetAllBookingsResponse {
     menteeId: string;
-    mentorId: string;
+    mentorId: mentorData;
     date: string;
     status: 'created' | 'scheduled' | 'cancelled' | 'completed'; 
     paymentStatus: "pending" | "completed"; 

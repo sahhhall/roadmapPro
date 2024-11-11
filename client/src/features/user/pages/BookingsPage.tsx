@@ -85,8 +85,9 @@ const BookingsPage = () => {
 
                   <div>
                     <h3 className="font-medium">Booking Session</h3>
+                    <p className="text-xs  text-gray-500  tracking-wide"> with: {booking?.mentorId?.name}</p>
                     <p className="text-sm text-gray-500 mb-2">
-                      {formatDate(booking.date)}
+                      {formatDate(booking?.date)}
                     </p>
                     <div className="flex gap-2">
                       <span className=" rounded-full px-3 py-1 text-sm bg-emerald-50 text-emerald-700">
