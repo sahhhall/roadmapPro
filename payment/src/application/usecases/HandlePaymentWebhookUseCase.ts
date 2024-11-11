@@ -3,6 +3,8 @@ import { IPaymentRepositary } from "../../domain/interfaces/IPayment";
 import { IHandlePaymentWebhookUseCase } from "../interfaces/IHandlePaymentWebhookUseCase";
 import { PaymentStatus } from "../../domain/entities/PaymentEntity";
 import { customLogger } from "../../presentation/middleware/loggerMiddleware";
+import { PayementCreateProducer } from "../../infrastructure/kafka/producers/payment-completed-producer";
+import kafkaWrapper from "../../infrastructure/kafka/kafka-wrapper";
 
 
 
@@ -30,9 +32,13 @@ export class HandlePaymentWebhookUseCase implements IHandlePaymentWebhookUseCase
                     bookingId,
                     transactionDate
                 });
-                break;
 
-            //kafka wil rule here ;)))))
+
+                //kafka wil rule here ;)))))
+                await new PayementCreateProducer(kafkaWrapper.producer).produce({
+                    bookingId: bookingId
+                })
+                break;
 
             case 'payment_intent.payment_failed':
                 await this.paymentRepositary.createPayment({
