@@ -8,12 +8,14 @@ import { UserCreatedConsumer } from './infrastructure/kafka/consumers/user-creat
 import { DIContainer } from './infrastructure/di/DIContainer';
 import { bookingRoutes } from './presentation/routes/bookingRoutes';
 import { ExpirationCompletedConsumer } from './infrastructure/kafka/consumers/expiration-completed-consumer';
+import { PaymentCompletedConsumer } from './infrastructure/kafka/consumers/payment-completed-consmer';
 
 
 
 export class App {
     private userCreatedConsumer?: UserCreatedConsumer;
     private bookingExpiration?: ExpirationCompletedConsumer;
+    private paymentCompletion?: PaymentCompletedConsumer;
     constructor(private server: IServerInterface) { }
 
     async initialize(): Promise<void> {
@@ -51,16 +53,21 @@ export class App {
             await kafkaWrapper.connect();
             const consumer = await kafkaWrapper.createConsumer('booking-service-group');
             const consumer2 = await kafkaWrapper.createConsumer('expiration-completed-group')
+            const consumer3 = await kafkaWrapper.createConsumer('payment-completed-group')
             const diContainer = DIContainer.getInstance();
             const userCreatedUseCase = diContainer.userCreatedUseCase();
+            // actully it generic it can use both payment completion and expiration
+            // chnage name later
             const updateStatusExipredBookings = diContainer.updateStatusExipiredBooking();
             this.userCreatedConsumer = new UserCreatedConsumer(
                 consumer,
                 userCreatedUseCase
             );
             this.bookingExpiration = new ExpirationCompletedConsumer(consumer2, updateStatusExipredBookings);
+            this.paymentCompletion = new PaymentCompletedConsumer(consumer3, updateStatusExipredBookings)
             await this.bookingExpiration.listen();
-            await this.userCreatedConsumer.listen()
+            await this.userCreatedConsumer.listen();
+            await this.paymentCompletion.listen();
         } catch (error) {
             console.log('some err connect with kafka', error);
         }

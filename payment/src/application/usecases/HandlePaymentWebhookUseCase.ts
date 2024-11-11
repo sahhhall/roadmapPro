@@ -35,6 +35,8 @@ export class HandlePaymentWebhookUseCase implements IHandlePaymentWebhookUseCase
 
 
                 //kafka wil rule here ;)))))
+                // this for after payment compmleteion we have to mark 
+                // booking documnet as 
                 await new PayementCreateProducer(kafkaWrapper.producer).produce({
                     bookingId: bookingId
                 })
