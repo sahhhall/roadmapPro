@@ -27,7 +27,7 @@ export const ProfileLayout = () => {
         <div className="hidden sm:block w-1/4 min-h-screen border-r p-4">
           <ProfileSidebar />
         </div>
-        <div className=" overflow-scroll w-full sm:w-3/4 flex-1 p-4 sm:p-8">
+        <div className=" overflow-hidden w-full sm:w-3/4 flex-1 p-4 sm:p-8">
           <Outlet />
         </div>
       </div>

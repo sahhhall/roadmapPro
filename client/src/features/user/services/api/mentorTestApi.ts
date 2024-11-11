@@ -1,6 +1,6 @@
 import { apiSlice } from "@/redux/slices/apiSlice";
-import { AllStacksResponse, MentorAssessmentRegistrationRequest, MentorAssessmentRegistrationResponse, QuestionResponse, TestSubmissionRequest } from "@/features/user/types/mentor";
-import { AssessmentTestEndpoints } from "@/features/user/services/endPoints";
+import { AllStacksResponse, IGetAllBookingsResponse, MentorAssessmentRegistrationRequest, MentorAssessmentRegistrationResponse, QuestionResponse, TestSubmissionRequest } from "@/features/user/types/mentor";
+import { AssessmentTestEndpoints, BookingEndpoints } from "@/features/user/services/endPoints";
 
 
 
@@ -35,15 +35,31 @@ const mentorTestApi = apiSlice.injectEndpoints({
             })
         }),
 
-        getUserDetails: builder.query<any,any>({
+        getUserDetails: builder.query<any, any>({
             query: (id) => ({
                 url: AssessmentTestEndpoints.getUserDetails(id),
                 method: 'get',
             })
+        }),
+
+
+        getAllBookingDetails: builder.query<IGetAllBookingsResponse[], any>({
+            query: ({ mentorId, status }) => ({
+                url: BookingEndpoints.getBookingDetails(mentorId, status),
+                method: 'get',
+            }),
+            keepUnusedDataFor: 0,
         })
 
     })
 })
 
 
-export const { useGetAllAvalibleStacksQuery, useRegisterTestMutation, useLazyGetQuestionQuery, useSubmitMentorMutation ,useGetUserDetailsQuery } = mentorTestApi;
+export const {
+    useGetAllAvalibleStacksQuery,
+    useRegisterTestMutation, 
+    useLazyGetQuestionQuery, 
+    useSubmitMentorMutation, 
+    useGetUserDetailsQuery,
+    useGetAllBookingDetailsQuery
+ } = mentorTestApi;

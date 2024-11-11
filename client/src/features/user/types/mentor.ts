@@ -106,3 +106,28 @@ export interface IMentorDetailsResponse {
     updatedAt: Date;
     id: string;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+export  interface IGetAllBookingsResponse {
+    menteeId: string;
+    mentorId: string;
+    date: string;
+    status: 'created' | 'scheduled' | 'cancelled' | 'completed'; 
+    paymentStatus: "pending" | "completed"; 
+    expiresAt: string; 
+    videoCallLink: string;
+    createdAt: string; 
+    roomId: string;
+    updatedAt: string; 
+    id: string;
+}

@@ -86,10 +86,11 @@ export  interface IGetMenotrsBookingsResponse {
     menteeId: string;
     mentorId: string;
     date: string;
-    status: 'created' | 'cancelled' | 'completed'; 
+    status: 'created' | 'scheduled' | 'cancelled' | 'completed'; 
     paymentStatus: "pending" | "completed"; 
     expiresAt: string; 
     videoCallLink: string;
+    roomId: string;
     createdAt: string; 
     updatedAt: string; 
     id: string;
