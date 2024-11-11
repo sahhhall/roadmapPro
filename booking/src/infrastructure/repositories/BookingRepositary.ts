@@ -68,7 +68,9 @@ export class BookingRepositary implements IBookingRepositary {
             } else {
                 query.status = { $in: [BookinStatus.Created, BookinStatus.Scheduled] };
             }
-            const bookings = await Booking.find(query);
+            const bookings = await Booking.find(query).populate({
+                path: 'mentorId menteeId'
+            });
             return bookings
         } catch (error: any) {
             customLogger.error(`db error to find bookings booking booking-service: ${error.message}`);
