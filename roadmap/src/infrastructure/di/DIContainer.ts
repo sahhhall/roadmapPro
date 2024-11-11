@@ -3,6 +3,7 @@ import { IGetRequestedRoadmaps } from "../../application/interfaces/admin/IGetRe
 import { IStatusChangeUseCase } from "../../application/interfaces/admin/IStatusChangeUseCase";
 import { ICreateNodeUseCase } from "../../application/interfaces/ICreateNodeUseCase";
 import { IGetAllRoadMaps } from "../../application/interfaces/IGetAllRoadMaps";
+import { IGetMyRoadmapByUser } from "../../application/interfaces/IGetMyRoadmapByUser";
 import { IGetNodeDetails } from "../../application/interfaces/IGetNodeDetails";
 import { IGetRoadMap } from "../../application/interfaces/IGetRoadMap";
 import { IRoadMapCreate } from "../../application/interfaces/IRoadmapCreate";
@@ -14,6 +15,7 @@ import { CreateNodeUseCase } from "../../application/usecases/CreateNodeUseCase"
 import { GetListedRoadMaps } from "../../application/usecases/GetListedRoadmaps";
 import { GetNodeDetails } from "../../application/usecases/GetNodeDetails";
 import { GetRoadMap } from "../../application/usecases/GetRoadMap";
+import { GetMyRoadmapByUser } from "../../application/usecases/GetRoadmapByUser";
 import { GetAllRoadMaps } from "../../application/usecases/GetRoadMaps";
 import { RoadMapCreate } from "../../application/usecases/RoadmapCreate";
 import { SaveRoadmap } from "../../application/usecases/SaveRoadMap";
@@ -73,5 +75,10 @@ export class DIContainer {
 
     public roadmapActiveChnage(): IStatusChangeUseCase {
         return new StatusChangeUseCase(this._roadmapRepositary)
+    }
+
+    // to fetch all the roadmaps by user
+    public fetchUserRoadmaps(): IGetMyRoadmapByUser {
+        return new GetMyRoadmapByUser(this._roadmapRepositary)
     }
 }

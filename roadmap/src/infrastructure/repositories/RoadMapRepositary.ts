@@ -220,5 +220,20 @@ export class RoadMapRepository implements IRoadMapRepository {
             throw new Error(`db error,update status: ${error.message}`);
         }
     }
+    async findAllRoadmapByStatus(userId: string, status: string): Promise<Roadmap[]> {
+        try {
+            const query: any = {
+                userId
+            }
+            if (status) {
+                query.status = status;
+            }
+            const roadmaps = await RoadMap.find(query)
+            return roadmaps
+        } catch (error: any) {
+            customLogger.error(`db error to find roadmaps booking booking-service: ${error.message}`);
+            throw new Error(`db error to find roadmaps booking booking-service: ${error.message}`);
+        }
+    }
 
 }

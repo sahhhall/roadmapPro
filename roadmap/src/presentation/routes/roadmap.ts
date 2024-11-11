@@ -3,9 +3,8 @@ import { DIContainer } from "../../infrastructure/di/DIContainer";
 import { validateRequest } from "@sahhhallroadmappro/common";
 import { CreateNodeDTO, CreateRoadMapDTO } from "../dto";
 import { AllRoadMapController, CreateRoadMap, GetNodeDetailsController, GetRequestedRoadmapsController, GetRoadMapController, NodeController, RoadMapSaveController } from "../controllers";
-import { ReviewRoadmapDTO } from "../dto/ReviewRoadmapDTO";
-import { RoadMapReviewController } from "../controllers/admin/ReviewRoadmapController";
 import { PublishRoadmapController } from "../controllers/PublishedRoadmapController";
+import { GetAllRoadmapByUserController } from "../controllers/GetAllRoadmapByUserController";
 
 
 const router = Router();
@@ -18,6 +17,7 @@ const getRoadMapController = new GetRoadMapController(diContainer.getRoadMapUseC
 const getSaveRoadmapController = new RoadMapSaveController(diContainer.getSaveRoadmapUseCase());
 const getNodeDetailsByNodeIdController = new GetNodeDetailsController(diContainer.getNodeDetailsUseCase());
 const publishRoadmapsController = new PublishRoadmapController(diContainer.getAllListedRoadmaps());
+const getRoadmapsByUser = new GetAllRoadmapByUserController(diContainer.fetchUserRoadmaps())
 
 //admin
 
@@ -63,6 +63,10 @@ router.post('/publish', async (req, res, next) => {
 router.get('/nodedetails/:nodeId', async (req, res, next) => {
     console.log("am hre node detailss")
     await getNodeDetailsByNodeIdController.getNodeDetails(req, res, next);
+})
+
+router.get('/profile/:userId', async (req, res, next) => {
+    await getRoadmapsByUser.get(req, res, next)
 })
 
 router.get('/:roadmapId', async (req, res, next) => {

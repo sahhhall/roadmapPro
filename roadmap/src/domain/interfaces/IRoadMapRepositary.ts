@@ -34,4 +34,6 @@ export interface IRoadMapRepository {
     ): Promise<Roadmap | null>;
 
     updateRoadmapActiveStatus(id: string, isActive: boolean): Promise<Roadmap | null>;
+
+    findAllRoadmapByStatus(mentorId: string, status: string): Promise<Roadmap[]>
 }
