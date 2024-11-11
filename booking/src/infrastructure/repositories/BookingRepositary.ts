@@ -42,11 +42,10 @@ export class BookingRepositary implements IBookingRepositary {
         }
     };
 
-    async findByMentorId(mentorId: string, status?: string): Promise<BookingEntity[]> {
+    async findByMentorId(mentorId: string, query?: any): Promise<BookingEntity[]> {
         try {
-            const query: any = { mentorId };
-            if (status) {
-                query.status = status
+            if (!query) {
+                query.status = { $in: [BookinStatus.Created, BookinStatus.Scheduled] };
             }
             const bookings = await Booking.find(query);
             return bookings

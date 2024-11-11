@@ -1,3 +1,4 @@
+import { BookinStatus } from '@sahhhallroadmappro/common';
 import { BookingEntity } from '../../../domain/entities/Booking';
 import { IBookingRepositary } from '../../../domain/interfaces/IBookingRepositary';
 import { IGetMentorAllBookingDetailsUseCase } from '../../interfaces/mentor/IGetMentorAllBookingDetailsUseCase';
@@ -6,8 +7,12 @@ import { IGetMentorAllBookingDetailsUseCase } from '../../interfaces/mentor/IGet
 export class GetMentorAllBookingDetailsUseCase implements IGetMentorAllBookingDetailsUseCase {
     constructor(private bookingRepositary: IBookingRepositary) { }
 
-    async execute(mentorId: string,status: string): Promise<BookingEntity[] | null> {
-        const bookings = await this.bookingRepositary.findByMentorId(mentorId,status);
+    async execute(mentorId: string): Promise<BookingEntity[] | null> {
+        const query = {
+            mentorId: mentorId,
+            status: { $in: [BookinStatus.Created, BookinStatus.Scheduled] }
+        };
+        const bookings = await this.bookingRepositary.findByMentorId(mentorId, query);
         return bookings
     }
 }
