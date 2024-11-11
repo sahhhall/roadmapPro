@@ -128,5 +128,13 @@ export const ROUTES = [
             target: 'http://localhost:3004/api/bookings',
             changeOrigin: true,
         }
+    },
+    {
+        url:'/api/payments',
+        auth: true,
+        proxy: {
+            target: 'http://localhost:3005/api/payments',
+            changeOrigin: true,
+        }
     }
 ];

@@ -59,7 +59,7 @@ const MentorListing = () => {
         <div className="space-y-4">
           {mentors?.map((mentor) => (
             <div
-              onClick={() => handleNavigateToMentorProfile(mentor.id)}
+              onClick={() => handleNavigateToMentorProfile(mentor?.userId?.id)}
               key={mentor.id}
               className="bg-white shadow-md rounded-lg p-6 hover:cursor-pointer"
             >

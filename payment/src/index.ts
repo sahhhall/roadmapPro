@@ -1,7 +1,7 @@
 import App from "./app";
 import dotenv from 'dotenv';
 import { ExpressWebServer } from "./infrastructure/server/express";
-
+import "reflect-metadata"
 
 dotenv.config();
 

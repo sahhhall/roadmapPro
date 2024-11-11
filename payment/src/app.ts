@@ -1,10 +1,11 @@
-import { errorHandler,userDtamiddleaware } from '@sahhhallroadmappro/common';
+import { errorHandler, userDtamiddleaware } from '@sahhhallroadmappro/common';
 import kafkaWrapper from './infrastructure/kafka/kafka-wrapper';
 import loggerMiddleware from './presentation/middleware/loggerMiddleware';
 import { IServerInterface } from './domain/interfaces/IServer';
-import { userRoutes } from './presentation/routes/userRoutes';
+import { paymentRoutes } from './presentation/routes/paymentRoutes';
+import { connectDB } from './infrastructure/database/sql/connection';
 
- 
+
 
 export class App {
     constructor(private server: IServerInterface) { }
@@ -23,15 +24,15 @@ export class App {
     }
 
     private registerRoutes(): void {
-     
+        this.server.registerRoutes('/api/payments',paymentRoutes)
 
-    }
+    }   
     private registerErrorHandler(): void {
         this.server.registerErrorHandler(errorHandler as any);
     }
     private async connectDB() {
         try {
-         
+            await connectDB();
         } catch (error) {
             console.log('Server could not be started', error);
             process.exit(1);

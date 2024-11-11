@@ -94,3 +94,21 @@ export  interface IGetMenotrsBookingsResponse {
     updatedAt: string; 
     id: string;
 }
+
+
+
+
+
+
+
+
+
+
+export interface ICreatePaymentRequest {
+    mentorId: string;
+    price: number;
+    name: string;
+    bookingId: string;
+    userId: string;
+    bookingDate: any
+}

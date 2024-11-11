@@ -1,6 +1,6 @@
 import { apiSlice } from "@/redux/slices/apiSlice";
 import { MentorEndpoints } from "@/features/mentor/services/endPoints";
-import { GetMentorsResponse, ICreateBookingRequest, IGetMenotrsBookingsResponse, MentorAvailabilityResponse, UpdateMentorAvailbilityRequest } from "@/features/mentor/types/mentor";
+import { GetMentorsResponse, ICreateBookingRequest, ICreatePaymentRequest, IGetMenotrsBookingsResponse, MentorAvailabilityResponse, UpdateMentorAvailbilityRequest } from "@/features/mentor/types/mentor";
 
 
 const mentorApi = apiSlice.injectEndpoints({
@@ -53,6 +53,14 @@ const mentorApi = apiSlice.injectEndpoints({
             keepUnusedDataFor: 0, 
         }),
 
+        createPayment: builder.mutation<any, ICreatePaymentRequest>({
+            query: (data) => ({
+                url: MentorEndpoints.createPaymentIntent, 
+                method: 'post',
+                body: data,
+            }),
+        }),
+
     })
 
 })
@@ -64,5 +72,6 @@ export const {
     useGetMentorDetailsQuery,
     useUpdateMentorAvailibilityMutation,
     useFetchMentorBookingsByIdQuery,
-    useCreateBookingMutation
+    useCreateBookingMutation,
+    useCreatePaymentMutation
 } = mentorApi;

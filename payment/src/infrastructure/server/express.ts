@@ -12,7 +12,6 @@ export class ExpressWebServer implements IServerInterface {
         this.app = express();
         this.app.use(cookieParser())
         this.app.use(express.urlencoded());
-        this.app.use(express.json());
     }
     async start(port: number): Promise<void> {
         return new Promise(res => {

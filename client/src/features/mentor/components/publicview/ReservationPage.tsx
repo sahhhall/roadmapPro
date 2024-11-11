@@ -4,19 +4,22 @@ import { PaymentSummary } from "@/features/mentor/components/publicview/PaymentS
 import { Timer } from "lucide-react";
 import ExpiryModal from "@/features/mentor/components/modals/ExpiryModal";
 import { getDayYearByDateString } from "@/features/mentor/libs/timeHelpers";
+import { IGetMenotrsBookingsResponse } from "../../types/mentor";
 
 interface IReservationProps {
   mentorDetails: IMentorDetailsResponse | undefined;
   price: number;
   bookedDate: string;
   setIsReserved: React.Dispatch<React.SetStateAction<boolean>>;
+  bookingDetails: IGetMenotrsBookingsResponse
 }
 
 const ReservationPage: React.FC<IReservationProps> = ({
   mentorDetails,
   price,
   bookedDate,
-  setIsReserved
+  setIsReserved,
+  bookingDetails
 }) => {
   const [expire, setExpire] = useState<number>(300);
   const [expiryDialog, setExpiryModal] = useState<boolean>(false);
@@ -77,7 +80,7 @@ const ReservationPage: React.FC<IReservationProps> = ({
 
         <div className="w-full items-center   lg-flex-end  lg:w-3/4">
           <div className="  border dark:border-gray-800 border-gray-100 shadow-sm bg-white dark:bg-black rounded-lg">
-            <PaymentSummary price={price} />
+            <PaymentSummary bookingDate={getDayYearByDateString(bookedDate)} bookingDetails={bookingDetails} mentorDetails={mentorDetails} price={price} />
           </div>
         </div>
       </div>

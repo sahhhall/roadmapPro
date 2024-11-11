@@ -16,7 +16,7 @@ import {
   useGetMentorDetailsQuery,
 } from "../services/api/mentorApi";
 import { availabilityArrange } from "@/features/mentor/libs/availbilityutil";
-import { WeeklySchedule } from "@/features/mentor/types/mentor";
+import { IGetMenotrsBookingsResponse, WeeklySchedule } from "@/features/mentor/types/mentor";
 import ReservationPage from "@/features/mentor/components/publicview/ReservationPage";
 import { usegetUser } from "@/hooks/usegetUser";
 import { ToastAction } from "@/components/ui/toast";
@@ -62,6 +62,7 @@ const MentorProfile = () => {
   );
   const [isReserved, setIsReserved] = useState<boolean>(false);
   const [booked, setBooked] = useState<string[]>([]);
+  const [bookingData, setBookingData] = useState<IGetMenotrsBookingsResponse>();
 
   console.log(selectedDate, "s", selectedTime, "t");
   const { toast } = useToast();
@@ -177,7 +178,8 @@ const MentorProfile = () => {
       date: selectedTime as string,
     };
     try {
-      await createBooking(createBookingPayload).unwrap();
+      const response = await createBooking(createBookingPayload).unwrap();
+      setBookingData(response)
       setIsReserved(!isReserved);
     } catch (error: any) {
       console.log(error);
@@ -212,6 +214,7 @@ const MentorProfile = () => {
               bookedDate={selectedTime as any}
               mentorDetails={mentorDetails as any}
               setIsReserved={setIsReserved as any}
+              bookingDetails={bookingData as any}
             />
           </div>
         </div>

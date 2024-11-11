@@ -12,5 +12,7 @@ export const MentorEndpoints = {
             url += `?status=${status}`;
         }
         return url;
-    }
+    },
+
+    createPaymentIntent : '/api/payments/create'
 }
