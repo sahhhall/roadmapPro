@@ -49,6 +49,7 @@ export class BookingEntity {
         public paymentStatus: 'pending' | 'paid' | 'refunded' = 'pending',
         public expiresAt: Date,
         public id: string,
+        public roomId: string,
         public videoCallLink?: string,
         public cancelledAt?: Date,
         public createdAt?: Date,

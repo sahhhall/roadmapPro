@@ -6,9 +6,10 @@ interface BookingAttr {
     menteeId: string;
     mentorId: string;
     date: string;
-    status?:BookinStatus;
+    status?: BookinStatus;
     paymentStatus?: 'pending' | 'paid' | 'refunded';
     expiresAt: Date;
+    roomId: string;
     videoCallLink?: string;
     cancelledAt?: Date;
 }
@@ -21,6 +22,7 @@ interface BookingDoc extends Document {
     status: BookinStatus;
     paymentStatus: 'pending' | 'paid' | 'refunded';
     expiresAt: Date;
+    roomId: string;
     videoCallLink?: string;
     id: string;
     cancelledAt?: Date;
@@ -50,6 +52,7 @@ const bookingSchema = new Schema<BookingDoc>(
         expiresAt: {
             type: mongoose.Schema.Types.Date,
         },
+        roomId: { type: String, required: true },
         videoCallLink: { type: String },
         cancelledAt: { type: Date },
     },
