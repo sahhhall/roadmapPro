@@ -1,27 +1,27 @@
 import { useEffect, useState } from "react";
-import { useGetAllBookingDetailsQuery } from "@/features/user/services/api/mentorTestApi";
+import { useGetAllRoadmapsByUserIdQuery } from "@/features/user/services/api/mentorTestApi";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/Container";
 import { usegetUser } from "@/hooks/usegetUser";
-
-const BookingsPage = () => {
-  const [status, setStatus] = useState("scheduled");
+const clientBaseUrl = import.meta.env.VITE_BASE_CLIENT_URL;
+const RoadmapsPage = () => {
+  const [status, setStatus] = useState("published");
   const user = usegetUser();
   const {
-    data: bookings,
+    data: roadmaps,
     isLoading,
     refetch,
-  } = useGetAllBookingDetailsQuery({
+  } = useGetAllRoadmapsByUserIdQuery({
     mentorId: user?.id,
     status,
   });
 
   useEffect(() => {
-    if (bookings) {
+    if (roadmaps) {
       refetch();
     }
   }, []);
-  const statuses = ["scheduled", "completed"];
+  const statuses = ["published", "rejected", "drafted"];
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleString("en-US", {
@@ -36,10 +36,9 @@ const BookingsPage = () => {
         <div>
           <h1 className="text-xl font-semibold">All Bookings</h1>
           <p className="text-sm text-gray-500">
-            Showing {bookings?.length || 0} results
+            Showing {roadmaps?.length || 0} results
           </p>
         </div>
-        {/* here filter comes like soring  */}
       </div>
 
       <div className=" flex gap-2  mb-6">
@@ -60,10 +59,10 @@ const BookingsPage = () => {
             <div className=" rounded-full animate-spin h-8 w-8 border-b-2 border-gray-900" />
           </div>
         ) : (
-          bookings?.map((booking) => (
+          roadmaps?.map((roadmap) => (
             <div
-              key={booking.id}
-              className="border dark:bg-transparent rounded-lg p-6 bg-white overflow-x-hidden"
+              key={roadmap.id}
+              className="border rounded-lg dark:bg-transparent p-6 bg-white overflow-x-hidden"
             >
               <div className="flex justify-between items-start">
                 <div className="flex gap-4">
@@ -84,45 +83,36 @@ const BookingsPage = () => {
                   </div>
 
                   <div>
-                    <h3 className="font-medium">Booking Session</h3>
-                    <p className="text-xs  text-gray-500  tracking-wide"> with: {booking?.mentorId?.name}</p>
+                    <h3 className="font-medium">{roadmap.title}</h3>
                     <p className="text-sm text-gray-500 mb-2">
-                      {formatDate(booking?.date)}
+                      {formatDate(roadmap.createdAt)}
                     </p>
                     <div className="flex gap-2">
-                      <span className=" rounded-full px-3 py-1 text-sm bg-emerald-50 text-emerald-700">
+                      <span className=" dark:bg-transparent rounded-full px-3 py-1 text-sm bg-emerald-50 text-emerald-700">
                         Full-Time
                       </span>
-                      <span className=" rounded-full px-3 py-1 text-sm bg-orange-50 text-orange-700">
-                        {booking.status}
+                      <span className="dark:bg-transparent rounded-full px-3 py-1 text-sm bg-orange-50 text-orange-700">
+                        {roadmap.status}    
                       </span>
                     </div>
                   </div>
                 </div>
 
                 <div className="flex flex-col items-end gap-2">
-                  {booking.status === "scheduled" && (
-                    <a
-                      href={booking.videoCallLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
-                      <Button variant={"outline"}>Join</Button>
-                    </a>
-                  )}
-                  <p className="text-sm sm:block hidden text-gray-500">
-                    Room ID:
-                    <span className="font-mono">
-                      {booking.roomId.slice(0, 8)}...
-                    </span>
-                  </p>
+                  <a
+                    href={`${clientBaseUrl}/roadmap/${roadmap.id}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <Button variant={"outline"}>View</Button>
+                  </a>
                 </div>
               </div>
             </div>
           ))
         )}
 
-        {!isLoading && bookings?.length === 0 && (
+        {!isLoading && roadmaps?.length === 0 && (
           <div className="text-center py-10 text-gray-500">
             No bookings found for this status.
           </div>
@@ -132,4 +122,4 @@ const BookingsPage = () => {
   );
 };
 
-export default BookingsPage;
+export default RoadmapsPage;

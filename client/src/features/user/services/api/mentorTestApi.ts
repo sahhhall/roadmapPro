@@ -1,6 +1,6 @@
 import { apiSlice } from "@/redux/slices/apiSlice";
-import { AllStacksResponse, IGetAllBookingsResponse, MentorAssessmentRegistrationRequest, MentorAssessmentRegistrationResponse, QuestionResponse, TestSubmissionRequest } from "@/features/user/types/mentor";
-import { AssessmentTestEndpoints, BookingEndpoints } from "@/features/user/services/endPoints";
+import { AllStacksResponse, IGetAllBookingsResponse, IRoadmapResponse, MentorAssessmentRegistrationRequest, MentorAssessmentRegistrationResponse, QuestionResponse, TestSubmissionRequest } from "@/features/user/types/mentor";
+import { AssessmentTestEndpoints, BookingEndpoints, roadmapEndPoints } from "@/features/user/services/endPoints";
 
 
 
@@ -49,6 +49,14 @@ const mentorTestApi = apiSlice.injectEndpoints({
                 method: 'get',
             }),
             keepUnusedDataFor: 0,
+        }),
+
+        getAllRoadmapsByUserId: builder.query<IRoadmapResponse[], any>({
+            query: ({ mentorId, status }) => ({
+                url: roadmapEndPoints.getRoadmapDetails(mentorId, status),
+                method: 'get',
+            }),
+            keepUnusedDataFor: 0,
         })
 
     })
@@ -57,9 +65,10 @@ const mentorTestApi = apiSlice.injectEndpoints({
 
 export const {
     useGetAllAvalibleStacksQuery,
-    useRegisterTestMutation, 
-    useLazyGetQuestionQuery, 
-    useSubmitMentorMutation, 
+    useRegisterTestMutation,
+    useLazyGetQuestionQuery,
+    useSubmitMentorMutation,
     useGetUserDetailsQuery,
-    useGetAllBookingDetailsQuery
- } = mentorTestApi;
+    useGetAllBookingDetailsQuery,
+    useGetAllRoadmapsByUserIdQuery
+} = mentorTestApi;

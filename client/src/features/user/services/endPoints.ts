@@ -17,3 +17,13 @@ export const BookingEndpoints = {
         return url
     }
 }
+
+export const roadmapEndPoints = {
+    getRoadmapDetails: (userId: string, status: string) => {
+        let url = `/api/roadmap/profile/${userId}`;
+        if (status) {
+            url += `?status=${status}`;
+        }
+        return url
+    }
+}

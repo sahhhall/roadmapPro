@@ -39,10 +39,8 @@ const AssessmentPage = lazy(
 const MentorListing = lazy(
   () => import("@/features/mentor/pages/MentorListing")
 );
-const MentorProfile = lazy(
-  () => import("@/features/mentor/pages/MentorProfilePublicView")
-);
-
+const MentorProfile = lazy(() => import("@/features/mentor/pages/MentorProfilePublicView"));
+const RoadMapProfie = lazy(()=> import("@/features/user/pages/RoadmapsPage"))
 const BookingsPage = lazy(() => import("@/features/user/pages/BookingsPage"));
 
 const routes = createBrowserRouter([
@@ -136,7 +134,7 @@ const routes = createBrowserRouter([
             path: "roadmaps",
             element: (
               <Suspense fallback={<div>Loading...</div>}>
-                <p>sdaf</p>
+                <RoadMapProfie/>
               </Suspense>
             ),
           },

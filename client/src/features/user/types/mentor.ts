@@ -136,3 +136,19 @@ export  interface IGetAllBookingsResponse {
     updatedAt: string; 
     id: string;
 }
+
+
+
+export interface IRoadmapResponse {
+    id: string;
+    userId: string;
+    title: string;
+    description: string;
+    status: "drafted" | "published";
+    nodes: Array<any>;
+    edges: Array<any>;
+    adminFeedback: string;
+    createdAt: string;
+    isActive: boolean;
+}
+
