@@ -14,7 +14,7 @@ export class BookingEventUpdateUseCase implements IBookingEventUpdateStatusUseCa
             throw new NotFoundError()
         };
         //if already completed then return  then it no need of unreservce
-        if (existBooking.status === BookinStatus.Complete) {
+        if (existBooking.status === BookinStatus.Complete || existBooking.status === BookinStatus.Scheduled) {
             return null
         }
         const updatedBooking = this.bookingRepositary.updateStatus(bookingId, status);
