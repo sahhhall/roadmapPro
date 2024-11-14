@@ -1,3 +1,4 @@
+import { File } from "buffer";
 
 export interface AllStacksResponse {
     name: string,
@@ -120,6 +121,10 @@ export interface IMentorUpdateRequest {
     }
 }
 
+export interface IUpdateGenericProfileRequest {
+    avatar?: File,
+    user?:string
+}
 
 
 

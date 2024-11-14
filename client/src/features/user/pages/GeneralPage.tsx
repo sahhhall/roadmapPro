@@ -3,13 +3,35 @@ import { Button } from "@/components/ui/button";
 import AvailabilityModal from "@/features/mentor/components/modals/AvalibilityModal";
 import { usegetUser } from "@/hooks/usegetUser";
 import { LinkedinIcon, Pen } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   useGetUserDetailsQuery,
   useUpdateMentorProfileMutation,
+  useUpdateUserDetailsMutation,
 } from "@/features/user/services/api/mentorTestApi";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+
+const MAX_FILE_SIZE = 10 * 1024 * 1024;
+const ACCEPTED_IMAGE_TYPES = [
+  "image/jpeg",
+  "image/jpg",
+  "image/png",
+  "image/webp",
+];
+
+const avatarSchema = z.object({
+  avatar: z
+    .instanceof(File)
+    .refine((file: File) => file.size <= MAX_FILE_SIZE, {
+      message: "File size must be less than 5MB",
+    })
+    .refine((file) => ACCEPTED_IMAGE_TYPES.includes(file.type), {
+      message: "Only .jpg, .jpeg, .png and .webp formats are supported",
+    }),
+});
 
 const headlineSchema = z
   .string()
@@ -30,19 +52,37 @@ const bioSchema = z
   .max(1000, "Bio must not exceed 1000 characters")
   .refine((val) => val.trim().length > 0, "Bio is required");
 
+const nameSchema = z
+  .string()
+  .min(3, {
+    message: "Name must be at least 3 characters long",
+  })
+  .max(10, {
+    message: "Name should be under 10 characters",
+  })
+  .regex(/^[a-zA-Z]+$/, {
+    message: "Username must only contain  alphabets",
+  });
+
 const GeneralPage = () => {
   const { toast } = useToast();
   const [availibilityDialogOpen, setAvailibilityDialogOpen] =
     useState<boolean>(false);
   // with help of this we find which one currently selected for editing and we render conditionly
   const [editingField, setEditingField] = useState<string | null>(null);
+  const [updatedAvatar, setUpdatedAvatar] = useState<string | null>(null);
 
   const user = usegetUser();
+  //it for trigger input file
+  const inputFileRef = useRef<HTMLInputElement>(null);
+
   const {
     data: profileData,
     isLoading: ProfileDataLoadingApi,
     refetch: refetchProfile,
   } = useGetUserDetailsQuery(user?.id!);
+
+  const [updateGenericProfileData] = useUpdateUserDetailsMutation();
   const [updateMentorData] = useUpdateMentorProfileMutation();
 
   // for controledd form
@@ -72,12 +112,63 @@ const GeneralPage = () => {
   //when click any other outside while editing this will trigger
   const handleBlurOn = (field: string) => {
     setFormErrors((prev) => ({ ...prev, [field]: "" }));
+
+    //should refactor later
+    setFormData({
+      name: profileData?.name || profileData?.userId?.name || "",
+      headline: profileData?.headline || "",
+      bio: profileData?.bio || "",
+      expirience: profileData?.expirience || "",
+    });
     setEditingField(null);
   };
 
   if (ProfileDataLoadingApi) {
     <>Loading</>;
   }
+
+  const form = useForm<z.infer<typeof avatarSchema>>({
+    resolver: zodResolver(avatarSchema),
+    defaultValues: {
+      avatar: undefined,
+    },
+  });
+
+  const handleAvatarUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) {
+      toast({
+        title: "Error",
+        description: "Please select a file",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    try {
+      form.setValue("avatar", file as any);
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onloadend = () => {
+        setUpdatedAvatar(reader.result as string);
+      };
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        const errorMessage = error.errors[0]?.message || "Invalid file";
+        toast({
+          title: "Validation Error",
+          description: errorMessage,
+          variant: "destructive",
+        });
+      } else {
+        toast({
+          title: "Error",
+          description: "Failed to process the image",
+          variant: "destructive",
+        });
+      }
+    }
+  };
 
   const openavailibilityDialog = () => setAvailibilityDialogOpen(true);
 
@@ -141,7 +232,55 @@ const GeneralPage = () => {
     }
     setEditingField(null);
   };
+  const handleSaveBasicProfile = async (
+    fieldName: string,
+    value: string | File
+  ) => {
+    try {
+      const formData = new FormData();
 
+      if (fieldName === "name") {
+        const res = nameSchema.safeParse(value);
+        if (!res?.success) {
+          toast({
+            title: "Error",
+            description: `${res?.error?.errors[0].message}`,
+          });
+          return;
+        }
+        formData.append("name", value);
+      }
+
+      if (updatedAvatar) {
+        console.log(form.getValues("avatar"));
+        formData.append("avatar", form.getValues("avatar"));
+      }
+
+      await updateGenericProfileData(formData as any);
+
+      toast({
+        title: "Success",
+        description: "Profile updated successfully",
+      });
+      refetchProfile();
+    } catch (error: any) {
+      const errorMessage =
+        error?.data?.errors[0] ||
+        "An unexpected error occurred. Please try again later.";
+      toast({
+        variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: errorMessage,
+      });
+    } finally {
+      if (fieldName === "avatar") {
+        setUpdatedAvatar(null);
+        if (inputFileRef && inputFileRef.current)
+          inputFileRef.current.value = "";
+      }
+      setEditingField(null);
+    }
+  };
   useEffect(() => {
     refetchProfile();
   }, []);
@@ -153,6 +292,7 @@ const GeneralPage = () => {
           <div className="absolute inset-0  rounded-t-lg">
             <img
               src={
+                updatedAvatar ||
                 profileData?.avatar ||
                 profileData?.userId?.avatar ||
                 "https://github.com/shadcn.png"
@@ -165,26 +305,84 @@ const GeneralPage = () => {
             <LinkedinIcon className="w-4 h-4 text-[#0077B5]" />
           </div>
           <div className="absolute -bottom-12 left-6">
-            <div className="w-21 h-21 sm:w-31 sm:h-31 rounded-full border-4 border-white dark:border-gray-800 overflow-hidden bg-white">
+            <div
+              className="w-21 h-21 sm:w-31 sm:h-31 rounded-full border-4 border-white dark:border-gray-800 overflow-hidden bg-white cursor-pointer relative group"
+              onClick={() => {
+                inputFileRef.current?.click();
+              }}
+            >
               <img
                 src={
+                  updatedAvatar ||
                   profileData?.avatar ||
                   profileData?.userId?.avatar ||
                   "https://github.com/shadcn.png"
                 }
                 alt="profile"
-                className=" w-20 h-20  object-cover"
+                className={` ${
+                  updatedAvatar ? " animate-pulse " : ""
+                } w-20 h-20 object-cover `}
               />
+              <div className="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
+                <Pen className="w-6 h-6 text-white" />
+              </div>
             </div>
+            <input
+              ref={inputFileRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleAvatarUpload}
+            />
           </div>
+          {updatedAvatar && (
+            <div className="absolute bottom-0 flex justify-end w-full px-6 space-x-2 pb-4">
+              <Button
+                onClick={() => handleSaveBasicProfile("avatar", updatedAvatar)}
+                className="border bg-black text-white hover:bg-gray-900 rounded-sm text-xs px-3"
+              >
+                Save
+              </Button>
+              <Button
+                onClick={() => {
+                  setUpdatedAvatar(null);
+                  if (inputFileRef && inputFileRef!.current)
+                    inputFileRef.current.value = "";
+                }}
+                className="border bg-white text-black hover:bg-gray-100 rounded-sm text-xs px-3"
+              >
+                Cancel
+              </Button>
+            </div>
+          )}
         </div>
 
         <div className="pb-9 pt-16  px-6">
           <div className="space-y-4">
             <div>
-              <h1 className="text-2xl font-bold">
-                {profileData?.name || profileData?.userId.name}
-              </h1>
+              {editingField === "name" ? (
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  onBlur={() => handleBlurOn("name")}
+                  onKeyDown={(e) =>
+                    e.key === "Enter" &&
+                    handleSaveBasicProfile("name", formData.name)
+                  }
+                  className="text-2xl font-bold bg-transparent border-b border-gray-300 focus:outline-none focus:border-blue-500"
+                  autoFocus
+                />
+              ) : (
+                <h1
+                  className="text-2xl font-bold flex items-center gap-2 group cursor-pointer"
+                  onClick={() => setEditingField("name")}
+                >
+                  {profileData?.name || profileData?.userId?.name}
+                  <Pen className="w-4 h-4 opacity-0 group-hover:opacity-100 transition-opacity" />
+                </h1>
+              )}
               <p className="text-gray-600 text-xs dark:text-gray-400">
                 {profileData?.email || profileData?.userId.email}
               </p>
@@ -195,9 +393,7 @@ const GeneralPage = () => {
                       <input
                         type="text"
                         name="headline"
-                        onBlur={() =>
-                          handleBlurOn("headline")
-                        }
+                        onBlur={() => handleBlurOn("headline")}
                         value={formData.headline}
                         onChange={handleInputChange}
                         onKeyDown={(e) =>
@@ -232,9 +428,7 @@ const GeneralPage = () => {
                       <input
                         type="number"
                         name="expirience"
-                        onBlur={() =>
-                          handleBlurOn("expirience")
-                        }
+                        onBlur={() => handleBlurOn("expirience")}
                         value={formData.expirience}
                         onChange={handleInputChange}
                         onKeyDown={(e) =>
