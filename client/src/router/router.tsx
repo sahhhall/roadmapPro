@@ -39,10 +39,14 @@ const AssessmentPage = lazy(
 const MentorListing = lazy(
   () => import("@/features/mentor/pages/MentorListing")
 );
-const MentorProfile = lazy(() => import("@/features/mentor/pages/MentorProfilePublicView"));
-const RoadMapProfie = lazy(()=> import("@/features/user/pages/RoadmapsPage"))
+const MentorProfile = lazy(
+  () => import("@/features/mentor/pages/MentorProfilePublicView")
+);
+const RoadMapProfie = lazy(() => import("@/features/user/pages/RoadmapsPage"));
 const BookingsPage = lazy(() => import("@/features/user/pages/BookingsPage"));
 
+
+const VideoChatPage = lazy(()=> import('@/features/video/pages/video-chat'))
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -134,7 +138,7 @@ const routes = createBrowserRouter([
             path: "roadmaps",
             element: (
               <Suspense fallback={<div>Loading...</div>}>
-                <RoadMapProfie/>
+                <RoadMapProfie />
               </Suspense>
             ),
           },
@@ -179,6 +183,14 @@ const routes = createBrowserRouter([
         element: (
           <Suspense fallback={<div>loading..</div>}>
             <>payment success</>
+          </Suspense>
+        ),
+      },
+      {
+        path: "/meet/:roomId",
+        element: (
+          <Suspense fallback={<div>loading..</div>}>
+            <VideoChatPage/>
           </Suspense>
         ),
       },

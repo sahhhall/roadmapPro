@@ -1,12 +1,17 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useGetAllBookingDetailsQuery } from "@/features/user/services/api/mentorTestApi";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/Container";
 import { usegetUser } from "@/hooks/usegetUser";
+import { useSocket } from "@/features/video/context/SocketProvider";
+import { useNavigate } from "react-router-dom";
 
 const BookingsPage = () => {
   const [status, setStatus] = useState("scheduled");
   const user = usegetUser();
+  const socket = useSocket();
+  const navigate = useNavigate();
+  
   const {
     data: bookings,
     isLoading,
@@ -17,10 +22,9 @@ const BookingsPage = () => {
   });
 
   useEffect(() => {
-    if (bookings) {
-      refetch();
-    }
+    refetch();
   }, []);
+
   const statuses = ["scheduled", "completed"];
 
   const formatDate = (dateString: string) => {
@@ -30,19 +34,67 @@ const BookingsPage = () => {
     });
   };
 
+  // Handle joining a room
+  const handleJoinClick = useCallback(
+    async (roomId: string) => {
+      try {
+        if (socket && user?.email) {
+          console.log(`Attempting to join room: ${roomId}`);
+          socket.emit("room:join", { 
+            email: user.email, 
+            room: roomId 
+          });
+        } else {
+          console.error("Socket or user email not available");
+        }
+      } catch (error) {
+        console.error("Error joining room:", error);
+      }
+    },
+    [socket, user?.email]
+  );
+
+  // Handle navigation after successfully joining
+  const handleRoomJoined = useCallback(
+    (data: { email: string; room: string }) => {
+      const { email, room } = data;
+      console.log(`Successfully joined room ${room} with email ${email}`);
+      navigate(`/meet/${room}`);
+    },
+    [navigate]
+  );
+
+  // Handle when other users join
+  const handleUserJoined = useCallback((data: { email: string; id: string }) => {
+    console.log(`New user joined: ${data.email} with socket ID: ${data.id}`);
+  }, []);
+
+  useEffect(() => {
+    if (socket) {
+      // Listen for room join confirmation
+      socket.on("room:join", handleRoomJoined);
+      // Listen for other users joining
+      socket.on("user:joined", handleUserJoined);
+
+      return () => {
+        socket.off("room:join", handleRoomJoined);
+        socket.off("user:joined", handleUserJoined);
+      };
+    }
+  }, [socket, handleRoomJoined, handleUserJoined]);
+
   return (
-    <Container className=" p-6 overflow-hidden  mx-auto ">
-      <div className="flex justify-between  items-center mb-4">
+    <Container className="p-6 overflow-hidden mx-auto">
+      <div className="flex justify-between items-center mb-4">
         <div>
           <h1 className="text-xl font-semibold">All Bookings</h1>
           <p className="text-sm text-gray-500">
             Showing {bookings?.length || 0} results
           </p>
         </div>
-        {/* here filter comes like soring  */}
       </div>
 
-      <div className=" flex gap-2  mb-6">
+      <div className="flex gap-2 mb-6">
         {statuses.map((statusOption) => (
           <Button
             key={statusOption}
@@ -54,10 +106,11 @@ const BookingsPage = () => {
           </Button>
         ))}
       </div>
+
       <div className="space-y-4">
         {isLoading ? (
-          <div className="items-center flex  justify-center h-32">
-            <div className=" rounded-full animate-spin h-8 w-8 border-b-2 border-gray-900" />
+          <div className="items-center flex justify-center h-32">
+            <div className="rounded-full animate-spin h-8 w-8 border-b-2 border-gray-900" />
           </div>
         ) : (
           bookings?.map((booking) => (
@@ -85,15 +138,17 @@ const BookingsPage = () => {
 
                   <div>
                     <h3 className="font-medium">Booking Session</h3>
-                    <p className="text-xs  text-gray-500  tracking-wide"> with: {booking?.mentorId?.name}</p>
+                    <p className="text-xs text-gray-500 tracking-wide">
+                      with: {booking?.mentorId?.name}
+                    </p>
                     <p className="text-sm text-gray-500 mb-2">
                       {formatDate(booking?.date)}
                     </p>
                     <div className="flex gap-2">
-                      <span className=" rounded-full px-3 py-1 text-sm bg-emerald-50 text-emerald-700">
+                      <span className="rounded-full px-3 py-1 text-sm bg-emerald-50 text-emerald-700">
                         Full-Time
                       </span>
-                      <span className=" rounded-full px-3 py-1 text-sm bg-orange-50 text-orange-700">
+                      <span className="rounded-full px-3 py-1 text-sm bg-orange-50 text-orange-700">
                         {booking.status}
                       </span>
                     </div>
@@ -102,13 +157,12 @@ const BookingsPage = () => {
 
                 <div className="flex flex-col items-end gap-2">
                   {booking.status === "scheduled" && (
-                    <a
-                      href={booking.videoCallLink}
-                      target="_blank"
-                      rel="noopener noreferrer"
+                    <Button
+                      onClick={() => handleJoinClick(booking.roomId)}
+                      variant="outline"
                     >
-                      <Button variant={"outline"}>Join</Button>
-                    </a>
+                      Join
+                    </Button>
                   )}
                   <p className="text-sm sm:block hidden text-gray-500">
                     Room ID:

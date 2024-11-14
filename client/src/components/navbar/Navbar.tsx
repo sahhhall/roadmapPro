@@ -12,7 +12,9 @@ const Navbar = () => {
   const userData = usegetUser();
 
   const location = useLocation();
-
+  if (location.pathname.includes("/meet")) {
+    return <></>;
+  }
   // Check if current route is mentor profile
   const isMentorProfile = location.pathname.includes("/mentor-profile");
   const handleToggle = () => {
