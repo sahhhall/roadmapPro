@@ -55,4 +55,18 @@ export class MentorRepositary implements IMentorRepository {
             throw new Error(`db error to fetch mentr by ${mentorId}: ${error.message}`);
         }
     }
+
+    async updateAdditionalInfo(mentorId: string, updatedData: Partial<Pick<Mentor, 'headline' | 'bio' | 'expirience'>>): Promise<Mentor | any> {
+        try {
+            const updatedMentor = await MentorDB.findOneAndUpdate(
+                { userId: mentorId },
+                { $set: updatedData },
+                { new: true }
+            );
+            return updatedMentor;
+        } catch (error: any) {
+            customLogger.error(`db error to fetch mentr by ${mentorId}: ${error.message}`);
+            throw new Error(`db error to fetch mentr by ${mentorId}: ${error.message}`);
+        }
+    }
 }

@@ -1,9 +1,11 @@
 import { IGetMentorDetailsByIdUseCase } from "../../application/interfaces/mentor/IGetMentorDetailsByIdUseCase";
 import { IGetMentorsBySkillUseCase } from "../../application/interfaces/mentor/IGetMentorsBySkillUseCase";
+import { IUpdateAdditionalInfoUseCase } from "../../application/interfaces/mentor/IUpdateAdditionalinolUseCase";
 import { IGetUserDetailsUseCase } from "../../application/interfaces/user/IGetUserDetailsUseCase";
 import { IMentorApprovalUseCase } from "../../application/interfaces/user/IMentorApprovalUseCase";
 import { GetMentorDetailsByIdUseCase } from "../../application/usecases/mentor/GetMentorDetailsByIdUseCase";
 import { GetMentorsBySkillUseCase } from "../../application/usecases/mentor/GetMentorsBySkillUseCase";
+import { UpdateAdditionalInfoUseCase } from "../../application/usecases/mentor/UpdateAdditionalinolUseCase";
 import { GetUserDetailsUseCase } from "../../application/usecases/user/GetUserDetailsUseCase";
 import { MentorApprovalUseCase } from "../../application/usecases/user/MentorApprovalUseCase";
 import { IMentorRepository } from "../../domain/interfaces/IMentorRepositary";
@@ -37,7 +39,7 @@ export class DIContainer {
     //
 
     public getUserDetailsUseCase(): IGetUserDetailsUseCase {
-        return new GetUserDetailsUseCase(this._userProfileRepositary,this._mentorRepositary);
+        return new GetUserDetailsUseCase(this._userProfileRepositary, this._mentorRepositary);
     };
 
 
@@ -49,5 +51,9 @@ export class DIContainer {
 
     public getMentorByIdUseCase(): IGetMentorDetailsByIdUseCase {
         return new GetMentorDetailsByIdUseCase(this._mentorRepositary)
+    }
+
+    public updateMentorDetails(): IUpdateAdditionalInfoUseCase {
+        return new UpdateAdditionalInfoUseCase(this._mentorRepositary)
     }
 }
