@@ -16,6 +16,8 @@ const mentorApi = apiSlice.injectEndpoints({
                 url: MentorEndpoints.getMentorDetails(mentorId),
                 method: 'get',
             }),
+            keepUnusedDataFor: 0,
+            providesTags: ['MentorDetails']
         }),
         getAvailabilityOfMentor: builder.query<MentorAvailabilityResponse, string>({
             query: (mentorId) => ({

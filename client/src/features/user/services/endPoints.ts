@@ -8,6 +8,12 @@ export const AssessmentTestEndpoints = {
 
 }
 
+export const profileEndpoints = {
+    updateProfileMentor: '/api/mentor'
+}
+
+
+
 export const BookingEndpoints = {
     getBookingDetails: (userId: string, status?: string) => {
         let url = `/api/bookings/profile/${userId}`;
@@ -17,6 +23,12 @@ export const BookingEndpoints = {
         return url
     }
 }
+
+
+
+
+
+
 
 export const roadmapEndPoints = {
     getRoadmapDetails: (userId: string, status: string) => {

@@ -3,8 +3,11 @@ import { Button } from "@/components/ui/button";
 import AvailabilityModal from "@/features/mentor/components/modals/AvalibilityModal";
 import { usegetUser } from "@/hooks/usegetUser";
 import { LinkedinIcon, Pen } from "lucide-react";
-import { useState } from "react";
-import { useGetUserDetailsQuery } from "@/features/user/services/api/mentorTestApi";
+import { useEffect, useState } from "react";
+import {
+  useGetUserDetailsQuery,
+  useUpdateMentorProfileMutation,
+} from "@/features/user/services/api/mentorTestApi";
 import { useToast } from "@/hooks/use-toast";
 import { z } from "zod";
 
@@ -35,8 +38,13 @@ const GeneralPage = () => {
   const [editingField, setEditingField] = useState<string | null>(null);
 
   const user = usegetUser();
-  const { data: profileData, isLoading: ProfileDataLoadingApi } =
-    useGetUserDetailsQuery(user?.id!);
+  const {
+    data: profileData,
+    isLoading: ProfileDataLoadingApi,
+    refetch: refetchProfile,
+  } = useGetUserDetailsQuery(user?.id!);
+  const [updateMentorData] = useUpdateMentorProfileMutation();
+
   // for controledd form
   const [formData, setFormData] = useState({
     name: profileData?.name || profileData?.userId?.name || "",
@@ -62,7 +70,7 @@ const GeneralPage = () => {
   };
 
   //when click any other outside while editing this will trigger
-  const handleBlurOn = (field: string, value: string) => {
+  const handleBlurOn = (field: string) => {
     setFormErrors((prev) => ({ ...prev, [field]: "" }));
     setEditingField(null);
   };
@@ -108,18 +116,35 @@ const GeneralPage = () => {
       }
       setFormErrors((prev) => ({ ...prev, [fieldName]: "" }));
 
-      const updatedField = { [fieldName]: value };
-      console.log("Updating field:", updatedField);
-    } catch (error: any) {
+      const updatedData = { [fieldName]: value };
+      await updateMentorData({
+        mentorId: user!.id,
+        updatedData,
+      }).unwrap();
+
       toast({
-        title: "Error",
-        description:
-          error?.data?.message || "Failed to update profile information",
+        title: "Success",
+        description: "Your profile information has been updated successfully.",
+      });
+
+      //refetch profile data
+      refetchProfile();
+    } catch (error: any) {
+      const errorMessage =
+        error?.data?.errors[0] ||
+        "An unexpected error occurred. Please try again later.";
+      toast({
         variant: "destructive",
+        title: "Uh oh! Something went wrong.",
+        description: errorMessage,
       });
     }
     setEditingField(null);
   };
+
+  useEffect(() => {
+    refetchProfile();
+  }, []);
   return (
     <Container className="">
       {/* div for contenet like profile and user name and headlin  */}
@@ -171,7 +196,7 @@ const GeneralPage = () => {
                         type="text"
                         name="headline"
                         onBlur={() =>
-                          handleBlurOn("headline", profileData.headline)
+                          handleBlurOn("headline")
                         }
                         value={formData.headline}
                         onChange={handleInputChange}
@@ -208,7 +233,7 @@ const GeneralPage = () => {
                         type="number"
                         name="expirience"
                         onBlur={() =>
-                          handleBlurOn("expirience", profileData.expirience)
+                          handleBlurOn("expirience")
                         }
                         value={formData.expirience}
                         onChange={handleInputChange}
@@ -253,7 +278,7 @@ const GeneralPage = () => {
               {editingField === "bio" ? (
                 <textarea
                   name="bio"
-                  onBlur={() => handleBlurOn("bio", profileData.bio)}
+                  onBlur={() => handleBlurOn("bio")}
                   onChange={handleInputChange}
                   value={formData.bio}
                   onKeyDown={(e) =>

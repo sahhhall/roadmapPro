@@ -111,29 +111,36 @@ export interface IMentorDetailsResponse {
 
 
 
+export interface IMentorUpdateRequest {
+    mentorId: string, 
+    updatedData: {
+        headline?: string;
+        bio?: string;
+        experience?: string;
+    }
+}
 
 
 
 
 
-
- interface mentorData {
+interface mentorData {
     role: string;
     email: string;
     name: string;
     id: string;
 }
-export  interface IGetAllBookingsResponse {
+export interface IGetAllBookingsResponse {
     menteeId: string;
     mentorId: mentorData;
     date: string;
-    status: 'created' | 'scheduled' | 'cancelled' | 'completed'; 
-    paymentStatus: "pending" | "completed"; 
-    expiresAt: string; 
+    status: 'created' | 'scheduled' | 'cancelled' | 'completed';
+    paymentStatus: "pending" | "completed";
+    expiresAt: string;
     videoCallLink: string;
-    createdAt: string; 
+    createdAt: string;
     roomId: string;
-    updatedAt: string; 
+    updatedAt: string;
     id: string;
 }
 

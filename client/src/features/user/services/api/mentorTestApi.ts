@@ -1,6 +1,6 @@
 import { apiSlice } from "@/redux/slices/apiSlice";
-import { AllStacksResponse, IGetAllBookingsResponse, IRoadmapResponse, MentorAssessmentRegistrationRequest, MentorAssessmentRegistrationResponse, QuestionResponse, TestSubmissionRequest } from "@/features/user/types/mentor";
-import { AssessmentTestEndpoints, BookingEndpoints, roadmapEndPoints } from "@/features/user/services/endPoints";
+import { AllStacksResponse, IGetAllBookingsResponse, IMentorDetailsResponse, IMentorUpdateRequest, IRoadmapResponse, MentorAssessmentRegistrationRequest, MentorAssessmentRegistrationResponse, QuestionResponse, TestSubmissionRequest } from "@/features/user/types/mentor";
+import { AssessmentTestEndpoints, BookingEndpoints, profileEndpoints, roadmapEndPoints } from "@/features/user/services/endPoints";
 
 
 
@@ -57,7 +57,16 @@ const mentorTestApi = apiSlice.injectEndpoints({
                 method: 'get',
             }),
             keepUnusedDataFor: 0,
-        })
+        }),
+
+        updateMentorProfile: builder.mutation<IMentorDetailsResponse, IMentorUpdateRequest>({
+            query: (data) => ({
+                url: profileEndpoints.updateProfileMentor,
+                method: 'put',
+                body: data
+            }),
+            invalidatesTags: ['MentorDetails']
+        })  
 
     })
 })
@@ -70,5 +79,6 @@ export const {
     useSubmitMentorMutation,
     useGetUserDetailsQuery,
     useGetAllBookingDetailsQuery,
-    useGetAllRoadmapsByUserIdQuery
+    useGetAllRoadmapsByUserIdQuery,
+    useUpdateMentorProfileMutation
 } = mentorTestApi;

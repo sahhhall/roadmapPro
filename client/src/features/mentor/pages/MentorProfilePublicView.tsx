@@ -46,8 +46,11 @@ const MentorProfile = () => {
 
   const user = usegetUser();
 
-  const { data: mentorDetails, isLoading: mentorLoading } =
-    useGetMentorDetailsQuery(mentorId!);
+  const {
+    data: mentorDetails,
+    isLoading: mentorLoading,
+    refetch: refetchMentorDetails,
+  } = useGetMentorDetailsQuery(mentorId!);
   const { data: availabilityData, isLoading: availabilityLoading } =
     useGetAvailabilityOfMentorQuery(mentorId!, {
       skip: false,
@@ -85,6 +88,8 @@ const MentorProfile = () => {
     refetchBookinData();
   }, [refetchBookinData]);
   useEffect(() => {
+    //if any change madae in mentro side here should be updated
+    refetchMentorDetails();
     if (availabilityData) {
       // this for getting possible avaialble freee days for a mentor to book in this month utill
       const dates = availabilityArrange(availabilityData.weeklySchedule);
