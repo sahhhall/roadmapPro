@@ -136,7 +136,7 @@ interface mentorData {
     id: string;
 }
 export interface IGetAllBookingsResponse {
-    menteeId: string;
+    menteeId: mentorData;
     mentorId: mentorData;
     date: string;
     status: 'created' | 'scheduled' | 'cancelled' | 'completed';

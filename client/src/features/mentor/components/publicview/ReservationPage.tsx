@@ -3,7 +3,7 @@ import { IMentorDetailsResponse } from "@/features/user/types/mentor";
 import { PaymentSummary } from "@/features/mentor/components/publicview/PaymentSummary";
 import { Timer } from "lucide-react";
 import ExpiryModal from "@/features/mentor/components/modals/ExpiryModal";
-import { getDayYearByDateString } from "@/features/mentor/libs/timeHelpers";
+import { formatDateAndCalculateTime } from "@/features/mentor/libs/timeHelpers";
 import { IGetMenotrsBookingsResponse } from "../../types/mentor";
 
 interface IReservationProps {
@@ -11,7 +11,7 @@ interface IReservationProps {
   price: number;
   bookedDate: string;
   setIsReserved: React.Dispatch<React.SetStateAction<boolean>>;
-  bookingDetails: IGetMenotrsBookingsResponse
+  bookingDetails: IGetMenotrsBookingsResponse;
 }
 
 const ReservationPage: React.FC<IReservationProps> = ({
@@ -19,14 +19,12 @@ const ReservationPage: React.FC<IReservationProps> = ({
   price,
   bookedDate,
   setIsReserved,
-  bookingDetails
+  bookingDetails,
 }) => {
   const [expire, setExpire] = useState<number>(300);
   const [expiryDialog, setExpiryModal] = useState<boolean>(false);
   const setOpenExipiry = () => setExpiryModal(true);
- 
-      
- 
+
   useEffect(() => {
     const timer = setInterval(() => {
       setExpire((prevExpire) => {
@@ -72,7 +70,9 @@ const ReservationPage: React.FC<IReservationProps> = ({
                   {mentorDetails?.bio}
                 </p>
                 <hr className="my-4 border-gray-200 dark:border-gray-700" />
-                <p className="text-gray-500">{getDayYearByDateString(bookedDate)}</p>
+                <p className="text-gray-500">
+                  {formatDateAndCalculateTime(bookedDate)}
+                </p>
               </div>
             </div>
           </div>
@@ -80,11 +80,20 @@ const ReservationPage: React.FC<IReservationProps> = ({
 
         <div className="w-full items-center   lg-flex-end  lg:w-3/4">
           <div className="  border dark:border-gray-800 border-gray-100 shadow-sm bg-white dark:bg-black rounded-lg">
-            <PaymentSummary bookingDate={getDayYearByDateString(bookedDate)} bookingDetails={bookingDetails} mentorDetails={mentorDetails} price={price} />
+            <PaymentSummary
+              bookingDate={formatDateAndCalculateTime(bookedDate)}
+              bookingDetails={bookingDetails}
+              mentorDetails={mentorDetails}
+              price={price}
+            />
           </div>
         </div>
       </div>
-      <ExpiryModal setIsReserved={setIsReserved} open={expiryDialog} setDialogExpiry={setExpiryModal} />
+      <ExpiryModal
+        setIsReserved={setIsReserved}
+        open={expiryDialog}
+        setDialogExpiry={setExpiryModal}
+      />
     </div>
   );
 };

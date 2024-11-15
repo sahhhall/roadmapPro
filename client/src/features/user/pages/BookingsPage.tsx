@@ -5,13 +5,14 @@ import Container from "@/components/Container";
 import { usegetUser } from "@/hooks/usegetUser";
 import { useSocket } from "@/features/video/context/SocketProvider";
 import { useNavigate } from "react-router-dom";
+import { formatDateAndCalculateTime } from "@/features/mentor/libs/timeHelpers";
 
 const BookingsPage = () => {
   const [status, setStatus] = useState("scheduled");
   const user = usegetUser();
   const socket = useSocket();
   const navigate = useNavigate();
-  
+
   const {
     data: bookings,
     isLoading,
@@ -20,29 +21,22 @@ const BookingsPage = () => {
     mentorId: user?.id,
     status,
   });
+  console.log(bookings);
 
   useEffect(() => {
     refetch();
   }, []);
 
   const statuses = ["scheduled", "completed"];
-
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleString("en-US", {
-      dateStyle: "medium",
-      timeStyle: "short",
-    });
-  };
-
   // Handle joining a room
   const handleJoinClick = useCallback(
     async (roomId: string) => {
       try {
         if (socket && user?.email) {
           console.log(`Attempting to join room: ${roomId}`);
-          socket.emit("room:join", { 
-            email: user.email, 
-            room: roomId 
+          socket.emit("room:join", {
+            email: user.email,
+            room: roomId,
           });
         } else {
           console.error("Socket or user email not available");
@@ -65,9 +59,12 @@ const BookingsPage = () => {
   );
 
   // Handle when other users join
-  const handleUserJoined = useCallback((data: { email: string; id: string }) => {
-    console.log(`New user joined: ${data.email} with socket ID: ${data.id}`);
-  }, []);
+  const handleUserJoined = useCallback(
+    (data: { email: string; id: string }) => {
+      console.log(`New user joined: ${data.email} with socket ID: ${data.id}`);
+    },
+    []
+  );
 
   useEffect(() => {
     if (socket) {
@@ -139,10 +136,15 @@ const BookingsPage = () => {
                   <div>
                     <h3 className="font-medium">Booking Session</h3>
                     <p className="text-xs text-gray-500 tracking-wide">
-                      with: {booking?.mentorId?.name}
+                      {booking?.mentorId?.id === user?.id ? (
+                        <>with: {booking.menteeId.name}</>
+                      ) : (
+                        <>tutor: {booking?.mentorId?.name}</>
+                      )}
                     </p>
+
                     <p className="text-sm text-gray-500 mb-2">
-                      {formatDate(booking?.date)}
+                      {formatDateAndCalculateTime(booking?.date)}
                     </p>
                     <div className="flex gap-2">
                       <span className="rounded-full px-3 py-1 text-sm bg-emerald-50 text-emerald-700">
