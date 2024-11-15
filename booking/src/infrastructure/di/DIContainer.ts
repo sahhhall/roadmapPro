@@ -22,6 +22,8 @@ import { IGetMyAllBookingByUserMentor } from "../../application/interfaces/IGetM
 import { GetMyAllBookingByUserMentor } from "../../application/usecases/GetMyAllBookingByUserMentor";
 import { IGetAnalyticsUseCase } from "../../application/interfaces/admin/IGetAnalyticsUseCase";
 import { GetAnalyticsUseCase } from "../../application/usecases/admin/GetAnalyticsUseCase";
+import { IGetBookingsCountAndUserUseCase } from "../../application/interfaces/admin/IGetBookingsCountAndUserUseCase";
+import { GetBookingsCountAndUserUseCase } from "../../application/usecases/admin/GetBookingsCountAndUserUseCase";
 
 
 
@@ -84,5 +86,8 @@ export class DIContainer {
 
     public getAnalyticsBylast30(): IGetAnalyticsUseCase {
         return new GetAnalyticsUseCase(this._bookingRepositary)
+    }
+    public getCountForAnalytics(): IGetBookingsCountAndUserUseCase{
+        return new GetBookingsCountAndUserUseCase(this._bookingRepositary,this._userRepositary)
     }
 }

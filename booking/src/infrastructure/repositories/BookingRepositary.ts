@@ -158,5 +158,14 @@ export class BookingRepositary implements IBookingRepositary {
         }
     }
 
+    async getCount(): Promise<number | null> {
+        try {
+            return await Booking.countDocuments();
+
+        } catch (error: any) {
+            customLogger.error(`count data: ${error.message}`);
+            throw new Error(`count data: ${error}`);
+        }
+    }
 }
 

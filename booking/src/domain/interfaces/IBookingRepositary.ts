@@ -11,4 +11,5 @@ export interface IBookingRepositary {
     updateStatus(bookingId: string, newStatus: string): Promise<BookingEntity | null>;
     daysBaseBookings(startDate: Date, endDate: Date, status?: BookinStatus): Promise<DayBooking[] | null>
     // checkAvailability(mentorId: string, startTime: string, endTime: string): Promise<boolean>;
+    getCount(): Promise<number | null>
 }

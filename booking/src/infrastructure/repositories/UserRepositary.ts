@@ -42,5 +42,14 @@ export class UserRepository implements IUserRepository {
             throw new Error(`db error to fetch user booking-service: ${error.message}`);
         }
     }
+
+    async getCount(): Promise<number | null> {
+        try {
+            return await UserBooking.countDocuments();
+        } catch (error: any) {
+            customLogger.error(`count data: ${error.message}`);
+            throw new Error(`count data: ${error}`);
+        }
+    }
 }
 

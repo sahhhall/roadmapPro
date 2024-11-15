@@ -10,4 +10,5 @@ export interface IUserRepository {
     }): Promise<User | null>;
 
     getUser(id: string): Promise<User | null>;
+    getCount(): Promise<number | null>
 }

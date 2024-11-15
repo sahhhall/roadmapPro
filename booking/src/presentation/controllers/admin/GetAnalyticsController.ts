@@ -8,8 +8,6 @@ export class GetAnalyticsController {
     async get(req: Request, res: Response, next: NextFunction) {
         try {
             const { days } = req.query;
-            console.log(days,"da");
-            
             const result = await this.getAnalytics.execute(days as string);
             return res.status(HttpStatus.OK).json(result);
         } catch (error) {

@@ -1,31 +1,43 @@
 import { TrendingDown, TrendingUp } from "lucide-react";
+import { useGetCountOfBookingsAndUsersQuery } from "../../services/api/analyticsApi";
+import { useEffect, useState } from "react";
 
-interface IStatCardData {
-  id: string;
-  title: string;
-  value: string;
-  trend: "up" | "down";
-  pillText: string;
-  period: string;
-}
+export const StatCards = () => {
+  const [stats, setStats] = useState<any>(null);
+  const { data } = useGetCountOfBookingsAndUsersQuery({});
 
-export const StatCards = ({ stats }: { stats: IStatCardData[] }) => {
+  useEffect(() => {
+    if (data) {
+      setStats({
+        totalUser: data.totalUser,
+        totalBookings: data.totolBookings,
+      });
+    }
+  }, [data]);
+
   return (
     <>
-      {stats.map((stat) => (
+      {stats && (
         <Card
-          key={stat.id}
-          title={stat.title}
-          value={stat.value}
-          pillText={stat.pillText}
-          trend={stat.trend}
-          period={stat.period}
+          title="Total Users"
+          value={stats.totalUser.toString()}
+          pillText="+10%"
+          trend="up"
+          period="Last year"
         />
-      ))}
+      )}
+      {stats && (
+        <Card
+          title="Total Bookings"
+          value={stats.totalBookings.toString()}
+          pillText="-5%"
+          trend="down"
+          period="Last year"
+        />
+      )}
     </>
   );
 };
-
 const Card = ({
   title,
   value,
