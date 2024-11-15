@@ -69,6 +69,8 @@ const bookingSchema = new Schema<BookingDoc>(
 );
 
 
+bookingSchema.index({ status: 1 }); 
+
 bookingSchema.statics.build = (attrs: BookingAttr) => {
     return new Booking(attrs);
 };

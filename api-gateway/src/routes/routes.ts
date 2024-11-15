@@ -120,9 +120,9 @@ export const ROUTES = [
             target: 'http://localhost:3003/api/user',
             changeOrigin: true,
         }
-    }, 
+    },
     {
-        url:'/api/bookings',
+        url: '/api/bookings',
         auth: false,
         proxy: {
             target: 'http://localhost:3004/api/bookings',
@@ -130,10 +130,18 @@ export const ROUTES = [
         }
     },
     {
-        url:'/api/payments',
+        url: '/api/payments',
         auth: true,
         proxy: {
             target: 'http://localhost:3005/api/payments',
+            changeOrigin: true,
+        }
+    },
+    {
+        url: '/api/bookings/analytics',
+        auth: 'admin',
+        proxy: {
+            target: 'http://localhost:4001/api/bookings/analytics',
             changeOrigin: true,
         }
     }

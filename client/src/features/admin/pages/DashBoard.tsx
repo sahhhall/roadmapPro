@@ -25,7 +25,7 @@ const dashboardData = {
     {
       id: "3",
       title: "Booking rate",
-      value: "3.8%",
+      value: "124",
       pillText: "+2.2% from last month",
       trend: "up",
       changePercentage: 2.2,

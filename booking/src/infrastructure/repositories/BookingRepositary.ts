@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { BookinStatus } from "@sahhhallroadmappro/common";
-import { BookingEntity } from "../../domain/entities/Booking";
+import { BookingEntity, DayBooking } from "../../domain/entities/Booking";
 import { IBookingRepositary } from "../../domain/interfaces/IBookingRepositary";
 import { customLogger } from "../../presentation/middleware/loggerMiddleware";
 import { Booking } from "../database/mongodb/schemas/booking.schema";
@@ -122,6 +122,39 @@ export class BookingRepositary implements IBookingRepositary {
         } catch (error: any) {
             customLogger.error(`db error updating booking status booking-service: ${error.message}`);
             throw new Error(`db error updating booking status booking-service: ${error.message}`);
+        }
+    }
+
+    async daysBaseBookings(startDate: Date, endDate: Date, status?: BookinStatus): Promise<DayBooking[] | null> {
+        try {
+
+            const matchCriteria: any = {
+                createdAt: { $gte: startDate, $lte: endDate },
+            };
+
+            if (status) {
+                matchCriteria.status = status;
+            }
+            console.log(matchCriteria)
+            //we get start date(day) from use case and endate will also generate from there
+            //tecnically it can use any kinda days thing like the days go for use case more 
+            const dayBaseBooking = await Booking.aggregate([
+                {
+                    $match: matchCriteria
+
+                },
+                {
+                    $group: {
+                        _id: { $dayOfMonth: "$createdAt" },
+                        totalBookings: { $sum: 1 }
+                    }
+                }
+            ])
+            console.log(dayBaseBooking)
+            return dayBaseBooking;
+        } catch (error: any) {
+            customLogger.error(`fetch data: ${error.message}`);
+            throw new Error(`fetch data: ${error.message}`);
         }
     }
 

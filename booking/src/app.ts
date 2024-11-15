@@ -9,6 +9,7 @@ import { DIContainer } from './infrastructure/di/DIContainer';
 import { bookingRoutes } from './presentation/routes/bookingRoutes';
 import { ExpirationCompletedConsumer } from './infrastructure/kafka/consumers/expiration-completed-consumer';
 import { PaymentCompletedConsumer } from './infrastructure/kafka/consumers/payment-completed-consmer';
+import { bookingAnalyticsRoutes } from './presentation/routes/bookingAnalyticsRoute';
 
 
 
@@ -33,7 +34,9 @@ export class App {
 
     private registerRoutes(): void {
         this.server.registerRoutes('/api/mentors/availability', availabilityRoutes);
+        this.server.registerRoutes('/api/bookings/analytics', bookingAnalyticsRoutes);
         this.server.registerRoutes('/api/bookings', bookingRoutes);
+
 
     }
     private registerErrorHandler(): void {

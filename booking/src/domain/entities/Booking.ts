@@ -56,3 +56,17 @@ export class BookingEntity {
         public updatedAt?: Date,
     ) { }
 }
+
+
+
+
+
+///
+
+
+export class DayBooking {
+    constructor(
+        public _id: number,
+        public totalBookings: number
+    ) {}
+}
