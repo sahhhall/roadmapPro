@@ -36,7 +36,7 @@ export class UserRepository implements IUserRepository {
     }
     async getUserDetails(userId: string): Promise<User | null> {
         try {
-            const userDetails = await Profile.findById(userId);
+            const userDetails = await Profile.findById(userId).lean();
             return userDetails;
         } catch (error: any) {
             customLogger.error(`db error to fetch user ${userId}: ${error.message}`);

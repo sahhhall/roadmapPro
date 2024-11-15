@@ -10,6 +10,7 @@ export class GetUserDetailsController {
     async getUser(req: Request, res: Response, next: NextFunction) {
         try {
             const { userId } = req.params;
+            console.log(userId,"hre")
             const userData = await this.getUserDetails.execute(userId);
             return res.status(HttpStatus.OK).json(userData)
         } catch (error) {

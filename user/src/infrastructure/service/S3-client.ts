@@ -44,7 +44,7 @@ class S3Operations {
                 Bucket: this.bucketName,
                 Key: key
             }),
-            { expiresIn: 30 }
+            { expiresIn: 300 }
         );
         return imageUrl;
     }

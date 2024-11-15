@@ -12,25 +12,28 @@ export class GetUserDetailsUseCase implements IGetUserDetailsUseCase {
     constructor(private userRepositary: IUserRepository, private mentorRepositary: IMentorRepository) { }
     async execute(userId: string): Promise<User | null | any> {
         let userData;
-        const user = await this.userRepositary.getUserDetails(userId);
-        if (user?.avatar) {
-            const avatarUrl = await s3Operation.getImageFromBucket(user?.avatar as string);
+        userData = await this.userRepositary.getUserDetails(userId);
+        if (userData?.avatar) {
+            const avatarUrl = await s3Operation.getImageFromBucket(userData?.avatar as string);
             userData = {
-                user,
+                ...userData,
                 avatar: avatarUrl
             }
         }
-        if (!user) {
+        if (!userData) {
             throw new NotFoundError();
         }
-        if (user.role == 'mentor') {
+        if (userData.role == 'mentor') {
             let mentordata = await this.mentorRepositary.getMentorByid(userId) as any
-            if (mentordata?.userId) {
-                const avatarUrl = await s3Operation.getImageFromBucket(user?.avatar as string);
+            if (mentordata?.userId?.avatar) {
+                const avatarUrl = await s3Operation.getImageFromBucket(mentordata.userId?.avatar as string);
                 mentordata = {
                     ...mentordata,
-                    avatar: avatarUrl
-                }
+                    userId: {
+                        ...mentordata.userId,
+                        avatar: avatarUrl,
+                    },
+                };
             }
             return mentordata
         }
