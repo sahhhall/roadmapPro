@@ -49,7 +49,7 @@ export class MentorRepositary implements IMentorRepository {
             return await MentorDB.findOne({ userId: mentorId }).populate({
                 path: 'userId',
                 select: 'name email avatar '
-            })
+            }).lean()
         } catch (error: any) {
             customLogger.error(`db error to fetch mentr by ${mentorId}: ${error.message}`);
             throw new Error(`db error to fetch mentr by ${mentorId}: ${error.message}`);

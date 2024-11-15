@@ -14,7 +14,7 @@ export class User {
 
 export class Mentor {
     constructor(
-        public userId: string,
+        public userId: string | User,
         public assessedSkills: string[],
         public languages: string[],
         public headline: string,
