@@ -32,12 +32,12 @@ class UserServiceGrpc {
                 call: grpc.ServerUnaryCall<CreateUserProfileRequest, CreateUserProfileResponse>,
                 callback: grpc.sendUnaryData<CreateUserProfileResponse>
             ) => {
-                const { userId, email, name, isGoogle, avatar } = call.request as any;
+                const { userId, email, name, isGoogle } = call.request as any;
                 console.log(`Received request: userId=${userId}, email=${email} ${name}`);
                 const userRepo = new UserRepository();
                 try {
                     const createdUser = await userRepo.create({
-                        userId, email, name, isGoogle, avatar
+                        userId, email, name, isGoogle
                     });
                     callback(null, { userId: createdUser.id, success: true });
                 } catch (error: any) {

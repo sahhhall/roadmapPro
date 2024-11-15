@@ -1,14 +1,45 @@
 import { Request, Response, NextFunction } from 'express';
 import { HttpStatus } from '@sahhhallroadmappro/common';
+import { IUpdateUserDataUseCase } from '../../../application/interfaces/user/IUpdateUserDataUseCase';
+import crypto from 'crypto';
+import { s3Operation } from '../../../infrastructure/service/S3-client';
 
 export class UpdateUserProfileController {
+    constructor(private updateUseCase: IUpdateUserDataUseCase) { }
 
     async update(req: Request, res: Response, next: NextFunction) {
         try {
-            console.log(req.file, "req.body");
-            console.log(req.files,"req.file")
+            const { userId } = req.body;
+            console.log(req.user?.email, "user email", userId);
+
+            let updatedUser;
+
+            if (req.file) {
+                // dlt previous avatar if `key` is provided in the body
+                if (req.body.key) {
+                    await s3Operation.deleteImageFromBucket(req.body.key);
+                }
+                // for randomm image name suppose two user upload same s3 will overide old image 
+                const fileKey = `${userId}/${crypto.randomBytes(16).toString('hex')}-${req.file.originalname}`;
+
+                const uploadResult = await s3Operation.uploadImageToBucket(
+                    req.file.buffer,
+                    req.file.mimetype,
+                    fileKey
+                );
+                console.log(uploadResult)
+
+                // update user profile with the avatar URL
+                updatedUser = await this.updateUseCase.execute(userId, { avatar: fileKey });
+            } else {
+                // update user profile with other fields if no file is present
+                updatedUser = await this.updateUseCase.execute(userId, { name: req.body.name });
+            }
+
+            // res with updated user profile
+            res.status(HttpStatus.OK).json(updatedUser);
         } catch (error) {
-            next(error)
+            next(error);
         }
     }
 }

@@ -1,10 +1,10 @@
 import { DeleteObjectCommand, GetObjectCommand, PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import dotenv from 'dotenv'
-import crypto from 'crypto'
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 dotenv.config();
 
-// for randomm image name suppose two user upload same s3 will overide old image 
-const randomImageName = (bytes=32) => crypto.randomBytes(bytes).toString('hex')
+// // for randomm image name suppose two user upload same s3 will overide old image 
+// const randomImageName = (bytes = 32) => crypto.randomBytes(bytes).toString('hex')
 
 class S3Operations {
     private s3: S3Client;
@@ -25,9 +25,42 @@ class S3Operations {
         });
     }
 
+    async uploadImageToBucket(fileBufferCode: Buffer, fileType: string, key: string) {
+        const uploadParmas = {
+            Bucket: this.bucketName,
+            Body: fileBufferCode,
+            Key: key,
+            ContentType: fileType,
+        }
+        const data = await this.s3.send(new PutObjectCommand(uploadParmas));
+        return data;
+    }
+
+
+    async getImageFromBucket(key: string) {
+        let imageUrl = await getSignedUrl(
+            this.s3,
+            new GetObjectCommand({
+                Bucket: this.bucketName,
+                Key: key
+            }),
+            { expiresIn: 30 }
+        );
+        return imageUrl;
+    }
+
+    async deleteImageFromBucket(key: string) {
+        const deleteParams = {
+            Bucket: this.bucketName,
+            Key: key,
+        };
+
+        const data = await this.s3.send(new DeleteObjectCommand(deleteParams));
+        return data;
+    }
 
 }
 
 
 
-export default new S3Operations();
+export  const s3Operation = new S3Operations();

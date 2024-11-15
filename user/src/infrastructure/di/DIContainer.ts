@@ -3,11 +3,13 @@ import { IGetMentorsBySkillUseCase } from "../../application/interfaces/mentor/I
 import { IUpdateAdditionalInfoUseCase } from "../../application/interfaces/mentor/IUpdateAdditionalinolUseCase";
 import { IGetUserDetailsUseCase } from "../../application/interfaces/user/IGetUserDetailsUseCase";
 import { IMentorApprovalUseCase } from "../../application/interfaces/user/IMentorApprovalUseCase";
+import { IUpdateUserDataUseCase } from "../../application/interfaces/user/IUpdateUserDataUseCase";
 import { GetMentorDetailsByIdUseCase } from "../../application/usecases/mentor/GetMentorDetailsByIdUseCase";
 import { GetMentorsBySkillUseCase } from "../../application/usecases/mentor/GetMentorsBySkillUseCase";
 import { UpdateAdditionalInfoUseCase } from "../../application/usecases/mentor/UpdateAdditionalinolUseCase";
 import { GetUserDetailsUseCase } from "../../application/usecases/user/GetUserDetailsUseCase";
 import { MentorApprovalUseCase } from "../../application/usecases/user/MentorApprovalUseCase";
+import { UpdateUserDataUseCase } from "../../application/usecases/user/UpdateUserDataUseCase";
 import { IMentorRepository } from "../../domain/interfaces/IMentorRepositary";
 import { IUserRepository } from "../../domain/interfaces/IUserRepositary";
 import { MentorRepositary } from "../repositories/MentorRepositary";
@@ -56,4 +58,12 @@ export class DIContainer {
     public updateMentorDetails(): IUpdateAdditionalInfoUseCase {
         return new UpdateAdditionalInfoUseCase(this._mentorRepositary)
     }
+
+
+
+
+
+    public userUpdateUseCase(): IUpdateUserDataUseCase {
+        return new UpdateUserDataUseCase(this._userProfileRepositary)
+    };
 }

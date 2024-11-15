@@ -33,7 +33,7 @@ export class GoogleLogin {
                 name,
                 email,
                 'google',
-                avatar as string,
+                // avatar as string,
             );
             user.isGoogle = true;
             user = await this.userRepository.create(user);

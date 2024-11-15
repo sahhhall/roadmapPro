@@ -13,7 +13,7 @@ const diContainer = DIContainer.getInstance();
 
 
 const getUserDetailsController = new GetUserDetailsController(diContainer.getUserDetailsUseCase());
-const updateUserProfileController = new UpdateUserProfileController();
+const updateUserProfileController = new UpdateUserProfileController(diContainer.userUpdateUseCase());
 
 
 router.put('/update', upload.single('avatar'), async (req, res, next) => {

@@ -4,7 +4,7 @@ import { IUpdateAdditionalInfoUseCase } from '../../../application/interfaces/me
 
 
 export class updateAdditionalinfoController {
-    constructor(private readonly updateData: IUpdateAdditionalInfoUseCase) { };
+    constructor(private updateData: IUpdateAdditionalInfoUseCase) { };
 
     async update(req: Request, res: Response, next: NextFunction) {
         try {

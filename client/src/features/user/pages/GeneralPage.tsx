@@ -238,7 +238,7 @@ const GeneralPage = () => {
   ) => {
     try {
       const formData = new FormData();
-
+      formData.append("userId", user!.id);
       if (fieldName === "name") {
         const res = nameSchema.safeParse(value);
         if (!res?.success) {
