@@ -6,7 +6,7 @@ export class Notification {
         public type: Types,
         public message: string,
         public senderName?: string,
-        public isRead: boolean = false,
+        public isRead?: boolean,
         public link?: string,
         public createdAt?: Date,
         public updatedAt?: Date

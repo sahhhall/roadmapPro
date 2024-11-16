@@ -22,7 +22,8 @@ export class AdminReviewUseCase implements IAdminReview {
 
 
         const reviwedRoadmap = await this.roadMapRepositary.updateRoadmap(roadmapId, adminFeedback, status);
-        const userData = await this.userRepo.getUserDetails(reviwedRoadmap?.userId as any)
+        const userData = await this.userRepo.getUserDetails(reviwedRoadmap?.userId as any);
+         console.log(userData)
         const message = status === 'published'
             ? `🎉 Your roadmap has been approved by the mentor! 🚀 You're all set to take the next steps in your journey. Keep up the great work! 💪`
             : `❌ Your roadmap approval was rejected by the admin. Unfortunately, it couldn't be published because: ${adminFeedback} 😔 Don't worry, use this feedback to improve and try again! ✨`;

@@ -30,7 +30,8 @@ const notificationSchema = new mongoose.Schema(
             required: true,
         },
         type: {
-            type: Object.values(Types),
+            type: String,
+            enum: Object.values(Types),
             required: true,
         },
         message: {

@@ -18,7 +18,12 @@ export class RoadmapUpdatedConsumer extends KafkaConsumer<RoadMapUpdatedEvent> {
     }): Promise<any> {
         console.log(data, "from roadmap serice")
         try {
-
+            const res = await this.updateBookingStatus.execute({
+                type: data.type as any,
+                message: data.message,
+                userMail: data.userEmail
+            })
+            console.log(res, "update")
         } catch (error) {
             console.log('err saving user the data db', error);
         }

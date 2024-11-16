@@ -7,8 +7,7 @@ import { customLogger } from '../../presentation/middlewares/loggerMiddleware';
 export class UserRepositary implements IUserRepository {
 
     async getUserDetails(userId: string): Promise<User | null> {
-        try {
-
+        try {         
             const user = await UserDB.findOne({ id: userId })
             return user
         } catch (error: any) {

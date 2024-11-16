@@ -32,7 +32,8 @@ export class NotificationRepositary implements INotificationRepo {
     async create(notification: Partial<Notification>): Promise<Notification> {
         try {
             const newNotification = new NotificationDB({
-                ...notification
+                ...notification,
+                type: notification.type as any
             })
             const savedNotification = await newNotification.save();
             return savedNotification
