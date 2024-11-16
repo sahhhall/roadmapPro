@@ -1,15 +1,17 @@
 import { connectDB, disconnectDB } from './infrastructure/database/mongodb/connection';
-import { errorHandler,userDtamiddleaware } from '@sahhhallroadmappro/common';
+import { errorHandler, userDtamiddleaware } from '@sahhhallroadmappro/common';
 import kafkaWrapper from './infrastructure/kafka/kafka-wrapper';
 import loggerMiddleware from './presentation/middleware/loggerMiddleware';
 import { IServerInterface } from './domain/interfaces/IServer';
 import { userRoutes } from './presentation/routes/userRoutes';
+import { DIContainer } from './infrastructure/di/DIContainer';
+import { RoadmapUpdatedConsumer } from './infrastructure/kafka/consumers/roadmap-update-consumer';
 
- 
+
 
 export class App {
     constructor(private server: IServerInterface) { }
-
+    private roadmapUpdatedConsumer?: RoadmapUpdatedConsumer;
     async initialize(): Promise<void> {
         this.registerMiddleware()
         this.registerRoutes();
@@ -42,7 +44,15 @@ export class App {
     private async connectKafka() {
         try {
             await kafkaWrapper.connect();
-            
+            const consumer = await kafkaWrapper.createConsumer('roadmap-updated-group');
+            const diContainer = DIContainer.getInstance();
+            const roadmapUpdated = diContainer.createNotificationUseCase();
+            this.roadmapUpdatedConsumer = new RoadmapUpdatedConsumer(
+                consumer,
+                roadmapUpdated
+            );
+            await this.roadmapUpdatedConsumer.listen()
+
         } catch (error) {
             console.log('some err connect with kafka', error);
         }

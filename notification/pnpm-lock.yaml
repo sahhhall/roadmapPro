@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@sahhhallroadmappro/common':
-        specifier: ^1.0.58
-        version: 1.0.58
+        specifier: ^1.0.59
+        version: 1.0.59
       '@types/bcrypt':
         specifier: ^5.0.2
         version: 5.0.2
@@ -206,8 +206,8 @@ packages:
   '@protobufjs/utf8@1.1.0':
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
 
-  '@sahhhallroadmappro/common@1.0.58':
-    resolution: {integrity: sha512-gMZshisbxdoxz/L+C5LLsIM0sr8m8wZrVkgMFFJVCmKDImhZcj7KSJr2lXz/LadAm/zdg3CLpBYJQJUw0/c84g==}
+  '@sahhhallroadmappro/common@1.0.59':
+    resolution: {integrity: sha512-we71JUV5hm7wtWWesW9aOioIZLEn8VntQgOO2ii59woyWUtk6FYyJOOTfHLQGcqivPPhTW8a/oV+KID2d4/eYQ==}
 
   '@tsconfig/node10@1.0.11':
     resolution: {integrity: sha512-DcRjDCujK/kCk/cUe8Xz8ZSpm8mS3mNNpta+jGCA6USEDfktlNvm1+IuZ9eTcDbNk41BHwpHHeW+N1lKCz4zOw==}
@@ -1551,7 +1551,7 @@ snapshots:
 
   '@protobufjs/utf8@1.1.0': {}
 
-  '@sahhhallroadmappro/common@1.0.58':
+  '@sahhhallroadmappro/common@1.0.59':
     dependencies:
       '@grpc/grpc-js': 1.12.2
       '@grpc/proto-loader': 0.7.13

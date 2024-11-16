@@ -19,7 +19,9 @@ import { GetMyRoadmapByUser } from "../../application/usecases/GetRoadmapByUser"
 import { GetAllRoadMaps } from "../../application/usecases/GetRoadMaps";
 import { RoadMapCreate } from "../../application/usecases/RoadmapCreate";
 import { SaveRoadmap } from "../../application/usecases/SaveRoadMap";
+import { IUserRepository } from "../../domain/interfaces/IUserRepositary";
 import { RoadMapRepository } from "../repositories/RoadMapRepositary";
+import { UserRepositary } from "../repositories/UserRepositary";
 
 
 
@@ -27,9 +29,11 @@ import { RoadMapRepository } from "../repositories/RoadMapRepositary";
 export class DIContainer {
     private static instance: DIContainer;
     private _roadmapRepositary: RoadMapRepository;
+    private _userRepositary: IUserRepository;
 
     private constructor() {
         this._roadmapRepositary = new RoadMapRepository;
+        this._userRepositary = new UserRepositary;
     }
     public static getInstance(): DIContainer {
         if (!DIContainer.instance) {
@@ -47,7 +51,7 @@ export class DIContainer {
     }
 
     public getReviewRoadMapUseCase(): IAdminReview {
-        return new AdminReviewUseCase(this._roadmapRepositary);
+        return new AdminReviewUseCase(this._roadmapRepositary, this._userRepositary);
     }
 
     public getAllRoadMapUseCase(): IGetAllRoadMaps {

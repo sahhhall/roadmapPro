@@ -1,5 +1,5 @@
 export enum Types {
-    Assessment = "assessment",
-    Booking = "booking",
-    Roadmap = "roadmap"
+    Assessment = "Assessment",
+    Booking = "Booking",
+    Roadmap = "Roadmap"
 }
