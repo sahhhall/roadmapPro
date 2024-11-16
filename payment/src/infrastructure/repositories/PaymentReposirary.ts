@@ -56,4 +56,17 @@ export class PaymentRepositary implements IPaymentRepositary {
             this.handleDBError("find payments by user ID", `User ID: ${userId}`, error);
         }
     }
+
+    async getTotalRevenue(): Promise<number| undefined> {
+        try {
+            console.log(await this.repository.find())
+            const total = await this.repository.createQueryBuilder("payment")
+                .select("Sum(payment.amount)", "totalRevenue")
+                .where("payment.status= :status", { status: PaymentStatus.COMPLETED })
+                .getRawOne()
+            return parseFloat(total.totalRevenue) || 0
+        } catch (error: any) {
+            this.handleDBError("find revenue", ` `, error);
+        }
+    }
 }

@@ -1,4 +1,6 @@
+import { IGetTotalRevenueUseCase } from "../../application/interfaces/IGetTotalRevenueUseCase";
 import { IHandlePaymentWebhookUseCase } from "../../application/interfaces/IHandlePaymentWebhookUseCase";
+import { GetTotalRevenueUseCase } from "../../application/usecases/GetTotalRevenueUseCase";
 import { HandlePaymentWebhookUseCase } from "../../application/usecases/HandlePaymentWebhookUseCase";
 import { IPaymentRepositary } from "../../domain/interfaces/IPayment";
 import { PaymentRepositary } from "../repositories/PaymentReposirary";
@@ -20,5 +22,9 @@ export class DIContainer {
 
     public getHandlePaymentwbHookUseCase(): IHandlePaymentWebhookUseCase {
         return new HandlePaymentWebhookUseCase(this._paymentRepositary);
+    }
+
+    public getTotalRevenue(): IGetTotalRevenueUseCase {
+        return new GetTotalRevenueUseCase(this._paymentRepositary)
     }
 }

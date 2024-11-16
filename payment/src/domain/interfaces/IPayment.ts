@@ -8,4 +8,5 @@ export interface IPaymentRepositary {
     updatePaymentStatus(paymentId: string, status: PaymentStatus):  Promise<PaymentEntity>
     findByPaymentId(paymentId: string) :  Promise<PaymentEntity | null>
     findByUserId(userId: string): Promise<PaymentEntity[]>
+    getTotalRevenue(): Promise<number | undefined>;
 }
