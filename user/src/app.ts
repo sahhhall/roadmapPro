@@ -53,9 +53,11 @@ export class App {
 
             const diContainer = DIContainer.getInstance();
             const mentorApprovalUseCase = diContainer.mentorApprovalUseCase();
+            const getUserDetails = diContainer.getUserDetailsUseCase();
             this.mentorApprovedConsumer = new MentorApprovedConsumer(
                 consumer,
-                mentorApprovalUseCase
+                mentorApprovalUseCase,
+                getUserDetails
             );
             await this.mentorApprovedConsumer.listen()
         } catch (error) {

@@ -21,8 +21,8 @@ importers:
         specifier: ^0.7.13
         version: 0.7.13
       '@sahhhallroadmappro/common':
-        specifier: ^1.0.48
-        version: 1.0.48
+        specifier: ^1.0.60
+        version: 1.0.60
       '@types/bcrypt':
         specifier: ^5.0.2
         version: 5.0.2
@@ -505,8 +505,8 @@ packages:
   '@protobufjs/utf8@1.1.0':
     resolution: {integrity: sha512-Vvn3zZrhQZkkBE8LSuW3em98c0FwgO4nxzv6OdSxPKJIEKY2bGbHn+mhGIPerzI4twdxaP8/0+06HBpwf345Lw==}
 
-  '@sahhhallroadmappro/common@1.0.48':
-    resolution: {integrity: sha512-iPf8yP99OjcW3O4nl8IrrpuCU8UYsi0kykD+TpswTJVPVr1yJq7s7mv7ZG1Z0Qt+PIBgb+LH4vWabtTbz6h0qw==}
+  '@sahhhallroadmappro/common@1.0.60':
+    resolution: {integrity: sha512-rFn6uuyd3C0yQZLhQewP8a9TY2azoclF/QOE3IyVrQRVkiGrX3+eGYQW0B/khSERKSPcrXxKaHx+1dlQba7HTw==}
 
   '@smithy/abort-controller@3.1.6':
     resolution: {integrity: sha512-0XuhuHQlEqbNQZp7QxxrFTdVWdwxch4vjxYgfInF91hZFkPxf9QDrdQka0KfxFMPqLNzSw0b95uGTrLliQUavQ==}
@@ -2820,7 +2820,7 @@ snapshots:
 
   '@protobufjs/utf8@1.1.0': {}
 
-  '@sahhhallroadmappro/common@1.0.48':
+  '@sahhhallroadmappro/common@1.0.60':
     dependencies:
       '@grpc/grpc-js': 1.12.2
       '@grpc/proto-loader': 0.7.13

@@ -6,12 +6,14 @@ import { IServerInterface } from './domain/interfaces/IServer';
 import { userRoutes } from './presentation/routes/userRoutes';
 import { DIContainer } from './infrastructure/di/DIContainer';
 import { RoadmapUpdatedConsumer } from './infrastructure/kafka/consumers/roadmap-update-consumer';
+import { AssessmentReviewConsumer } from './infrastructure/kafka/consumers/assessment-reviewed-consumer';
 
 
 
 export class App {
     constructor(private server: IServerInterface) { }
     private roadmapUpdatedConsumer?: RoadmapUpdatedConsumer;
+    private assessmentReviewedConsumer?: AssessmentReviewConsumer;
     async initialize(): Promise<void> {
         this.registerMiddleware()
         this.registerRoutes();
@@ -45,13 +47,20 @@ export class App {
         try {
             await kafkaWrapper.connect();
             const consumer = await kafkaWrapper.createConsumer('roadmap-updated-group');
+            const consumer2 = await kafkaWrapper.createConsumer('assessment-reviwed-group');
+
             const diContainer = DIContainer.getInstance();
-            const roadmapUpdated = diContainer.createNotificationUseCase();
+            const genericNotificationCreator = diContainer.createNotificationUseCase();
             this.roadmapUpdatedConsumer = new RoadmapUpdatedConsumer(
                 consumer,
-                roadmapUpdated
+                genericNotificationCreator
             );
+            this.assessmentReviewedConsumer = new AssessmentReviewConsumer(
+                consumer2,
+                genericNotificationCreator
+            )
             await this.roadmapUpdatedConsumer.listen()
+            await this.assessmentReviewedConsumer.listen();
 
         } catch (error) {
             console.log('some err connect with kafka', error);
