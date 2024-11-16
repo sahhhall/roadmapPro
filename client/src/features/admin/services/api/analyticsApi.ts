@@ -17,7 +17,14 @@ const analyticsApi = apiSlice.injectEndpoints({
             }),
             keepUnusedDataFor: 0
         }),
+        getTotalRevenue: builder.query<any, any>({
+            query: () => ({
+                url: adminEndpoints.getTotalRevenue,
+                method: 'get'
+            }),
+            keepUnusedDataFor: 0
+        }),
     })
 });
 
-export const { useGetBookingDaysAnlaylisisQuery,useGetCountOfBookingsAndUsersQuery } = analyticsApi;
+export const { useGetBookingDaysAnlaylisisQuery, useGetCountOfBookingsAndUsersQuery,useGetTotalRevenueQuery } = analyticsApi;

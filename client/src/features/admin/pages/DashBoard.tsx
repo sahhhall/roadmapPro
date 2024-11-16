@@ -1,6 +1,6 @@
 import Grid from "../components/dashboard/Grid";
-import { LineChartDashBoard } from "../components/dashboard/LineChart";
 import TopBar from "../components/dashboard/TopBar";
+import LineChartDashBoard from "../components/dashboard/LineChart";
 
 
 

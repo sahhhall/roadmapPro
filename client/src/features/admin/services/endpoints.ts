@@ -10,5 +10,6 @@ export const adminEndpoints = {
         }
         return url
     },
-    getCountOfBookinggsAndUsers: 'api/bookings/analytics/total'
+    getCountOfBookinggsAndUsers: 'api/bookings/analytics/total',
+    getTotalRevenue: 'api/payments/total-revenue'
 }

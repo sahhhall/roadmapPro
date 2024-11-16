@@ -1,22 +1,35 @@
 import { TrendingDown, TrendingUp } from "lucide-react";
-import { useGetCountOfBookingsAndUsersQuery } from "../../services/api/analyticsApi";
+import {
+  useGetCountOfBookingsAndUsersQuery,
+  useGetTotalRevenueQuery,
+} from "../../services/api/analyticsApi";
 import { useEffect, useState } from "react";
 
 export const StatCards = () => {
   const [stats, setStats] = useState<any>(null);
   const { data } = useGetCountOfBookingsAndUsersQuery({});
-
+  const { data: totalRevenue } = useGetTotalRevenueQuery({});
   useEffect(() => {
-    if (data) {
+    if (data && totalRevenue) {
       setStats({
         totalUser: data.totalUser,
         totalBookings: data.totolBookings,
+        totalRevenue: totalRevenue,
       });
     }
   }, [data]);
 
   return (
     <>
+      {stats && (
+        <Card
+          title="Gross Revenue"
+          value={`₹ ${stats.totalRevenue}`}
+          pillText="+5%"
+          trend="up"
+          period="Last year"
+        />
+      )}
       {stats && (
         <Card
           title="Total Users"
