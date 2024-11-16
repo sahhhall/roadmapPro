@@ -10,6 +10,7 @@ import { bookingRoutes } from './presentation/routes/bookingRoutes';
 import { ExpirationCompletedConsumer } from './infrastructure/kafka/consumers/expiration-completed-consumer';
 import { PaymentCompletedConsumer } from './infrastructure/kafka/consumers/payment-completed-consmer';
 import { bookingAnalyticsRoutes } from './presentation/routes/bookingAnalyticsRoute';
+import { BookingCompletedConsumer } from './infrastructure/kafka/consumers/booking-completed-consumer';
 
 
 
@@ -17,6 +18,7 @@ export class App {
     private userCreatedConsumer?: UserCreatedConsumer;
     private bookingExpiration?: ExpirationCompletedConsumer;
     private paymentCompletion?: PaymentCompletedConsumer;
+    private bookingCompletion?: BookingCompletedConsumer;
     constructor(private server: IServerInterface) { }
 
     async initialize(): Promise<void> {
@@ -57,17 +59,16 @@ export class App {
             const consumer = await kafkaWrapper.createConsumer('booking-service-group');
             const consumer2 = await kafkaWrapper.createConsumer('expiration-completed-group')
             const consumer3 = await kafkaWrapper.createConsumer('payment-completed-group')
+            const consumer4 = await kafkaWrapper.createConsumer('booking-completed-group')
             const diContainer = DIContainer.getInstance();
             const userCreatedUseCase = diContainer.userCreatedUseCase();
             // actully it generic it can use both payment completion and expiration
             // chnage name later
-            const updateStatusExipredBookings = diContainer.updateStatusExipiredBooking();
-            this.userCreatedConsumer = new UserCreatedConsumer(
-                consumer,
-                userCreatedUseCase
-            );
-            this.bookingExpiration = new ExpirationCompletedConsumer(consumer2, updateStatusExipredBookings);
-            this.paymentCompletion = new PaymentCompletedConsumer(consumer3, updateStatusExipredBookings)
+            const updateStatusExipredBookingsOrCompletd = diContainer.updateStatusExipiredBooking();
+            this.userCreatedConsumer = new UserCreatedConsumer(consumer, userCreatedUseCase);
+            this.bookingExpiration = new ExpirationCompletedConsumer(consumer2, updateStatusExipredBookingsOrCompletd);
+            this.paymentCompletion = new PaymentCompletedConsumer(consumer3, updateStatusExipredBookingsOrCompletd);
+            this.bookingCompletion = new BookingCompletedConsumer(consumer4, updateStatusExipredBookingsOrCompletd)
             await this.bookingExpiration.listen();
             await this.userCreatedConsumer.listen();
             await this.paymentCompletion.listen();

@@ -7,6 +7,7 @@ import { userRoutes } from './presentation/routes/userRoutes';
 import { DIContainer } from './infrastructure/di/DIContainer';
 import { RoadmapUpdatedConsumer } from './infrastructure/kafka/consumers/roadmap-update-consumer';
 import { AssessmentReviewConsumer } from './infrastructure/kafka/consumers/assessment-reviewed-consumer';
+import { BookingNotificationConsumer } from './infrastructure/kafka/consumers/booking-notification-consumer';
 
 
 
@@ -14,6 +15,7 @@ export class App {
     constructor(private server: IServerInterface) { }
     private roadmapUpdatedConsumer?: RoadmapUpdatedConsumer;
     private assessmentReviewedConsumer?: AssessmentReviewConsumer;
+    private bookingNotificationConsumer?: BookingNotificationConsumer;
     async initialize(): Promise<void> {
         this.registerMiddleware()
         this.registerRoutes();
@@ -48,19 +50,15 @@ export class App {
             await kafkaWrapper.connect();
             const consumer = await kafkaWrapper.createConsumer('roadmap-updated-group');
             const consumer2 = await kafkaWrapper.createConsumer('assessment-reviwed-group');
-
+            const consumer3 = await kafkaWrapper.createConsumer('booking-notification-group')
             const diContainer = DIContainer.getInstance();
             const genericNotificationCreator = diContainer.createNotificationUseCase();
-            this.roadmapUpdatedConsumer = new RoadmapUpdatedConsumer(
-                consumer,
-                genericNotificationCreator
-            );
-            this.assessmentReviewedConsumer = new AssessmentReviewConsumer(
-                consumer2,
-                genericNotificationCreator
-            )
+            this.roadmapUpdatedConsumer = new RoadmapUpdatedConsumer(consumer, genericNotificationCreator);
+            this.assessmentReviewedConsumer = new AssessmentReviewConsumer(consumer2, genericNotificationCreator);
+            this.bookingNotificationConsumer = new BookingNotificationConsumer(consumer3, genericNotificationCreator)
             await this.roadmapUpdatedConsumer.listen()
             await this.assessmentReviewedConsumer.listen();
+            await this.bookingNotificationConsumer.listen();
 
         } catch (error) {
             console.log('some err connect with kafka', error);
