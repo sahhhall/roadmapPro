@@ -1,5 +1,7 @@
 import { ICreateNotificationUseCase } from "../../application/interfaces/ICreateNotificationUseCase";
+import { IFetchNotificationsUseCase } from "../../application/interfaces/IFetchNotificationsUseCase";
 import { CreateNotificationUseCase } from "../../application/usecases/CreateNotificationUseCase";
+import { FetchNotificationsUseCase } from "../../application/usecases/FetchNotificationsUseCase";
 import { IEmailService } from "../../domain/interfaces/IEmailService";
 import { INotificationRepo } from "../../domain/interfaces/INotificationRepositary";
 import { NotificationRepositary } from "../repositories/NotificationRepositary";
@@ -24,5 +26,9 @@ export class DIContainer {
 
     public createNotificationUseCase(): ICreateNotificationUseCase {
         return new CreateNotificationUseCase(this._notificatioRepositary, this._nodeMailerService)
+    }
+
+    public getNotifications(): IFetchNotificationsUseCase {
+        return new FetchNotificationsUseCase(this._notificatioRepositary)
     }
 }

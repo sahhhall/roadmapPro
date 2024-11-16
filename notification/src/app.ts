@@ -3,7 +3,7 @@ import { errorHandler, userDtamiddleaware } from '@sahhhallroadmappro/common';
 import kafkaWrapper from './infrastructure/kafka/kafka-wrapper';
 import loggerMiddleware from './presentation/middleware/loggerMiddleware';
 import { IServerInterface } from './domain/interfaces/IServer';
-import { userRoutes } from './presentation/routes/userRoutes';
+import { notificationRoutes } from './presentation/routes/notificationRoutes';
 import { DIContainer } from './infrastructure/di/DIContainer';
 import { RoadmapUpdatedConsumer } from './infrastructure/kafka/consumers/roadmap-update-consumer';
 import { AssessmentReviewConsumer } from './infrastructure/kafka/consumers/assessment-reviewed-consumer';
@@ -30,7 +30,7 @@ export class App {
     }
 
     private registerRoutes(): void {
-        this.server.registerRoutes('/api/user', userRoutes);
+        this.server.registerRoutes('/api/user/notifications', notificationRoutes);
 
     }
     private registerErrorHandler(): void {

@@ -46,20 +46,21 @@ export class NotificationRepositary implements INotificationRepo {
 
     /**
    * Updates the `isRead` status of a notification.
-   * @param notificationId - The ID of the notification to update.
+   * @param userMail - The mail of the notification to update.
    * @returns A promise resolving to the updated notification.
    */
-    async updateIsRead(notificationId: string): Promise<Notification | null> {
+    async updateIsRead(userMail: string): Promise<Notification[] | any> {
         try {
-            const updatedNotification = await NotificationDB.findByIdAndUpdate(
-                notificationId,
-                { isRead: true },
+            const updatedNotifications = await NotificationDB.updateMany(
+                { userMail, isRead: false },
+                { $set: { isRead: true } },
                 { new: true }
-            )
-            return updatedNotification
+            );
+            return updatedNotifications
         } catch (error: any) {
             customLogger.error(error.message);
             throw new Error(`DB error: update isRead status - ${error.message}`);
         }
     }
+
 }

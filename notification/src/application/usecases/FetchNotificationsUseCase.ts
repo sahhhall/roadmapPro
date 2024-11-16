@@ -8,6 +8,8 @@ export class FetchNotificationsUseCase implements IFetchNotificationsUseCase {
 
     async execute(userMail: string, limit: number, skip: number): Promise<Notification[]> {
         const notifications = await this.notificationRepositary.fetchByUserId(userMail, limit, skip);
+        //this for each fetching i want to updated last fetched data
+        await this.notificationRepositary.updateIsRead(userMail)
         return notifications;
     }
 }

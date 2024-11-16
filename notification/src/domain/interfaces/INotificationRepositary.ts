@@ -22,5 +22,5 @@ export interface INotificationRepo {
  * @returns A promise resolving to the updated notification.
  */
 
-    updateIsRead(notificationId: string): Promise<Notification | null>;
+    updateIsRead(updateIsRead: string): Promise<Notification[] | null>;
 }
