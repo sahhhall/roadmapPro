@@ -1,5 +1,6 @@
 import { Mentor } from "../../../domain/entities/User";
 import { IMentorRepository } from "../../../domain/interfaces/IMentorRepositary";
+import { s3Operation } from "../../../infrastructure/service/S3-client";
 import { IGetMentorDetailsByIdUseCase } from "../../interfaces/mentor/IGetMentorDetailsByIdUseCase";
 
 
@@ -7,7 +8,19 @@ import { IGetMentorDetailsByIdUseCase } from "../../interfaces/mentor/IGetMentor
 export class GetMentorDetailsByIdUseCase implements IGetMentorDetailsByIdUseCase {
     constructor(private mentorRepositary: IMentorRepository) { }
     async execute(mentorId: string): Promise<Mentor | null> {
-        const mentor = await this.mentorRepositary.getMentorByid(mentorId);
+        let mentor;
+        mentor = await this.mentorRepositary.getMentorByid(mentorId);
+        if (mentor?.userId?.avatar) {
+            const avatarUrl = await s3Operation.getImageFromBucket(mentor.userId?.avatar as string);
+            mentor = {
+                ...mentor,
+                userId: {
+                    ...mentor.userId,
+                    avatar: avatarUrl,
+                },
+            };
+        }
+
         return mentor
     }
 }

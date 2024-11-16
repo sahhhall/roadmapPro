@@ -34,7 +34,7 @@ export const PaymentSummary = ({
 
   const handlePayment = async () => {
     const paymentData: ICreatePaymentRequest = {
-      mentorId: mentorDetails?.userId.id as any,
+      mentorId: mentorDetails?.userId._id as any,
       price: price,
       name: mentorDetails?.userId.name as any,
       bookingId: bookingDetails.id,

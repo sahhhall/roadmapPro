@@ -91,7 +91,7 @@ export interface IMentorDetailsResponse {
         name: string;
         email: string;
         avatar: string;
-        id: string;
+        _id: string;
     };
     assessedSkills: string[];
     headline: string;
