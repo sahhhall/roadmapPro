@@ -9,11 +9,13 @@ export class NotificationRepositary implements INotificationRepo {
      * @param userId - The ID of the user to fetch notifications for.
      * @returns A promise resolving to an array of notifications.
      */
-    async fetchByUserId(userId: string): Promise<Notification[]> {
+    async fetchByUserId(userId: string, limit: number, skip: number): Promise<Notification[]> {
         try {
             const notifications = await NotificationDB.find({ userId })
                 .sort({ createdAt: -1 })
-                .exec();
+                .skip(skip)
+                .limit(limit)
+
 
             return notifications;
         } catch (error: any) {
