@@ -6,12 +6,12 @@ import { Notification as NotificationDB } from "../database/mongodb/schemas/noti
 export class NotificationRepositary implements INotificationRepo {
     /**
      * Fetches notifications for a user, sorted by createdAt in descending order.
-     * @param userId - The ID of the user to fetch notifications for.
+     * @param userMail - The ID of the user to fetch notifications for.
      * @returns A promise resolving to an array of notifications.
      */
-    async fetchByUserId(userId: string, limit: number, skip: number): Promise<Notification[]> {
+    async fetchByUserId(userMail: string, limit: number, skip: number): Promise<Notification[]> {
         try {
-            const notifications = await NotificationDB.find({ userId })
+            const notifications = await NotificationDB.find({ userMail })
                 .sort({ createdAt: -1 })
                 .skip(skip)
                 .limit(limit)

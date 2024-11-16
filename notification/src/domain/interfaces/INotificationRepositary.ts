@@ -6,7 +6,7 @@ export interface INotificationRepo {
      * @param userId - The ID of the user whose notifications should be fetched.
      * @returns A promise that resolves to an array of notifications.
      */
-    fetchByUserId(userId: string, limit: number, skip: number): Promise<Notification[]>;
+    fetchByUserId(userMail: string, limit: number, skip: number): Promise<Notification[]>;
 
     /**
      * Creates a new notification.

@@ -2,7 +2,7 @@ import { Types } from "../../shared/type.enum";
 
 export class Notification {
     constructor(
-        public userId: string,
+        public userMail: string,
         public type: Types,
         public message: string,
         public senderName?: string,

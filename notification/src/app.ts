@@ -42,6 +42,7 @@ export class App {
     private async connectKafka() {
         try {
             await kafkaWrapper.connect();
+            
         } catch (error) {
             console.log('some err connect with kafka', error);
         }

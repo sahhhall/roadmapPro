@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import { Types } from "../../../../shared/type.enum";
 
 interface NotificationAttr {
-    userId: string;
+    userMail: string;
     type: Types;
     message: string;
     senderName?: string;
@@ -15,7 +15,7 @@ interface NotificationModel extends mongoose.Model<NotificationDoc> {
 }
 
 interface NotificationDoc extends mongoose.Document {
-    userId: string;
+    userMail: string;
     type: Types;
     message: string;
     senderName?: string;
@@ -25,7 +25,7 @@ interface NotificationDoc extends mongoose.Document {
 
 const notificationSchema = new mongoose.Schema(
     {
-        userId: {
+        userMail: {
             type: String,
             required: true,
         },

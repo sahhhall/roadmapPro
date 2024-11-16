@@ -6,8 +6,8 @@ import { IFetchNotificationsUseCase } from "../interfaces/IFetchNotificationsUse
 export class FetchNotificationsUseCase implements IFetchNotificationsUseCase {
     constructor(private notificationRepositary: INotificationRepo) { }
 
-    async execute(userId: string, limit: number, skip: number): Promise<Notification[]> {
-        const notifications = await this.notificationRepositary.fetchByUserId(userId, limit, skip);
+    async execute(userMail: string, limit: number, skip: number): Promise<Notification[]> {
+        const notifications = await this.notificationRepositary.fetchByUserId(userMail, limit, skip);
         return notifications;
     }
 }
