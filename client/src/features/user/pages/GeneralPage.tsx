@@ -224,12 +224,11 @@ const GeneralPage = () => {
         mentorId: user!.id,
         updatedData: { [fieldName]: value },
       }).unwrap();
-
+      await refetchProfile();
       toast({
         title: "Success",
         description: "Your profile information has been updated successfully.",
       });
-
     } catch (error: any) {
       const errorMessage =
         error?.data?.errors[0] ||
@@ -246,9 +245,7 @@ const GeneralPage = () => {
   if (ProfileDataLoadingApi) {
     return <div>Loading...</div>;
   }
-  console.log(profileData,
-    "proifle"
-  )
+  console.log(profileData, "proifle");
 
   return (
     <Container className="">
