@@ -127,34 +127,33 @@ export class BookingRepositary implements IBookingRepositary {
 
     async daysBaseBookings(startDate: Date, endDate: Date, status?: BookinStatus): Promise<DayBooking[] | null> {
         try {
-
             const matchCriteria: any = {
                 createdAt: { $gte: startDate, $lte: endDate },
             };
-
+    
             if (status) {
                 matchCriteria.status = status;
             }
-            console.log(matchCriteria)
-            //we get start date(day) from use case and endate will also generate from there
-            //tecnically it can use any kinda days thing like the days go for use case more 
-            const dayBaseBooking = await Booking.aggregate([
+    
+            const monthlyBookings = await Booking.aggregate([
                 {
                     $match: matchCriteria
-
                 },
                 {
                     $group: {
-                        _id: { $dayOfMonth: "$createdAt" },
+                        _id: { $month: "$createdAt" }, 
                         totalBookings: { $sum: 1 }
                     }
+                },
+                {
+                    $sort: { _id: 1 }
                 }
-            ])
-            console.log(dayBaseBooking)
-            return dayBaseBooking;
+            ]);
+    
+            return monthlyBookings;
         } catch (error: any) {
-            customLogger.error(`fetch data: ${error.message}`);
-            throw new Error(`fetch data: ${error.message}`);
+            customLogger.error(`fetch monthly data: ${error.message}`);
+            throw new Error(`fetch monthly data: ${error.message}`);
         }
     }
 

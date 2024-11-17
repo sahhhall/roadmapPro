@@ -3,7 +3,7 @@ import { adminEndpoints } from "../endpoints";
 
 const analyticsApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getBookingDaysAnlaylisis: builder.query<any, any>({
+        getBookingMonthBaseAnlaylisis: builder.query<any, any>({
             query: ({ days }) => ({
                 url: adminEndpoints.getBookingsDaysAnalysis(days),
                 method: 'get'
@@ -27,4 +27,4 @@ const analyticsApi = apiSlice.injectEndpoints({
     })
 });
 
-export const { useGetBookingDaysAnlaylisisQuery, useGetCountOfBookingsAndUsersQuery,useGetTotalRevenueQuery } = analyticsApi;
+export const { useGetBookingMonthBaseAnlaylisisQuery, useGetCountOfBookingsAndUsersQuery,useGetTotalRevenueQuery } = analyticsApi;

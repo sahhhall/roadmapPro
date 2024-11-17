@@ -1,22 +1,66 @@
-import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  ResponsiveContainer,
-} from "recharts";
-import { useGetBookingDaysAnlaylisisQuery } from "../../services/api/analyticsApi"; 
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Area, AreaChart, XAxis } from "recharts";
+import {
+  ChartConfig,
+  ChartContainer,
+  ChartLegend,
+  ChartLegendContent,
+  ChartTooltip,
+  ChartTooltipContent,
+} from "@/components/ui/chart";
+import { useState } from "react";
+import { useGetBookingMonthBaseAnlaylisisQuery } from "../../services/api/analyticsApi";
 
-const LineChartDashBoard = () => {
-  const { data: bookingData, isLoading, error } = useGetBookingDaysAnlaylisisQuery({ days: 30 });
+const chartConfig = {
+  bookings: {
+    label: "Total Bookings",
+    color: "hsl(var(--chart-1))",
+  },
+  completed: {
+    label: "Completed Bookings",
+    color: "hsl(var(--chart-2))",
+  },
+} satisfies ChartConfig;
 
+const months = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+];
+
+const MonthlyBookingsChart = () => {
+  const [timeRange, setTimeRange] = useState("12m");
+  const {
+    data: bookingData,
+    isLoading,
+    error,
+  } = useGetBookingMonthBaseAnlaylisisQuery({});
 
   if (isLoading) {
     return (
-      <Card className="m-4">
+      <Card>
         <CardContent className="flex items-center justify-center h-[400px]">
           <div className="text-gray-500">Loading booking data...</div>
         </CardContent>
@@ -26,7 +70,7 @@ const LineChartDashBoard = () => {
 
   if (error) {
     return (
-      <Card className="m-4">
+      <Card>
         <CardContent className="flex items-center justify-center h-[400px]">
           <div className="text-red-500">Error loading booking data</div>
         </CardContent>
@@ -34,77 +78,117 @@ const LineChartDashBoard = () => {
     );
   }
 
-  const getDateNDaysAgo = (n: number) => {
-    const date = new Date();
-    date.setDate(date.getDate() - n);
-    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
-  };
+  const processedData = months.map((month, index) => ({
+    month: month,
+    bookings: bookingData?.monthBaseBookings[index] || 0,
+    completed: bookingData?.monthBaseCompleted[index] || 0,
+  }));
 
+  const filteredData = processedData.filter((_, index) => {
+    const totalMonths = months.length;
+    let monthsToShow = 12;
 
-  const processedData = bookingData?.dayBaseBookings.map((bookings:any, index:any) => {
-    //it will get the data length
-    const daysAgo = bookingData.dayBaseBookings.length - 1 - index;
-    return {
-      date: getDateNDaysAgo(daysAgo),
-      bookings: bookings,
-      completed: bookingData.dayBaseCompleted[index],
-    };
-  }) || [];
+    if (timeRange === "6m") monthsToShow = 6;
+    if (timeRange === "3m") monthsToShow = 3;
+
+    return index >= totalMonths - monthsToShow;
+  });
 
   return (
-    <Card className="m-4">
-      <CardHeader>
-        <CardTitle>Bookings Overview - Last 30 Days</CardTitle>
-      </CardHeader>
-      <CardContent className="m-4">
-        <div className="h-[400px] w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <LineChart
-              data={processedData}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                dataKey="date"
-                tick={{ fontSize: 12 }}
-                interval="preserveStartEnd"
-              />
-              <YAxis />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: 'white',
-                  border: '1px solid #ccc',
-                  borderRadius: '1px',
-                  padding: '1px'
-                }}
-              />
-              <Line
-                type="monotone"
-                dataKey="bookings"
-                stroke="#2563eb"
-                strokeWidth={1}
-                dot={{ r: 1 }}
-                name="Bookings"
-              />
-              <Line
-                type="monotone"
-                dataKey="completed"
-                stroke="#16a34a"
-                strokeWidth={1}
-                dot={{ r: 1 }}
-                name="Completed"
-              />
-            </LineChart>
-          </ResponsiveContainer>
+    <Card>
+      <CardHeader className="flex items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
+        <div className="grid flex-1 gap-1 text-center sm:text-left">
+          <CardTitle>Bookings Overview</CardTitle>
+          <CardDescription>
+            Total: {bookingData?.metadata.totalBookings || 0} | Completed:{" "}
+            {bookingData?.metadata.totalCompleted || 0}
+          </CardDescription>
         </div>
+        <Select value={timeRange} onValueChange={setTimeRange}>
+          <SelectTrigger className="w-[160px] rounded-lg sm:ml-auto">
+            <SelectValue placeholder="Last 12 months" />
+          </SelectTrigger>
+          <SelectContent className="rounded-xl">
+            <SelectItem value="12m" className="rounded-lg">
+              Last 12 months
+            </SelectItem>
+            <SelectItem value="6m" className="rounded-lg">
+              Last 6 months
+            </SelectItem>
+            <SelectItem value="3m" className="rounded-lg">
+              Last 3 months
+            </SelectItem>
+          </SelectContent>
+        </Select>
+      </CardHeader>
+      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
+        <ChartContainer
+          config={chartConfig}
+          className="aspect-auto h-[350px] w-full"
+        >
+          <AreaChart data={filteredData}>
+            <defs>
+              <linearGradient id="fillBookings" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="12%"
+                  stopColor="var(--color-bookings)"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--color-bookings)"
+                  stopOpacity={0.1}
+                />
+              </linearGradient>
+              <linearGradient id="fillCompleted" x1="0" y1="0" x2="0" y2="1">
+                <stop
+                  offset="5%"
+                  stopColor="var(--color-completed)"
+                  stopOpacity={0.8}
+                />
+                <stop
+                  offset="95%"
+                  stopColor="var(--color-completed)"
+                  stopOpacity={0.1}
+                />
+              </linearGradient>
+            </defs>
+            <XAxis
+              dataKey="month"
+              tickLine={false}
+              axisLine={false}
+              tickMargin={8}
+              minTickGap={32}
+            />
+            <ChartTooltip
+              cursor={false}
+              content={
+                <ChartTooltipContent
+                  labelFormatter={(value) => value}
+                  indicator="dot"
+                />
+              }
+            />
+            <Area
+              dataKey="completed"
+              type="monotone"
+              fill="url(#fillCompleted)"
+              stroke="var(--color-completed)"
+              stackId="a"
+            />
+            <Area
+              dataKey="bookings"
+              type="monotone"
+              fill="url(#fillBookings)"
+              stroke="var(--color-bookings)"
+              stackId="a"
+            />
+            <ChartLegend content={<ChartLegendContent />} />
+          </AreaChart>
+        </ChartContainer>
       </CardContent>
     </Card>
   );
 };
 
-export default LineChartDashBoard;
+export default MonthlyBookingsChart;
