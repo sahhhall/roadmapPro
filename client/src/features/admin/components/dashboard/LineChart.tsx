@@ -1,161 +1,107 @@
-import * as React from "react";
-import { Area, AreaChart, CartesianGrid, XAxis } from "recharts";
+import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import {
-  ChartConfig,
-  ChartContainer,
-  ChartLegend,
-  ChartLegendContent,
-  ChartTooltip,
-  ChartTooltipContent,
-} from "@/components/ui/chart";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-const chartData = [
-  { date: "2024-04-01", desktop: 222, mobile: 150 },
-  { date: "2024-04-02", desktop: 97, mobile: 180 },
-];
-const chartConfig = {
-  visitors: {
-    label: "Visitors",
-  },
-  desktop: {
-    label: "Desktop",
-    color: "hsl(var(--chart-1))",
-  },
-  mobile: {
-    label: "Mobile",
-    color: "hsl(var(--chart-2))",
-  },
-} satisfies ChartConfig;
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from "recharts";
+import { useGetBookingDaysAnlaylisisQuery } from "../../services/api/analyticsApi"; 
+
 const LineChartDashBoard = () => {
-  const [timeRange, setTimeRange] = React.useState("90d");
-  const filteredData = chartData.filter((item) => {
-    const date = new Date(item.date);
-    const referenceDate = new Date("2024-06-30");
-    let daysToSubtract = 30;
-    if (timeRange === "7d") {
-      daysToSubtract = 7;
-    }
-    const startDate = new Date(referenceDate);
-    startDate.setDate(startDate.getDate() - daysToSubtract);
-    return date >= startDate;
-  });
+  const { data: bookingData, isLoading, error } = useGetBookingDaysAnlaylisisQuery({ days: 30 });
+
+
+  if (isLoading) {
+    return (
+      <Card className="m-4">
+        <CardContent className="flex items-center justify-center h-[400px]">
+          <div className="text-gray-500">Loading booking data...</div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (error) {
+    return (
+      <Card className="m-4">
+        <CardContent className="flex items-center justify-center h-[400px]">
+          <div className="text-red-500">Error loading booking data</div>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  const getDateNDaysAgo = (n: number) => {
+    const date = new Date();
+    date.setDate(date.getDate() - n);
+    return date.toLocaleDateString("en-US", { month: "short", day: "numeric" });
+  };
+
+
+  const processedData = bookingData?.dayBaseBookings.map((bookings:any, index:any) => {
+    //it will get the data length
+    const daysAgo = bookingData.dayBaseBookings.length - 1 - index;
+    return {
+      date: getDateNDaysAgo(daysAgo),
+      bookings: bookings,
+      completed: bookingData.dayBaseCompleted[index],
+    };
+  }) || [];
+
   return (
     <Card className="m-4">
-      <CardHeader className="flex  items-center gap-2 space-y-0 border-b py-5 sm:flex-row">
-        <div className="grid flex-1 gap-1 text-center sm:text-left">
-          <CardTitle>Area Chart - Interactive</CardTitle>
-          <CardDescription>
-            Showing total visitors for the last 30 days
-          </CardDescription>
-        </div>
-        <Select value={timeRange} onValueChange={setTimeRange}>
-          <SelectTrigger
-            className="w-[160px] rounded-lg sm:ml-auto"
-            aria-label="Select a value"
-          >
-            <SelectValue placeholder="Last 30 days" />
-          </SelectTrigger>
-          <SelectContent className="rounded-xl">
-            <SelectItem value="90d" className="rounded-lg">
-              Last 30 days
-            </SelectItem>
-            <SelectItem value="7d" className="rounded-lg">
-              Last 7 days
-            </SelectItem>
-          </SelectContent>
-        </Select>
+      <CardHeader>
+        <CardTitle>Bookings Overview - Last 30 Days</CardTitle>
       </CardHeader>
-      <CardContent className="px-2 pt-4 sm:px-6 sm:pt-6">
-        <ChartContainer
-          config={chartConfig}
-          className="aspect-auto h-[250px] w-full"
-        >
-          <AreaChart data={filteredData}>
-            <defs>
-              <linearGradient id="fillDesktop" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-desktop)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-desktop)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-              <linearGradient id="fillMobile" x1="0" y1="0" x2="0" y2="1">
-                <stop
-                  offset="5%"
-                  stopColor="var(--color-mobile)"
-                  stopOpacity={0.8}
-                />
-                <stop
-                  offset="95%"
-                  stopColor="var(--color-mobile)"
-                  stopOpacity={0.1}
-                />
-              </linearGradient>
-            </defs>
-            <CartesianGrid vertical={false} />
-            <XAxis
-              dataKey="date"
-              tickLine={false}
-              axisLine={false}
-              tickMargin={8}
-              minTickGap={32}
-              tickFormatter={(value) => {
-                const date = new Date(value);
-                return date.toLocaleDateString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                });
+      <CardContent className="m-4">
+        <div className="h-[400px] w-full">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart
+              data={processedData}
+              margin={{
+                top: 5,
+                right: 30,
+                left: 20,
+                bottom: 5,
               }}
-            />
-            <ChartTooltip
-              cursor={false}
-              content={
-                <ChartTooltipContent
-                  labelFormatter={(value) => {
-                    return new Date(value).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                    });
-                  }}
-                  indicator="dot"
-                />
-              }
-            />
-            <Area
-              dataKey="mobile"
-              type="natural"
-              fill="url(#fillMobile)"
-              stroke="var(--color-mobile)"
-              stackId="a"
-            />
-            <Area
-              dataKey="desktop"
-              type="natural"
-              fill="url(#fillDesktop)"
-              stroke="var(--color-desktop)"
-              stackId="a"
-            />
-            <ChartLegend content={<ChartLegendContent />} />
-          </AreaChart>
-        </ChartContainer>
+            >
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis
+                dataKey="date"
+                tick={{ fontSize: 12 }}
+                interval="preserveStartEnd"
+              />
+              <YAxis />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: 'white',
+                  border: '1px solid #ccc',
+                  borderRadius: '1px',
+                  padding: '1px'
+                }}
+              />
+              <Line
+                type="monotone"
+                dataKey="bookings"
+                stroke="#2563eb"
+                strokeWidth={1}
+                dot={{ r: 1 }}
+                name="Bookings"
+              />
+              <Line
+                type="monotone"
+                dataKey="completed"
+                stroke="#16a34a"
+                strokeWidth={1}
+                dot={{ r: 1 }}
+                name="Completed"
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </CardContent>
     </Card>
   );
