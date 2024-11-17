@@ -89,7 +89,7 @@ const Navbar = () => {
         </div>
         {userData ? (
           <div className="me-[1rem] flex items-center gap-6  sm:me-[8em]">
-            <Link to={""}>
+            <Link to={"/notifications"}>
               <Bell />
             </Link>
             <div className="flex flex-row md:gap-2  items-center">

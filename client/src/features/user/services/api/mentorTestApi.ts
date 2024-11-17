@@ -1,6 +1,7 @@
 import { apiSlice } from "@/redux/slices/apiSlice";
 import { AllStacksResponse, IGetAllBookingsResponse, IMentorDetailsResponse, IMentorUpdateRequest, IRoadmapResponse, IUpdateGenericProfileRequest, MentorAssessmentRegistrationRequest, MentorAssessmentRegistrationResponse, QuestionResponse, TestSubmissionRequest } from "@/features/user/types/mentor";
 import { AssessmentTestEndpoints, BookingEndpoints, profileEndpoints, roadmapEndPoints } from "@/features/user/services/endPoints";
+import { INotificationResponse } from "../../types/notification";
 
 
 
@@ -74,7 +75,17 @@ const mentorTestApi = apiSlice.injectEndpoints({
                 method: 'put',
                 body: data
             }),
+        }),
+
+        getNotifications: builder.query<INotificationResponse[], { email: string; skip: number }>({
+            query: ({ email, skip }) => ({
+                url: `${profileEndpoints.getNotifications}/${email}`,
+                method: 'GET',
+                params: { skip }
+            }),
+            keepUnusedDataFor:0
         })
+
 
     })
 })
@@ -89,5 +100,6 @@ export const {
     useGetAllBookingDetailsQuery,
     useGetAllRoadmapsByUserIdQuery,
     useUpdateMentorProfileMutation,
-    useUpdateUserDetailsMutation
+    useUpdateUserDetailsMutation,
+    useGetNotificationsQuery
 } = mentorTestApi;

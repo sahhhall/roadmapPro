@@ -45,8 +45,11 @@ const MentorProfile = lazy(
 const RoadMapProfie = lazy(() => import("@/features/user/pages/RoadmapsPage"));
 const BookingsPage = lazy(() => import("@/features/user/pages/BookingsPage"));
 
+const VideoChatPage = lazy(() => import("@/features/video/pages/video-chat"));
 
-const VideoChatPage = lazy(()=> import('@/features/video/pages/video-chat'))
+const NotificationsPage = lazy(
+  () => import("@/features/user/pages/NotificationsPage")
+);
 const routes = createBrowserRouter([
   {
     path: "/",
@@ -106,6 +109,16 @@ const routes = createBrowserRouter([
               <Resetpassword />
             </Suspense>
           </RedirectLoggedIn>
+        ),
+      },
+      {
+        path: "/notifications",
+        element: (
+          <UserProtected>
+            <Suspense fallback={<div>Loading...</div>}>
+              <NotificationsPage />
+            </Suspense>
+          </UserProtected>
         ),
       },
       {
@@ -190,7 +203,7 @@ const routes = createBrowserRouter([
         path: "/meet/:roomId",
         element: (
           <Suspense fallback={<div>loading..</div>}>
-            <VideoChatPage/>
+            <VideoChatPage />
           </Suspense>
         ),
       },

@@ -1,4 +1,13 @@
 export const ROUTES = [
+    
+    {
+        url: '/api/user/notifications',
+        auth: 'user',
+        proxy: {
+            target: 'http://localhost:3006/api/user/notifications',
+            changeOrigin: true,
+        }
+    },
     {
         url: '/api/admin/assessment',
         auth: 'admin',
@@ -144,5 +153,6 @@ export const ROUTES = [
             target: 'http://localhost:4001/api/bookings/analytics',
             changeOrigin: true,
         }
-    }
+    },
+ 
 ];

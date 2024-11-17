@@ -10,7 +10,7 @@ export class GetUserNotificationByemailController {
     async get(req: Request, res: Response, next: NextFunction) {
         try {
             const { mail } = req.params;
-            const { limit = 0, skip = 0 } = req.query;
+            const { limit = 10, skip = 0 } = req.query;
             console.log(mail)
             const notifications = await this.getNotifcaionByUserMail.execute(mail, parseInt(limit as string), parseInt(skip as string));
             return res.status(HttpStatus.OK).json(notifications);
