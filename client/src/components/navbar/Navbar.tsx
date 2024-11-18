@@ -83,9 +83,9 @@ const Navbar = () => {
     <>
       <div className="flex justify-between pt-4  border border-b-1 pb-4 align-middle items-center ">
         <div>
-          <h1 className="ms-[1.4rem] sm:ms-[7rem] font-extrabold text-1xl sm:text:2xl  ">
+          <Link to={'/'} className="ms-[1.4rem] sm:ms-[7rem] font-extrabold text-1xl sm:text:2xl  ">
             RoadmapPro
-          </h1>
+          </Link>
         </div>
         {userData ? (
           <div className="me-[1rem] flex items-center gap-6  sm:me-[8em]">

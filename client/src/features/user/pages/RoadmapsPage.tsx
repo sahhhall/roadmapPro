@@ -34,7 +34,7 @@ const RoadmapsPage = () => {
     <Container className=" p-6 overflow-hidden  mx-auto ">
       <div className="flex justify-between  items-center mb-4">
         <div>
-          <h1 className="text-xl font-semibold">All Bookings</h1>
+          <h1 className="text-xl font-semibold">All Roadmaps</h1>
           <p className="text-sm text-gray-500">
             Showing {roadmaps?.length || 0} results
           </p>
