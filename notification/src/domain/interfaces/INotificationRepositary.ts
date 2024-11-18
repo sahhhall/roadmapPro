@@ -23,4 +23,14 @@ export interface INotificationRepo {
  */
 
     updateIsRead(updateIsRead: string): Promise<Notification[] | null>;
+
+    
+    /**
+ * Retrieves the count of unread notifications for a given user.
+ * @param userMail - The email address of the user whose notifications are to be counted.
+ * @returns A promise resolving to an object containing the notification count, or `null` if an error occurs.
+ * @throws Will throw an error if there is an issue accessing the database.
+ */
+
+    getNotificationCount(userMail: string): Promise<{ notificationCount: number } | null>
 }

@@ -63,4 +63,24 @@ export class NotificationRepositary implements INotificationRepo {
         }
     }
 
+    
+    /**
+  * Retrieves the count of unread notifications for a given user.
+  * @param userMail - The email address of the user whose notifications are to be counted.
+  * @returns A promise resolving to an object containing the notification count, or `null` if an error occurs.
+  * @throws Will throw an error if there is an issue accessing the database.
+  */
+
+    async getNotificationCount(userMail: string): Promise<{ notificationCount: number; } | null> {
+        try {
+            const notificationCount = await NotificationDB.find(
+                { userMail, isRead: false },
+            ).countDocuments();
+            return { notificationCount };
+        } catch (error: any) {
+            customLogger.error(error.message);
+            throw new Error(`DB error: get notificatoinn count - ${error.message}`);
+        }
+    }
+
 }
