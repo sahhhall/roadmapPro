@@ -84,7 +84,7 @@ class DIContainer {
         return new VerifyPasswordReset(this._rediseService, this._authRepository)
     }
     static refreshTokenUserUseCase() {
-        return new RefreshToken(this._jwtService)
+        return new RefreshToken(this._jwtService,this._authRepository)
     }
     static adminRefeshTokenUseCase() {
         return new AdminRefreshToken(this._jwtService)
