@@ -11,7 +11,8 @@ export const AssessmentTestEndpoints = {
 export const profileEndpoints = {
     updateProfileMentor: '/api/mentor',
     updateGenericProfile: '/api/user/update',
-    getNotifications: '/api/user/notifications'
+    getNotifications: '/api/user/notifications',
+    getNotificationCount: '/api/user/notifications/notification-count'
 }
 
 

@@ -83,7 +83,14 @@ const mentorTestApi = apiSlice.injectEndpoints({
                 method: 'GET',
                 params: { skip }
             }),
-            keepUnusedDataFor:0
+            keepUnusedDataFor: 0
+        }),
+        getNoticationCount: builder.query<{ notificationCount: number }, { email: string}>({
+            query: ({ email }) => ({
+                url: `${profileEndpoints.getNotificationCount}/${email}`,
+                method: 'GET',
+            }),
+            keepUnusedDataFor: 0
         })
 
 
@@ -101,5 +108,6 @@ export const {
     useGetAllRoadmapsByUserIdQuery,
     useUpdateMentorProfileMutation,
     useUpdateUserDetailsMutation,
-    useGetNotificationsQuery
+    useGetNotificationsQuery,
+    useGetNoticationCountQuery
 } = mentorTestApi;
