@@ -8,8 +8,7 @@ export class ExpressWebServer implements IServerInterface {
     private app: Application;
     private server: any;
     private io: Server;
-    private emailToSocketIdMap: any;
-    private socketidToEmailMap: any;
+    private rooms: any;
 
     constructor() {
         this.app = express();
@@ -26,48 +25,58 @@ export class ExpressWebServer implements IServerInterface {
             }
         });
 
-        this.emailToSocketIdMap = new Map();
-        this.socketidToEmailMap = new Map();
+        this.rooms = new Map();
         this.setupSocketHandlers();
     }
 
     private setupSocketHandlers() {
         this.io.on('connection', (socket) => {
-            console.log('Socket connected:', socket.id);
-            socket.on('room:join', async (data) => {
-                const { email, room } = data;
-                console.log(this.emailToSocketIdMap, this.socketidToEmailMap)
-                // to map email to socketidconso
-                this.emailToSocketIdMap.set(email, socket.id)
-                this.socketidToEmailMap.set(socket.id, email)
-                console.log(socket.id)
-                // this emits an event to all clients in the specified room
-                this.io.to(room).emit("user:joined", { email, id: socket.id })
-                //it should tell client paritelar socket join room
-                await socket.join(room);
+            console.log("User connected:", socket.id);
 
-                this.io.to(socket.id).emit("room:join", data)
-            })
+            socket.on("join-room", (payload) => {
+                console.log("payload thaat i getting",payload)
+                console.log(`User ${socket.id} joining room ${payload.roomId}`);
 
+                if (!this.rooms.has(payload.roomId)) {
+                    this.rooms.set(payload.roomId, new Set([socket.id]));
+                } else {
+                    this.rooms.get(payload.roomId).add(socket.id);
+                }
 
-            socket.on('user:call', ({ to, offer }) => {
-                console.log("user: call", to, offer)
-                this.io.to(to).emit('incoming:call', { from: socket.id, offer })
-            })
+                const others = Array.from(this.rooms.get(payload.roomId)).filter(id => id !== socket.id);
+                const otherUser = others[0] as any
 
-            socket.on('call:accepted', ({ to, ans }) => {
-                console.log("accepted: call", to, ans)
-                this.io.to(to).emit('call:accepted', { from: socket.id, ans })
-            })
+                if (otherUser) {
+                    socket.emit("other user", otherUser);
+                    socket.to(otherUser).emit("user joined", {socketId:socket.id,name: payload.name});
+                }
 
-            socket.on('peer:nego:needed', ({ to, offer }) => {
-                console.log("nego: needed", to, offer)
-                this.io.to(to).emit('peer:nego:needed', { from: socket.id, offer })
-            })
+                socket.on("disconnect", () => {
+                    console.log(`User ${socket.id} disconnected from room ${payload.roomId}`);
+                    if (this.rooms.has(payload.roomId)) {
+                        this.rooms.get(payload.roomId).delete(socket.id);
+                        if (this.rooms.get(payload.roomId).size === 0) {
+                            this.rooms.delete(payload.roomId);
+                        }
+                    }
+                });
+            });
 
-            socket.on('peer:nego:done', ({ to, ans }) => {
-                this.io.to(to).emit('peer:nego:final', { from: socket.id, ans })
-            })
+            socket.on("offer", (payload) => {
+                console.log("Received offer from", socket.id, "to", payload.target);
+                this.io.to(payload.target).emit("offer", payload);
+            });
+
+            socket.on("answer", (payload) => {
+                console.log("Received answer from", socket.id, "to", payload.target);
+                this.io.to(payload.target).emit("answer", payload);
+            });
+
+            socket.on("ice-candidate", (incoming) => {
+                console.log("Received ICE candidate from", socket.id, "to", incoming.target);
+                this.io.to(incoming.target).emit("ice-candidate", incoming.candidate);
+            });
+
         });
     }
 

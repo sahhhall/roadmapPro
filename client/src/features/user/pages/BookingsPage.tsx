@@ -1,16 +1,14 @@
-import { useCallback, useEffect, useState } from "react";
+import {  useEffect, useState } from "react";
 import { useGetAllBookingDetailsQuery } from "@/features/user/services/api/mentorTestApi";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/Container";
 import { usegetUser } from "@/hooks/usegetUser";
-import { useSocket } from "@/features/video/context/SocketProvider";
 import { useNavigate } from "react-router-dom";
 import { formatDateAndCalculateTime } from "@/features/mentor/libs/timeHelpers";
 
 const BookingsPage = () => {
   const [status, setStatus] = useState("scheduled");
   const user = usegetUser();
-  const socket = useSocket();
   const navigate = useNavigate();
 
   const {
@@ -28,58 +26,10 @@ const BookingsPage = () => {
   }, []);
 
   const statuses = ["scheduled", "completed"];
-  // Handle joining a room
-  const handleJoinClick = useCallback(
-    async (roomId: string) => {
-      try {
-        if (socket && user?.email) {
-          console.log(`Attempting to join room: ${roomId}`);
-          socket.emit("room:join", {
-            email: user.email,
-            room: roomId,
-          });
-        } else {
-          console.error("Socket or user email not available");
-        }
-      } catch (error) {
-        console.error("Error joining room:", error);
-      }
-    },
-    [socket, user?.email]
-  );
-
-  // Handle navigation after successfully joining
-  const handleRoomJoined = useCallback(
-    (data: { email: string; room: string }) => {
-      const { email, room } = data;
-      console.log(`Successfully joined room ${room} with email ${email}`);
-      navigate(`/meet/${room}`);
-    },
-    [navigate]
-  );
-
-  // Handle when other users join
-  const handleUserJoined = useCallback(
-    (data: { email: string; id: string }) => {
-      console.log(`New user joined: ${data.email} with socket ID: ${data.id}`);
-    },
-    []
-  );
-
-  useEffect(() => {
-    if (socket) {
-      // Listen for room join confirmation
-      socket.on("room:join", handleRoomJoined);
-      // Listen for other users joining
-      socket.on("user:joined", handleUserJoined);
-
-      return () => {
-        socket.off("room:join", handleRoomJoined);
-        socket.off("user:joined", handleUserJoined);
-      };
-    }
-  }, [socket, handleRoomJoined, handleUserJoined]);
-
+  //  joining a room
+  const handleJoinClick = (roomId: string) => {
+    navigate(`/meet/${roomId}`);
+  };
   return (
     <Container className="p-6 overflow-hidden mx-auto">
       <div className="flex justify-between items-center mb-4">
