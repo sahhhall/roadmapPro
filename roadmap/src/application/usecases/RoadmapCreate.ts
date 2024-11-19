@@ -14,9 +14,9 @@ export class RoadMapCreate implements IRoadMapCreate {
         description,
     }: Pick<Roadmap, 'userId' | 'title' | 'description'>): Promise<Roadmap | null> {
         const existingRoadmap = await this.roadMapRepository.getRoadmapByTitle(title);
-        if (existingRoadmap) {
-            return null;
-        }
+        // if (existingRoadmap) {
+        //     return null;
+        // }
         const newRoadmap = new Roadmap(
             userId,
             title,
