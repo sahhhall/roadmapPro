@@ -8,8 +8,16 @@ export class GetMentorsBySkillController {
 
     async getMentors(req: Request, res: Response, next: NextFunction) {
         try {
+            let mentors;
             const { skill } = req.params;
-            const mentors = await this.getAllMentors.execute(skill);
+            const { userId } = req.query;
+            console.log("userId", userId)
+            if (!userId) {
+                mentors = await this.getAllMentors.execute(skill);
+            } else {
+                mentors = await this.getAllMentors.execute(skill, userId as any);
+            }
+
             return res.status(HttpStatus.OK).json(mentors)
         } catch (error) {
             next(error)

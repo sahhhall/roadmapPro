@@ -11,9 +11,12 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useGetMentorsBySkillQuery } from "@/features/mentor/services/api/mentorApi";
 import { useLocation, useNavigate } from "react-router-dom";
+import { usegetUser } from "@/hooks/usegetUser";
 
 const MentorListing = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const user = usegetUser();
+  const userId = user?.id || "";
   const location = useLocation();
   const navigate = useNavigate();
   const skill = location.state?.skill || "";
@@ -21,7 +24,7 @@ const MentorListing = () => {
     data: mentors,
     isLoading,
     refetch,
-  } = useGetMentorsBySkillQuery(skill);
+  } = useGetMentorsBySkillQuery({ skill, userId });
   useEffect(() => {
     refetch();
   }, []);

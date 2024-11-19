@@ -27,13 +27,18 @@ export class MentorRepositary implements IMentorRepository {
         }
     }
 
-    async getMentorsBySkill(skill: string): Promise<Mentor[] | null> {
+    async getMentorsBySkill(skill: string, userId?: string): Promise<Mentor[] | null> {
+        const query: any = {
+            assessedSkills: {
+                $regex: new RegExp(`^${skill}$`, 'i'),
+            },
+        };
+        //if there user don need to show his details
+        if (userId !== undefined) {
+            query.userId = { $ne: userId };
+        }
         try {
-            return await MentorDB.find({
-                assessedSkills: {
-                    $regex: new RegExp(`^${skill}$`, 'i')
-                }
-            }).populate({
+            return await MentorDB.find(query).populate({
                 path: 'userId',
                 select: 'name email avatar '
             })

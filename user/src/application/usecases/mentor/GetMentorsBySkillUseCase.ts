@@ -8,13 +8,13 @@ import { IGetMentorsBySkillUseCase } from "../../interfaces/mentor/IGetMentorsBy
 
 export class GetMentorsBySkillUseCase implements IGetMentorsBySkillUseCase {
     constructor(private mentorRepositary: IMentorRepository) { }
-    async execute(skill: string): Promise<Mentor[] | null> {
-        const mentors = await this.mentorRepositary.getMentorsBySkill(skill);
+    async execute(skill: string, userId?: string | undefined): Promise<Mentor[] | null> {
+        const mentors = await this.mentorRepositary.getMentorsBySkill(skill, userId);
         if (!mentors) {
             throw new NotFoundError()
         }
         for (const mentor of mentors) {
-            if (mentor) {
+            if (mentor && mentor.userId.avatar) {
                 try {
                     const avatarUrl = await s3Operation.getImageFromBucket(mentor.userId.avatar);
                     mentor.userId.avatar = avatarUrl;

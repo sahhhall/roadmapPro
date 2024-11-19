@@ -5,9 +5,9 @@ import { GetMentorsResponse, ICreateBookingRequest, ICreatePaymentRequest, IGetM
 
 const mentorApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getMentorsBySkill: builder.query<GetMentorsResponse[], any>({
-            query: (skill) => ({
-                url: MentorEndpoints.getMentorsBySkill(skill),
+        getMentorsBySkill: builder.query<GetMentorsResponse[], { skill: string, userId: string }>({
+            query: ({ skill, userId }) => ({
+                url: MentorEndpoints.getMentorsBySkill(skill, userId),
                 method: 'get',
             })
         }),
@@ -25,7 +25,7 @@ const mentorApi = apiSlice.injectEndpoints({
                 method: 'get',
             }),
             providesTags: ["AvailbilityMentor"],
-            keepUnusedDataFor: 0, 
+            keepUnusedDataFor: 0,
         }),
 
         updateMentorAvailibility: builder.mutation<any, UpdateMentorAvailbilityRequest>({
@@ -52,12 +52,12 @@ const mentorApi = apiSlice.injectEndpoints({
                 method: 'get',
             }),
             providesTags: ['BookingData'],
-            keepUnusedDataFor: 0, 
+            keepUnusedDataFor: 0,
         }),
 
         createPayment: builder.mutation<any, ICreatePaymentRequest>({
             query: (data) => ({
-                url: MentorEndpoints.createPaymentIntent, 
+                url: MentorEndpoints.createPaymentIntent,
                 method: 'post',
                 body: data,
             }),
