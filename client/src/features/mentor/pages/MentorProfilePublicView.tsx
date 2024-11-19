@@ -205,6 +205,12 @@ const MentorProfile = () => {
       if (error.status === 409) {
         setShowUnavailableDialog(true);
         refetchBookinData();
+      } else if (error.status === 400) {
+        toast({
+          variant: "destructive",
+          title: "Uh oh! Booking Not Allowed.",
+          description: "You cannot book a session with your own mentor profile.",
+        });
       } else {
         const errorMessage =
           error?.data?.errors[0] ||

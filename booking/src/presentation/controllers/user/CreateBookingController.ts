@@ -11,6 +11,9 @@ export class CreateBookingController {
     async create(req: Request, res: Response, next: NextFunction) {
         try {
             const { menteeId, mentorId, date } = req.body;
+            if(menteeId == mentorId) {
+                throw new BadRequestError("bro it your id")
+            }
             // if( menteeId !==req.user?.id ){
             //     throw new BadRequestError('come with you account vrroo')
             // }

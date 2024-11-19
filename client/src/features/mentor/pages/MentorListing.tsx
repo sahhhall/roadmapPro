@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search } from "lucide-react";
 import {
   Sheet,
@@ -15,12 +15,18 @@ import { useLocation, useNavigate } from "react-router-dom";
 const MentorListing = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const location = useLocation();
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const skill = location.state?.skill || "";
-  const { data: mentors, isLoading } = useGetMentorsBySkillQuery(skill);
-
+  const {
+    data: mentors,
+    isLoading,
+    refetch,
+  } = useGetMentorsBySkillQuery(skill);
+  useEffect(() => {
+    refetch();
+  }, []);
   const handleNavigateToMentorProfile = (mentorId: string) => {
-    navigate(`/mentor-profile/${mentorId}`); 
+    navigate(`/mentor-profile/${mentorId}`);
   };
   if (isLoading) {
     return (
