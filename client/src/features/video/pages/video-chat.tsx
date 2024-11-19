@@ -127,9 +127,13 @@ const VideoChat = () => {
     return peer;
   };
 
+  //this first happen of call other user end it be user B to user A
+  //data channel for
   const callUser = (userID: string) => {
     peerRef.current = createPeer(userID);
+    //this is used sending non-media data, such as chat messages
     sendChannel.current = peerRef.current.createDataChannel("sendChannel");
+    //this trigger when recive
     sendChannel.current.onmessage = handleReciveMessage;
     userStream.current?.getTracks().forEach((track) => {
       if (userStream.current) {

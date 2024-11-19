@@ -1,6 +1,6 @@
 import express, { Application } from 'express';
 import cookieParser from "cookie-parser";
-import { Server, Socket } from 'socket.io';
+import { Server } from 'socket.io';
 import { createServer } from 'http';
 import { IServerInterface } from '../../domain/interfaces/IServer';
 
@@ -20,8 +20,8 @@ export class ExpressWebServer implements IServerInterface {
 
         this.io = new Server(this.server, {
             cors: {
-                origin: "http://localhost:5173",
-                methods: ["GET", "POST"]
+                origin: process.env.FRONT_END_BASE_URL,
+                methods: ["*"]
             }
         });
 
@@ -34,7 +34,7 @@ export class ExpressWebServer implements IServerInterface {
             console.log("User connected:", socket.id);
 
             socket.on("join-room", (payload) => {
-                console.log("payload thaat i getting",payload)
+                console.log("payload thaat i getting", payload)
                 console.log(`User ${socket.id} joining room ${payload.roomId}`);
 
                 if (!this.rooms.has(payload.roomId)) {
@@ -48,7 +48,7 @@ export class ExpressWebServer implements IServerInterface {
 
                 if (otherUser) {
                     socket.emit("other user", otherUser);
-                    socket.to(otherUser).emit("user joined", {socketId:socket.id,name: payload.name});
+                    socket.to(otherUser).emit("user joined", { socketId: socket.id, name: payload.name });
                 }
 
                 socket.on("disconnect", () => {
