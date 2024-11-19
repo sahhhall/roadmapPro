@@ -1,12 +1,28 @@
 import { useToast } from "@/hooks/use-toast";
 import { usegetUser } from "@/hooks/usegetUser";
-import { Mic, Video, MicOff, VideoOff, PhoneOff } from "lucide-react";
+import {
+  Mic,
+  Video,
+  MicOff,
+  VideoOff,
+  PhoneOff,
+  MessageSquareText,
+} from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { io } from "socket.io-client";
+import Chat from "../components/Chat";
+interface Message {
+  sender: string;
+  text: string;
+  yours: boolean;
+}
 const VideoChat = () => {
   const [isMuted, setIsMuted] = useState(false);
   const [videoMuted, setVideoMuted] = useState(false);
+  const [showChat, setShowChat] = useState(false);
+  const [messages, setMessages] = useState<Message[]>([]);
+
   const { roomId } = useParams();
   const userVideo = useRef<HTMLVideoElement | null>(null);
   const partnerVideo = useRef<HTMLVideoElement | null>(null);
@@ -14,9 +30,16 @@ const VideoChat = () => {
   const socketRef = useRef<any>(null);
   const otherUser = useRef<string | null>(null);
   const userStream = useRef<MediaStream | null>(null);
+
+  const sendChannel = useRef<RTCDataChannel | null>(null);
+
   const user = usegetUser();
 
   const { toast } = useToast();
+
+  const toggleChat = () => {
+    setShowChat(!showChat);
+  };
 
   const navigate = useNavigate();
   console.log(user, "user");
@@ -61,12 +84,14 @@ const VideoChat = () => {
           otherUser.current = userId;
         });
 
-        socketRef.current.on("user joined", (payload: { userId: string; name: string }) => {
-            console.log(payload,"payload from user")
+        socketRef.current.on(
+          "user joined",
+          (payload: { userId: string; name: string }) => {
+            console.log(payload, "payload from user");
             otherUser.current = payload.userId;
             toast({
               title: `${payload.name} has joined the meeting`,
-            });            
+            });
           }
         );
         socketRef.current.on("offer", handleRecieveCall);
@@ -104,6 +129,8 @@ const VideoChat = () => {
 
   const callUser = (userID: string) => {
     peerRef.current = createPeer(userID);
+    sendChannel.current = peerRef.current.createDataChannel("sendChannel");
+    sendChannel.current.onmessage = handleReciveMessage;
     userStream.current?.getTracks().forEach((track) => {
       if (userStream.current) {
         peerRef.current?.addTrack(track, userStream.current);
@@ -131,6 +158,10 @@ const VideoChat = () => {
 
   const handleRecieveCall = async (incoming: any) => {
     peerRef.current = createPeer();
+    peerRef.current.ondatachannel = (event) => {
+      sendChannel.current = event.channel;
+      sendChannel.current.onmessage = handleReciveMessage;
+    };
     try {
       const desc = new RTCSessionDescription(incoming.sdp);
       await peerRef.current?.setRemoteDescription(desc);
@@ -221,6 +252,38 @@ const VideoChat = () => {
     navigate("/profile/bookings");
   };
 
+  
+  const handleReciveMessage = (e: MessageEvent) => {
+    const data = JSON.parse(e.data);
+    setMessages((messages:any) => [
+      ...messages,
+      { 
+        sender: data.sender,
+        text: data.text,
+        yours: false 
+      }
+    ]);
+  };
+
+  const handleSendMessage = (text: string) => {
+    if (!sendChannel.current || !text.trim()) return;
+    
+    const messageData = {
+      sender: user?.name || 'anonoymouus',
+      text: text.trim()
+    };
+    
+    sendChannel.current.send(JSON.stringify(messageData));
+    setMessages((messages) => [
+      ...messages,
+      { 
+        sender: messageData.sender,
+        text: messageData.text,
+        yours: true 
+      }
+    ]);
+  };
+
   return (
     <div className="bg-gray-900 min-h-[100vh] overflow-hidden flex flex-col">
       <div
@@ -274,7 +337,21 @@ const VideoChat = () => {
           >
             <PhoneOff className="h-6 w-6" />
           </button>
+          <button
+            style={{ background: "#333537" }}
+            className=" text-white p-4 rounded-full"
+            onClick={toggleChat}
+          >
+            <MessageSquareText className="h-6 w-6" />
+          </button>
         </div>
+        {showChat && (
+          <Chat
+            messages={messages}
+            toggleChat={toggleChat}
+            onSendMessage={handleSendMessage}
+          />
+        )}
       </div>
     </div>
   );
