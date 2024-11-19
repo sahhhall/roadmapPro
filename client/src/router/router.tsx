@@ -9,6 +9,7 @@ import RoadMapMangment from "@/features/admin/pages/RoadMapMangment";
 import WrappedDnDFlow from "@/features/roadmaps/pages/Flow";
 import GeneralPage from "@/features/user/pages/GeneralPage";
 import { ProfileLayout } from "@/features/user/layout/ProfileLayout";
+import PaymentSuccessPage from "@/features/mentor/pages/PaymentSuccessPage";
 
 const Home = lazy(() => import("@/pages/HomePage"));
 const LoginPage = lazy(() => import("@/features/auth/pages/LoginPage"));
@@ -195,7 +196,7 @@ const routes = createBrowserRouter([
         path: "/payment-success",
         element: (
           <Suspense fallback={<div>loading..</div>}>
-            <>payment success</>
+            <PaymentSuccessPage/>
           </Suspense>
         ),
       },

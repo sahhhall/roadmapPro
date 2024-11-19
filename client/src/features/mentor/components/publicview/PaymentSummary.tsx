@@ -1,3 +1,4 @@
+import React, { useMemo, useCallback } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -17,31 +18,32 @@ import {
 } from "../../types/mentor";
 
 const publishKey = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
-
 const stripePromise = loadStripe(publishKey);
-export const PaymentSummary = ({
+
+interface PaymentSummaryProps {
+  price: number;
+  mentorDetails: IMentorDetailsResponse | undefined;
+  bookingDetails: IGetMenotrsBookingsResponse;
+  bookingDate: string;
+}
+
+export const PaymentSummary: React.FC<PaymentSummaryProps> = React.memo(({
   price,
   mentorDetails,
   bookingDetails,
   bookingDate,
-}: {
-  price: number;
-  mentorDetails: IMentorDetailsResponse | undefined;
-  bookingDetails: IGetMenotrsBookingsResponse;
-  bookingDate: any;
 }) => {
   const [createPayment, { isLoading }] = useCreatePaymentMutation();
+  const paymentData = useMemo<ICreatePaymentRequest>(() => ({
+    mentorId: mentorDetails?.userId._id as string,
+    price: price,
+    name: mentorDetails?.userId.name as any,
+    bookingId: bookingDetails.id,
+    userId: bookingDetails.menteeId,
+    bookingDate: bookingDate
+  }), [mentorDetails?.userId._id, mentorDetails?.userId.name, price, bookingDetails.id, bookingDetails.menteeId, bookingDate]);
 
-  const handlePayment = async () => {
-    const paymentData: ICreatePaymentRequest = {
-      mentorId: mentorDetails?.userId._id as any,
-      price: price,
-      name: mentorDetails?.userId.name as any,
-      bookingId: bookingDetails.id,
-      userId: bookingDetails.menteeId,
-      bookingDate:bookingDate
-    };
-
+  const handlePayment = useCallback(async () => {
     try {
       const result = await createPayment(paymentData).unwrap();
       const { id } = result;
@@ -52,9 +54,16 @@ export const PaymentSummary = ({
     } catch (error) {
       console.error("Payment failed:", error);
     }
-  };
+  }, [createPayment, paymentData]);
+
+  
+  const buttonText = useMemo(() => 
+    isLoading ? "Processing..." : "Proceed to Pay",
+    [isLoading]
+  );
+
   return (
-    <Card className="w-full  h-full shadow-none">
+    <Card className="w-full h-full shadow-none">
       <CardHeader>
         <CardTitle>Booking Summary</CardTitle>
         <CardDescription>
@@ -63,7 +72,7 @@ export const PaymentSummary = ({
       </CardHeader>
       <CardContent>
         <div>
-          <div className="  w-full  items-center gap-4">
+          <div className="w-full items-center gap-4">
             <div className="space-y-2">
               <h3 className="text-md font-semibold text-gray-800">
                 Payment Instructions
@@ -85,7 +94,7 @@ export const PaymentSummary = ({
                 </li>
               </ul>
             </div>
-            <div className="flex  mt-8 flex-row justify-between space-y-1.5">
+            <div className="flex mt-8 flex-row justify-between space-y-1.5">
               <label className="text-sm font-medium text-gray-700">
                 Total Price
               </label>
@@ -104,10 +113,11 @@ export const PaymentSummary = ({
           onClick={handlePayment}
           disabled={isLoading}
         >
-          {isLoading ? "Processing..." : "Proceed to Pay"} &nbsp;
+          {buttonText} &nbsp;
           <IndianRupee className="w-3 h-3" />
         </Button>
       </CardFooter>
     </Card>
   );
-};
+});
+

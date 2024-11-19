@@ -38,14 +38,29 @@ export const generateTimeSlots = (from: string, to: string) => {
 // //will get timestap that will converted into normall day and time
 export const formatDateAndCalculateTime = (timestamp: string) => {
   const date = new Date(timestamp);
-  const options = { weekday: 'long', year: 'numeric', month: 'numeric', day: 'numeric' } as any;
-  const formattedDate = date.toLocaleDateString('en-US', options);
-  let hours12 = date.getHours() % 12 || 12;
 
-  //too concat zero to end
-  const timeFormatted = String(date.getMinutes()) + 0
-  const ampm = date.getHours() >= 12 ? 'PM' : 'AM';
 
-  return `${formattedDate} at ${hours12}:${timeFormatted} ${ampm}`
+    const daysOfWeek = [
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+    ];
 
+  
+    const day = daysOfWeek[date.getDay()];
+    const dayDate = date.getDate();
+    const year = date.getFullYear();
+
+    
+    let hours = date.getHours();
+    const minutes = date.getMinutes();
+    const ampm = hours >= 12 ? "PM" : "AM";
+    hours = hours % 12 || 12; 
+    const formattedMinutes = minutes.toString().padStart(2, "0");
+
+    return `${day} ${dayDate}, ${year} ${hours}.${formattedMinutes} ${ampm}`;
 }
