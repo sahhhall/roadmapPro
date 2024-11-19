@@ -68,9 +68,9 @@ export class BookingRepositary implements IBookingRepositary {
             } else {
                 query.status = { $in: [BookinStatus.Created, BookinStatus.Scheduled] };
             }
-            const bookings = await Booking.find(query).populate({
+            const bookings = await Booking.find(query).sort({ date: -1 }).populate({
                 path: 'mentorId menteeId'
-            });
+            })
             return bookings
         } catch (error: any) {
             customLogger.error(`db error to find bookings booking booking-service: ${error.message}`);
@@ -130,18 +130,18 @@ export class BookingRepositary implements IBookingRepositary {
             const matchCriteria: any = {
                 createdAt: { $gte: startDate, $lte: endDate },
             };
-    
+
             if (status) {
                 matchCriteria.status = status;
             }
-    
+
             const monthlyBookings = await Booking.aggregate([
                 {
                     $match: matchCriteria
                 },
                 {
                     $group: {
-                        _id: { $month: "$createdAt" }, 
+                        _id: { $month: "$createdAt" },
                         totalBookings: { $sum: 1 }
                     }
                 },
@@ -149,7 +149,7 @@ export class BookingRepositary implements IBookingRepositary {
                     $sort: { _id: 1 }
                 }
             ]);
-    
+
             return monthlyBookings;
         } catch (error: any) {
             customLogger.error(`fetch monthly data: ${error.message}`);

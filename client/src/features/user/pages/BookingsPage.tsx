@@ -1,13 +1,27 @@
-import {  useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useGetAllBookingDetailsQuery } from "@/features/user/services/api/mentorTestApi";
 import { Button } from "@/components/ui/button";
 import Container from "@/components/Container";
 import { usegetUser } from "@/hooks/usegetUser";
 import { useNavigate } from "react-router-dom";
 import { formatDateAndCalculateTime } from "@/features/mentor/libs/timeHelpers";
+import DialogEarlyJoining from "../components/booking/DialogEarlyJoining";
 
+interface DialogState {
+  isOpen: boolean;
+  dialogType: "early" | "past" | null;
+  timeDetails?: {
+    hoursLeft: number;
+    minutesLeft: number;
+  };
+  roomId?: string;
+}
 const BookingsPage = () => {
   const [status, setStatus] = useState("scheduled");
+  const [dialogState, setDialogState] = useState<DialogState>({
+    isOpen: false,
+    dialogType: null,
+  });
   const user = usegetUser();
   const navigate = useNavigate();
 
@@ -27,8 +41,49 @@ const BookingsPage = () => {
 
   const statuses = ["scheduled", "completed"];
   //  joining a room
-  const handleJoinClick = (roomId: string) => {
+
+  const handleJoinClick = (roomId: string, bookingDate: string) => {
+    const now = new Date();
+    const bookingTime = new Date(bookingDate);
+    const timeDifference = bookingTime.getTime() - now.getTime();
+
+    if (timeDifference > 0) {
+      const hoursLeft = Math.floor(timeDifference / (1000 * 60 * 60));
+      const minutesLeft = Math.floor(
+        (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+      );
+
+      if (timeDifference > 5 * 60 * 1000) {
+        setDialogState({
+          isOpen: true,
+          dialogType: "early",
+          timeDetails: { hoursLeft, minutesLeft },
+          roomId,
+        });
+        return;
+      }
+    } else {
+      setDialogState({
+        isOpen: true,
+        dialogType: "past",
+      });
+      return;
+    }
     navigate(`/meet/${roomId}`);
+  };
+
+  const handleClose = () => {
+    setDialogState({
+      isOpen: false,
+      dialogType: null,
+    });
+  };
+
+  const handleJoinAnyway = () => {
+    if (dialogState.roomId) {
+      navigate(`/meet/${dialogState.roomId}`);
+    }
+    handleClose();
   };
   return (
     <Container className="p-6 overflow-hidden mx-auto">
@@ -110,7 +165,9 @@ const BookingsPage = () => {
                 <div className="flex flex-col items-end gap-2">
                   {booking.status === "scheduled" && (
                     <Button
-                      onClick={() => handleJoinClick(booking.roomId)}
+                      onClick={() =>
+                        handleJoinClick(booking.roomId, booking.date)
+                      }
                       variant="outline"
                     >
                       Join
@@ -134,6 +191,13 @@ const BookingsPage = () => {
           </div>
         )}
       </div>
+      <DialogEarlyJoining
+        isOpen={dialogState.isOpen}
+        dialogType={dialogState.dialogType}
+        timeDetails={dialogState.timeDetails}
+        onClose={handleClose}
+        onJoinAnyway={handleJoinAnyway}
+      />
     </Container>
   );
 };

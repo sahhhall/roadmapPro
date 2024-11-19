@@ -67,8 +67,8 @@ const Chat: React.FC<IChatProps> = ({
           </AlertDialogDescription>
         </AlertDialog>
 
-        <ScrollArea className="h-80 pr-4 overflow-scroll scrollbar-hide">
-          <div className="space-y-1">
+        <ScrollArea className="h-80 pt-3 pr-4 overflow-scroll scrollbar-hide">
+          <div className="space-y-2">
             {messages.map((msg: any, index: any) => (
               <div
                 key={index}
@@ -82,15 +82,15 @@ const Chat: React.FC<IChatProps> = ({
                   } `}
                 >
                   <div className="text-xs font-bold">
-                    {msg.yours && messages[index - 1]?.yours
+                    {msg?.yours && messages[index - 1]?.yours
                       ? ""
-                      : msg.yours
+                      : msg?.yours
                       ? "You"
-                      : !msg.yours &&
-                        msg.sender &&
-                        messages[index - 1].sender === msg.sender
+                      : !msg?.yours &&
+                        msg?.sender &&
+                        messages[index - 1]?.sender === msg?.sender
                       ? ""
-                      : msg.sender}
+                      : msg?.sender}
                   </div>
 
                   <div className="text-xs tracking-normal ">{msg.text}</div>
