@@ -57,7 +57,7 @@ const ReservationPage: React.FC<IReservationProps> = ({
             <div className="flex  flex-row">
               <div className="sm:min-w-[13rem]  hidden sm:block  min-h-fit   ">
                 <img
-                  src="https://github.com/shadcn.png"
+                  src={`${mentorDetails?.userId.avatar}`}
                   className="w-full h-full object-cover rounded-t-lg sm:rounded-l-lg sm:rounded-tr-none"
                   alt={`${mentorDetails?.userId.name}'s profile`}
                 />
