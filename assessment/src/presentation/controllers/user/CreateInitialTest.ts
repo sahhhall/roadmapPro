@@ -9,7 +9,10 @@ export class InitialTestController {
 
     async createStack(req: Request, res: Response, next: NextFunction) {
         try {
-            const userId = req.user!.id;
+            let userId = req.user!.id;
+            if(!userId){
+                userId = req.body.userId
+            }
             const { stackId, expirience, headline, bio, linkedinUrl, githubUrl, languages } = req.body;
             const initialTest = await this.createTestUseCase.execute({ userId, stackId, expirience, headline, bio, linkedinUrl, githubUrl, languages });
             return res.status(HttpStatus.CREATED).json(initialTest)

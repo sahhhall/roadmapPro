@@ -1,16 +1,29 @@
 import { useAppDispatch, useAppSelector } from "@/hooks/useAppStore";
 import { toggleDarkMode } from "@/redux/slices/themeSlice";
 import { Button } from "../ui/button";
-import { Bell, Moon } from "lucide-react";
+import { Moon } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import Dropdown from "./Dropdown";
 import { usegetUser } from "@/hooks/usegetUser";
+import { useGetNoticationCountQuery } from "@/features/user/services/api/mentorTestApi";
+import { NotificationBell } from "./NotificationBell";
+import { useEffect } from "react";
 
 const Navbar = () => {
   const dispatch = useAppDispatch();
   const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
   const userData = usegetUser();
 
+  const { data: notificatioCount, refetch } = useGetNoticationCountQuery(
+    userData?.email ? ({ email: userData.email } as any) : undefined,
+    { skip: !userData?.email, refetchOnMountOrArgChange: true }
+  );
+  useEffect(() => {
+    if (userData?.email) {
+      refetch();
+    }
+  }, []);
+  console.log(notificatioCount);
   const location = useLocation();
   if (location.pathname.includes("/meet")) {
     return null;
@@ -37,12 +50,9 @@ const Navbar = () => {
           <div className="flex items-center gap-4">
             {userData ? (
               <>
-                <Link
-                  to=""
-                  className="text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
-                >
-                  <Bell className="w-5 h-5" />
-                </Link>
+                <NotificationBell
+                  notification={notificatioCount?.notificationCount}
+                />
                 <div className="relative overflow-visible">
                   <Dropdown handleToggle={handleToggle} />
                 </div>
@@ -83,15 +93,18 @@ const Navbar = () => {
     <>
       <div className="flex justify-between pt-4  border border-b-1 pb-4 align-middle items-center ">
         <div>
-          <Link to={'/'} className="ms-[1.4rem] sm:ms-[7rem] font-extrabold text-1xl sm:text:2xl  ">
+          <Link
+            to={"/"}
+            className="ms-[1.4rem] sm:ms-[7rem] font-extrabold text-1xl sm:text:2xl  "
+          >
             RoadmapPro
           </Link>
         </div>
         {userData ? (
           <div className="me-[1rem] flex items-center gap-6  sm:me-[8em]">
-            <Link to={"/notifications"}>
-              <Bell />
-            </Link>
+            <NotificationBell
+              notification={notificatioCount?.notificationCount}
+            />
             <div className="flex flex-row md:gap-2  items-center">
               <Dropdown handleToggle={handleToggle} />
               <div className="md:block hidden">

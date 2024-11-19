@@ -26,6 +26,7 @@ import {
 import { CircleCheck, Github, Linkedin, LoaderCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import { usegetUser } from "@/hooks/usegetUser";
 
 const formSchema = z.object({
   stackId: z
@@ -64,6 +65,7 @@ const formSchema = z.object({
     .url("Please enter a valid Github URL")
     .min(1, "github URL is required")
     .refine((val) => val.includes("github.com"), "Must be a LinkedIn URL"),
+  userId: z.string(),
 });
 
 type FormData = z.infer<typeof formSchema>;
@@ -88,6 +90,7 @@ const languageOptions = [
 ];
 
 export const MentorDetailsSubmissionForm = () => {
+  const user = usegetUser();
   const form = useForm<FormData>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -97,6 +100,7 @@ export const MentorDetailsSubmissionForm = () => {
       bio: "",
       linkedinUrl: "",
       languages: [],
+      userId: user?.id,
     },
   });
 
@@ -125,7 +129,7 @@ export const MentorDetailsSubmissionForm = () => {
         state: { testData: response },
       });
     } catch (error: any) {
-      console.log(error,"errie")
+      console.log(error, "errie");
       toast({
         variant: "destructive",
         title: `${
