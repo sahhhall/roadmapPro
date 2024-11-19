@@ -1,5 +1,3 @@
-import Calneder from "./Calender";
-
 const TopBar = () => {
   return (
     <div className="border-b mb-4 px-4 mt-2 pb-4 border-stone-200">
@@ -13,7 +11,7 @@ const TopBar = () => {
           </span>
         </div>
         <div className="">
-          <Calneder />
+          {/* <Calneder /> */}
         </div>
       </div>
     </div>

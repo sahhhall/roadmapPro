@@ -146,7 +146,7 @@ const MentorListing = () => {
                 </div>
               </div>
               <Button variant={"submit"} className="h-4 mt-4 w-full">
-                Book Now
+                More Details
               </Button>
             </div>
           ))}
