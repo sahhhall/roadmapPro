@@ -22,13 +22,13 @@ export class UpdateTestController {
                             "Node js", "GraphQL", "gRPC", "Microservices",
                             "Kubernetes", "React", "JavaScript", "Docker",
                             "HTML", "CSS", "Next js", "Vue", "Angular", "DSA",
-                            "SQL", "NoSQL", "TypeScript"
+                            "SQL", "NoSQL", "TypeScript", "frontend engineering"
                         ]
                     ],
                     [
                         "python full stack",
                         [
-                            "Django", "HTML", "CSS", "JavaScript", "Next js",
+                            "Django", "backend engineering", "HTML", "CSS", "JavaScript", "Next js",
                             "DSA", "GraphQL", "Docker",
                             "Microservices", "gRPC", "Kubernetes", "SQL", "NoSQL"
                         ]
