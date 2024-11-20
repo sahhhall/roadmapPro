@@ -46,15 +46,8 @@ const MentorProfile = () => {
 
   const user = usegetUser();
 
-  const {
-    data: mentorDetails,
-    isLoading: mentorLoading,
-    refetch: refetchMentorDetails,
-  } = useGetMentorDetailsQuery(mentorId!);
-  const { data: availabilityData, isLoading: availabilityLoading } =
-    useGetAvailabilityOfMentorQuery(mentorId!, {
-      skip: false,
-    });
+  const { data: mentorDetails, isLoading: mentorLoading, refetch: refetchMentorDetails, } = useGetMentorDetailsQuery(mentorId!);
+  const { data: availabilityData, isLoading: availabilityLoading } = useGetAvailabilityOfMentorQuery(mentorId!, {skip: false,});
   //only need know created if there is completed that will take care by validation only show upcomings days
   const {
     data: bookingDetailsOfMentor,
@@ -81,7 +74,6 @@ const MentorProfile = () => {
   //for showing already anyone take seats liek confilt
   const [showUnavailableDialog, setShowUnavailableDialog] = useState(false);
 
-  console.log(selectedDate, "s", selectedTime, "t");
   const { toast } = useToast();
 
   useEffect(() => {
@@ -127,7 +119,6 @@ const MentorProfile = () => {
                 ? 12
                 : 0)
             }:00`;
-            console.log(slotStartTime, "slotstattime");
             return {
               ...slot,
               date: slotStartTime,
@@ -145,7 +136,6 @@ const MentorProfile = () => {
     if (bookingDetailsOfMentor) {
       const bookedDates = bookingDetailsOfMentor.map((detail) => detail.date);
       setBooked(bookedDates);
-      console.log(booked, "booked");
     }
   }, [bookingDetailsOfMentor]);
 
