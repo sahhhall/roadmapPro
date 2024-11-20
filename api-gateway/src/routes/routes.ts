@@ -1,10 +1,11 @@
+require('dotenv').config();
+
 export const ROUTES = [
-    
     {
         url: '/api/user/notifications',
         auth: 'user',
         proxy: {
-            target: 'http://localhost:3006/api/user/notifications',
+            target: `${process.env.NOTIFICATION_SERVICE_URL}/api/user/notifications`,
             changeOrigin: true,
         }
     },
@@ -12,24 +13,27 @@ export const ROUTES = [
         url: '/api/admin/assessment',
         auth: 'admin',
         proxy: {
-            target: 'http://localhost:3002/api/admin/assessment',
+            target: `${process.env.ASSESSMENT_SERVICE_URL}/api/admin/assessment`,
             changeOrigin: true,
         }
     },
-
     {
         url: '/api/admin/roadmap',
         auth: "admin",
         proxy: {
-            target: 'http://localhost:3001/api/admin/roadmap',
+            target: `${process.env.ROADMAP_SERVICE_URL}/api/admin/roadmap`,
             changeOrigin: true,
         }
     },
     {
         url: '/api/auth/',
         auth: false,
+        rateLimit: {
+            windowMs: 15 * 60 * 1000,  
+            max: 10  //  per 15 minutes per IP
+        },
         proxy: {
-            target: "http://localhost:3000/api/auth",
+            target: `${process.env.AUTH_SERVICE_URL}/api/auth`,
             changeOrigin: true,
         }
     },
@@ -37,16 +41,15 @@ export const ROUTES = [
         url: '/api/auth/logout',
         auth: "user",
         proxy: {
-            target: "http://localhost:3000/api/auth",
+            target: `${process.env.AUTH_SERVICE_URL}/api/auth`,
             changeOrigin: true,
         }
-
     },
     {
         url: '/api/admin/users',
         auth: "admin",
         proxy: {
-            target: "http://localhost:3000/api/admin/users",
+            target: `${process.env.AUTH_SERVICE_URL}/api/admin/users`,
             changeOrigin: true,
         }
     },
@@ -54,7 +57,7 @@ export const ROUTES = [
         url: '/api/admin/logout',
         auth: "admin",
         proxy: {
-            target: "http://localhost:3000/api/admin/logout",
+            target: `${process.env.AUTH_SERVICE_URL}/api/admin/logout`,
             changeOrigin: true,
         }
     },
@@ -62,7 +65,7 @@ export const ROUTES = [
         url: '/api/admin/user-action',
         auth: "admin",
         proxy: {
-            target: "http://localhost:3000/api/admin/user-action",
+            target: `${process.env.AUTH_SERVICE_URL}/api/admin/user-action`,
             changeOrigin: true
         }
     },
@@ -70,7 +73,7 @@ export const ROUTES = [
         url: '/api/admin/',
         auth: false,
         proxy: {
-            target: "http://localhost:3000/api/admin",
+            target: `${process.env.AUTH_SERVICE_URL}/api/admin`,
             changeOrigin: true,
         }
     },
@@ -78,16 +81,15 @@ export const ROUTES = [
         url: '/api/roadmap/nodedetails',
         auth: false,
         proxy: {
-            target: 'http://localhost:3001/api/roadmap/nodedetails',
+            target: `${process.env.ROADMAP_SERVICE_URL}/api/roadmap/nodedetails`,
             changeOrigin: true,
         }
-    }
-    ,
-    , {
+    },
+    {
         url: '/api/roadmap/published',
         auth: false,
         proxy: {
-            target: 'http://localhost:3001/api/roadmap/published',
+            target: `${process.env.ROADMAP_SERVICE_URL}/api/roadmap/published`,
             changeOrigin: true,
         }
     },
@@ -95,14 +97,15 @@ export const ROUTES = [
         url: '/api/roadmap',
         auth: 'user',
         proxy: {
-            target: 'http://localhost:3001/api/roadmap',
+            target: `${process.env.ROADMAP_SERVICE_URL}/api/roadmap`,
             changeOrigin: true,
         }
-    }, {
+    },
+    {
         url: '/api/assessment',
         auth: 'user',
         proxy: {
-            target: 'http://localhost:3002/api/assessment',
+            target: `${process.env.ASSESSMENT_SERVICE_URL}/api/assessment`,
             changeOrigin: true,
         }
     },
@@ -110,7 +113,7 @@ export const ROUTES = [
         url: '/api/mentors',
         auth: false,
         proxy: {
-            target: 'http://localhost:3004/api/mentors',
+            target: `${process.env.MENTOR_SERVICE_URL}/api/mentors`,
             changeOrigin: true,
         }
     },
@@ -118,7 +121,7 @@ export const ROUTES = [
         url: '/api/mentor',
         auth: false,
         proxy: {
-            target: 'http://localhost:3003/api/mentor',
+            target: `${process.env.USER_SERVICE_URL}/api/mentor`,
             changeOrigin: true,
         }
     },
@@ -126,7 +129,7 @@ export const ROUTES = [
         url: '/api/user',
         auth: false,
         proxy: {
-            target: 'http://localhost:3003/api/user',
+            target: `${process.env.USER_SERVICE_URL}/api/user`,
             changeOrigin: true,
         }
     },
@@ -134,15 +137,15 @@ export const ROUTES = [
         url: '/api/bookings',
         auth: false,
         proxy: {
-            target: 'http://localhost:3004/api/bookings',
+            target: `${process.env.MENTOR_SERVICE_URL}/api/bookings`,
             changeOrigin: true,
         }
     },
     {
         url: '/api/payments',
-        auth: true,
+        auth: false,
         proxy: {
-            target: 'http://localhost:3005/api/payments',
+            target: `${process.env.PAYMENT_SERVICE_URL}/api/payments`,
             changeOrigin: true,
         }
     },
@@ -150,9 +153,8 @@ export const ROUTES = [
         url: '/api/bookings/analytics',
         auth: 'admin',
         proxy: {
-            target: 'http://localhost:4001/api/bookings/analytics',
+            target: `${process.env.MENTOR_SERVICE_URL}/api/bookings/analytics`,
             changeOrigin: true,
         }
-    },
- 
+    }
 ];

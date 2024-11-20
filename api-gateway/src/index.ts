@@ -1,15 +1,12 @@
-import express, { NextFunction, Request, Response } from 'express';
+import express from 'express';
 import { ROUTES } from './routes/routes';
 import { setupRateLimit } from './ratelimit/ratelimit';
-import axios from 'axios';
 import { setupProxies } from './proxy/proxy';
 import { setupAuth } from './auth/auth';
 import cookieParser from 'cookie-parser';
 import loggingMiddleware from './logger/morgan';
 import cors from 'cors'
 import dotenv from 'dotenv';
-import { winstonLogger } from '@sahhhallroadmappro/common';
-const useLogger = winstonLogger('api-gateway')
 
 dotenv.config();
 
@@ -27,7 +24,7 @@ app.use(cors({
 app.use(loggingMiddleware);
 
 app.use(cookieParser());
-// setupRateLimit(app, ROUTES);
+setupRateLimit(app, ROUTES);
 
 // app.get('/api/mentor/mentor-profile/:mentorId', async (req: Request, res: Response, next: NextFunction) => {
 //   try {
