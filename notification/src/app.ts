@@ -53,7 +53,7 @@ export class App {
             const consumer3 = await kafkaWrapper.createConsumer('booking-notification-group')
             const diContainer = DIContainer.getInstance();
             const genericNotificationCreator = diContainer.createNotificationUseCase();
-            this.roadmapUpdatedConsumer = new RoadmapUpdatedConsumer(consumer, genericNotificationCreator);
+            this.roadmapUpdatedConsumer = new RoadmapUpdatedConsumer(consumer, genericNotificationCreator, this.server as any);
             this.assessmentReviewedConsumer = new AssessmentReviewConsumer(consumer2, genericNotificationCreator);
             this.bookingNotificationConsumer = new BookingNotificationConsumer(consumer3, genericNotificationCreator)
             await this.roadmapUpdatedConsumer.listen()
