@@ -1,7 +1,7 @@
 import { connectDB, disconnectDB } from './infrastructure/database/mongodb/connection';
 import { errorHandler, userDtamiddleaware } from '@sahhhallroadmappro/common';
 import kafkaWrapper from './infrastructure/kafka/kafka-wrapper';
-import loggerMiddleware from './presentation/middleware/loggerMiddleware';
+import loggerMiddleware, { customLogger } from './presentation/middleware/loggerMiddleware';
 import { IServerInterface } from './domain/interfaces/IServer';
 import { notificationRoutes } from './presentation/routes/notificationRoutes';
 import { DIContainer } from './infrastructure/di/DIContainer';
@@ -40,7 +40,7 @@ export class App {
         try {
             await connectDB();
         } catch (error) {
-            console.log('Server could not be started', error);
+            customLogger.error('Server could not be started', error);
             process.exit(1);
         }
     }
@@ -54,14 +54,14 @@ export class App {
             const diContainer = DIContainer.getInstance();
             const genericNotificationCreator = diContainer.createNotificationUseCase();
             this.roadmapUpdatedConsumer = new RoadmapUpdatedConsumer(consumer, genericNotificationCreator, this.server as any);
-            this.assessmentReviewedConsumer = new AssessmentReviewConsumer(consumer2, genericNotificationCreator);
-            this.bookingNotificationConsumer = new BookingNotificationConsumer(consumer3, genericNotificationCreator)
+            this.assessmentReviewedConsumer = new AssessmentReviewConsumer(consumer2, genericNotificationCreator, this.server as any);
+            this.bookingNotificationConsumer = new BookingNotificationConsumer(consumer3, genericNotificationCreator, this.server as any)
             await this.roadmapUpdatedConsumer.listen()
             await this.assessmentReviewedConsumer.listen();
             await this.bookingNotificationConsumer.listen();
 
         } catch (error) {
-            console.log('some err connect with kafka', error);
+            customLogger.error('some err connect with kafka', error);
         }
     }
 

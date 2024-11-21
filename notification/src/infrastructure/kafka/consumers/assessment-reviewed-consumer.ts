@@ -1,12 +1,14 @@
 import { AssessmentReviewedEvent, KafkaConsumer, Topics } from "@sahhhallroadmappro/common";
 import { ICreateNotificationUseCase } from "../../../application/interfaces/ICreateNotificationUseCase";
+import { ExpressWebServer } from "../../server/express";
+import { customLogger } from "../../../presentation/middleware/loggerMiddleware";
 
 
 
 export class AssessmentReviewConsumer extends KafkaConsumer<AssessmentReviewedEvent> {
     topic: Topics.assessmentReviewed = Topics.assessmentReviewed;
     groupId: string = 'assessment-reviwed-group';
-    constructor(consumer: any, private updateBookingStatus: ICreateNotificationUseCase) {
+    constructor(consumer: any, private assesmentNotificationCreate: ICreateNotificationUseCase, private expressWebServer: ExpressWebServer) {
         super(consumer);
     };
     async onMessage(data: {
@@ -14,15 +16,20 @@ export class AssessmentReviewConsumer extends KafkaConsumer<AssessmentReviewedEv
         message: string,
         userEmail: string
     }): Promise<any> {
-        console.log(data, "from roadmap serice to asseessmet")
+        // for storing  only when he pass  notification in database 
         try {
-            const res = await this.updateBookingStatus.execute({
+            await this.assesmentNotificationCreate.execute({
                 type: data.type as any,
                 message: data.message,
                 userMail: data.userEmail
             })
+            //for emiting real time socket
+            this.expressWebServer.emitToUser(data.userEmail, {
+                type: data.type,
+                message: data.message,
+            });
         } catch (error) {
-            console.log('err saving user the data db', error);
+            customLogger.error("assessmen-consumer error", error)
         }
     }
 }
