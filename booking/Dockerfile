@@ -10,13 +10,13 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 
 
-RUN pnpm install
+RUN pnpm install --only=prod
 
 
 COPY . .
 
 
-EXPOSE 3004
+EXPOSE 3000
 
 
 CMD ["pnpm", "start"]
