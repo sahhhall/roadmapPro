@@ -8,6 +8,7 @@ import { DIContainer } from './infrastructure/di/DIContainer';
 import { RoadmapUpdatedConsumer } from './infrastructure/kafka/consumers/roadmap-update-consumer';
 import { AssessmentReviewConsumer } from './infrastructure/kafka/consumers/assessment-reviewed-consumer';
 import { BookingNotificationConsumer } from './infrastructure/kafka/consumers/booking-notification-consumer';
+import { BookingInformConsumer } from './infrastructure/kafka/consumers/booking-inform-mentor-event';
 
 
 
@@ -16,6 +17,7 @@ export class App {
     private roadmapUpdatedConsumer?: RoadmapUpdatedConsumer;
     private assessmentReviewedConsumer?: AssessmentReviewConsumer;
     private bookingNotificationConsumer?: BookingNotificationConsumer;
+    private bookingInformConsumer?: BookingInformConsumer;
     async initialize(): Promise<void> {
         this.registerMiddleware()
         this.registerRoutes();
@@ -50,15 +52,20 @@ export class App {
             await kafkaWrapper.connect();
             const consumer = await kafkaWrapper.createConsumer('roadmap-updated-group');
             const consumer2 = await kafkaWrapper.createConsumer('assessment-reviwed-group');
-            const consumer3 = await kafkaWrapper.createConsumer('booking-notification-group')
+            // this event for reminding user to join meeting at time(refacator later to genric tomentor and user)
+            const consumer3 = await kafkaWrapper.createConsumer('booking-notification-group');
+            //this for mentor only to inform notification any one booked
+            const consumer4 = await kafkaWrapper.createConsumer('booking-inform-group');
             const diContainer = DIContainer.getInstance();
             const genericNotificationCreator = diContainer.createNotificationUseCase();
             this.roadmapUpdatedConsumer = new RoadmapUpdatedConsumer(consumer, genericNotificationCreator, this.server as any);
             this.assessmentReviewedConsumer = new AssessmentReviewConsumer(consumer2, genericNotificationCreator, this.server as any);
-            this.bookingNotificationConsumer = new BookingNotificationConsumer(consumer3, genericNotificationCreator, this.server as any)
+            this.bookingNotificationConsumer = new BookingNotificationConsumer(consumer3, genericNotificationCreator, this.server as any);
+            this.bookingInformConsumer = new BookingInformConsumer(consumer4, genericNotificationCreator, this.server as any)
             await this.roadmapUpdatedConsumer.listen()
             await this.assessmentReviewedConsumer.listen();
             await this.bookingNotificationConsumer.listen();
+            await this.bookingInformConsumer.listen();
 
         } catch (error) {
             customLogger.error('some err connect with kafka', error);

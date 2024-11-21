@@ -1,5 +1,3 @@
-import { IUserCreatedUseCase } from '../interfaces/IUserCreatedUseCase';
-
 import { IGetMyAllBookingByUserMentor } from '../interfaces/IGetMyAllBookingByUserMentor';
 import { IBookingRepositary } from '../../domain/interfaces/IBookingRepositary';
 import { BookingEntity } from '../../domain/entities/Booking';

@@ -62,12 +62,13 @@ export class App {
             const consumer4 = await kafkaWrapper.createConsumer('booking-completed-group')
             const diContainer = DIContainer.getInstance();
             const userCreatedUseCase = diContainer.userCreatedUseCase();
+            const userOrMentorDetails = diContainer.getUserByIdUseCase();
             // actully it generic it can use both payment completion and expiration
             // chnage name later
             const updateStatusExipredBookingsOrCompletd = diContainer.updateStatusExipiredBooking();
             this.userCreatedConsumer = new UserCreatedConsumer(consumer, userCreatedUseCase);
             this.bookingExpiration = new ExpirationCompletedConsumer(consumer2, updateStatusExipredBookingsOrCompletd);
-            this.paymentCompletion = new PaymentCompletedConsumer(consumer3, updateStatusExipredBookingsOrCompletd);
+            this.paymentCompletion = new PaymentCompletedConsumer(consumer3, updateStatusExipredBookingsOrCompletd,userOrMentorDetails);
             this.bookingCompletion = new BookingCompletedConsumer(consumer4, updateStatusExipredBookingsOrCompletd)
             await this.bookingExpiration.listen();
             await this.userCreatedConsumer.listen();

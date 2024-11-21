@@ -24,6 +24,8 @@ import { IGetAnalyticsUseCase } from "../../application/interfaces/admin/IGetAna
 import { GetAnalyticsUseCase } from "../../application/usecases/admin/GetAnalyticsUseCase";
 import { IGetBookingsCountAndUserUseCase } from "../../application/interfaces/admin/IGetBookingsCountAndUserUseCase";
 import { GetBookingsCountAndUserUseCase } from "../../application/usecases/admin/GetBookingsCountAndUserUseCase";
+import { IGetUserOrMentorUseCase } from "../../application/interfaces/IGetUserOrMentorUseCase";
+import { GetUserOrMentorUseCase } from "../../application/usecases/GetUserOrMentorUseCase";
 
 
 
@@ -48,6 +50,10 @@ export class DIContainer {
     //for kafka
     public userCreatedUseCase(): IUserCreatedUseCase {
         return new UserCreatedUseCase(this._userRepositary);
+    }
+
+    public getUserByIdUseCase(): IGetUserOrMentorUseCase {
+        return new GetUserOrMentorUseCase(this._userRepositary);
     }
 
     /// availability
@@ -87,7 +93,7 @@ export class DIContainer {
     public getAnalyticsBylast30(): IGetAnalyticsUseCase {
         return new GetAnalyticsUseCase(this._bookingRepositary)
     }
-    public getCountForAnalytics(): IGetBookingsCountAndUserUseCase{
-        return new GetBookingsCountAndUserUseCase(this._bookingRepositary,this._userRepositary)
+    public getCountForAnalytics(): IGetBookingsCountAndUserUseCase {
+        return new GetBookingsCountAndUserUseCase(this._bookingRepositary, this._userRepositary)
     }
 }
