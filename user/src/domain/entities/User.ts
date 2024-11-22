@@ -21,7 +21,7 @@ export class Mentor {
         public bio: string,
         public githubUrl: string,
         public linkedinUrl: string,
-        public expirience: string,
+        public expirience: number | string,
         public sessionPrice?: number,
         public totalEarnings?: number,
         public totalMeetings?: number,

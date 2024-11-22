@@ -24,7 +24,7 @@ app.use(cors({
 app.use(loggingMiddleware);
 
 app.use(cookieParser());
-setupRateLimit(app, ROUTES);
+// setupRateLimit(app, ROUTES);
 
 // app.get('/api/mentor/mentor-profile/:mentorId', async (req: Request, res: Response, next: NextFunction) => {
 //   try {

@@ -8,7 +8,7 @@ export interface MentorAttr {
     bio: string;
     githubUrl: string;
     linkedinUrl: string;
-    expirience: string;
+    expirience: number;
     sessionPrice?: number;
     totalEarnings?: number;
     totalMeetings?: number;
@@ -28,7 +28,7 @@ interface MentorDoc extends Document {
     githubUrl: string;
     linkedinUrl: string;
     languages: string[];
-    expirience: string;
+    expirience: number;
     sessionPrice?: number;
     totalEarnings?: number;
     totalMeetings?: number;
@@ -48,7 +48,7 @@ const mentorSchema = new Schema(
         languages: { type: [String], required: true },
         githubUrl: { type: String, required: true },
         linkedinUrl: { type: String, required: true },
-        expirience: { type: String, required: true },
+        expirience: { type: Number, required: true },
         sessionPrice: { type: Number, default: 0 },
         totalEarnings: { type: Number, default: 0 },
         totalMeetings: { type: Number, default: 0 },

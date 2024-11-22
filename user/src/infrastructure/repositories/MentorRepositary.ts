@@ -1,9 +1,18 @@
 import { Mentor } from "../../domain/entities/User";
 import { MentorAttr, Mentor as MentorDB } from "../database/mongodb/schemas/mentor.schma";
 import { customLogger } from "../../presentation/middleware/loggerMiddleware";
-import mongoose, { Mongoose } from "mongoose";
 import { IMentorRepository } from "../../domain/interfaces/IMentorRepositary";
+import mongoose from "mongoose";
 
+interface FilterOptions {
+    expirience?: number;
+    pricing?: {
+        min?: number;
+        max?: number;
+    };
+    languages?: string[]
+    companies?: string[]
+}
 
 
 export class MentorRepositary implements IMentorRepository {
@@ -11,7 +20,7 @@ export class MentorRepositary implements IMentorRepository {
         try {
             const newMentor = MentorDB.build({
                 userId: data.userId,
-                expirience: data.expirience,
+                expirience: Number(data.expirience),
                 bio: data.bio,
                 headline: data.headline,
                 languages: data.languages,
@@ -27,28 +36,89 @@ export class MentorRepositary implements IMentorRepository {
         }
     }
 
-    async getMentorsBySkill(skill: string, userId?: string): Promise<Mentor[] | null> {
-        const query: any = {
-            assessedSkills: {
-                $regex: new RegExp(`^${skill}$`, 'i'),
-            },
-        };
-        //if there user don need to show his details
-        if (userId !== undefined) {
-            query.userId = { $ne: userId };
-        }
+    async getMentorsBySkill(skill: string, userId?: string, search?: string | undefined, filters?: FilterOptions, page?: number, pageSize?: number): Promise<Mentor[] | null> {
         try {
-            return await MentorDB.find(query).populate({
-                path: 'userId',
-                select: 'name email avatar '
-            })
-                .select('-updatedAt -totalEarnings');
+
+            // it for base pipleing all find 
+            // have assessd skill beacuase we finding based on assess skill
+            // in frontend listing like based on skills
+            const basepipline: any = {
+                $and: [
+                    { assessedSkills: { $regex: `^${skill}$`, $options: 'i' } },
+
+                ]
+            }
+
+            //if user id pro
+            if (userId) {
+                basepipline['$and'].push({ userId: { $ne: new mongoose.Types.ObjectId(userId) } });
+            }
+            if (filters) {
+                if (filters.expirience) {
+                    basepipline['$and'].push({ expirience: { $gte: filters.expirience } });
+                }
+                //it need but actually here not updating only booking service updating the session price
+                // i have to sent a event to here update so it later ddo
+                // if (filters.pricing?.min) {
+                //     basepipline['$and'].push({ $gte: filters.pricing.min });
+                // }
+                //adding a query to find lanuges base mentor
+                if (filters.languages) {
+                    basepipline['$and'].push({ languages: { $all: filters.languages } })
+                }
+                // companie based mentors it just for dummy if they add any company into headline  that will get I
+                if (filters.companies) {
+                    basepipline['$and'].push({ headline: { $in: filters.companies.map(company => new RegExp(company, 'i')) } })
+                }
+            }
+            console.log(basepipline, "base")
+
+            const aggregationPipeline = [
+                {
+                    $match: basepipline,
+
+                },
+                {
+                    $lookup: {
+                        from: 'profiles',
+                        localField: 'userId',
+                        foreignField: '_id',
+                        as: 'userProfile'
+                    }
+                },
+
+            ];
+
+            if (search) {
+                const searchRegex = new RegExp(search, 'i');
+                aggregationPipeline.splice(3, 0, {
+                    $match: {
+                        $or: [
+                            { 'userProfile.name': { $regex: searchRegex } },
+                            { 'userProfile.email': { $regex: searchRegex } },
+                        ]
+                    }
+                });
+            }
+
+
+
+            //pagination
+            let skip;
+            if (page && pageSize) {
+                skip = (page - 1) * pageSize;
+            }
+            console.log(page, pageSize, "pagw pagw size")
+
+
+
+            const results = await MentorDB.aggregate(aggregationPipeline).skip(skip as number).limit(pageSize as number);
+            return results || null;
         } catch (error: any) {
-            customLogger.error(`db error to fetch mentros by ${skill}: ${error.message}`);
-            throw new Error(`db error to fetch mentros by ${skill}: ${error.message}`);
+            console.error('Full error:', error);
+            throw new Error(`db error to fetch mentors by ${skill}: ${error.message}`);
         }
     }
-
     async getMentorByid(mentorId: string): Promise<Mentor | null> {
         try {
             return await MentorDB.findOne({ userId: mentorId }).populate({
