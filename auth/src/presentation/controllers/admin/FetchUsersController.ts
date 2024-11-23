@@ -12,9 +12,9 @@ export class FetchUsersController {
         try {
             const page = parseInt(req.query.page as string) || 1;
             const pageSize = parseInt(req.query.pageSize as string) || 5;
-            
-            const { users, total } = await this.getAllUsers.execute(page, pageSize);
-            
+            const { search } = req.query ;
+            const { users, total } = await this.getAllUsers.execute(page, pageSize, search as string);
+
             res.json({
                 users,
                 total,

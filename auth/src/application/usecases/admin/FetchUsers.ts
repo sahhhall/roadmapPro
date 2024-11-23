@@ -8,9 +8,9 @@ export class FetchUsers {
         private userRepository: IUserRepository,
     ) { }
 
-    async execute(page: number, pageSize: number): Promise<any | null> {
+    async execute(page: number, pageSize: number,search?: string): Promise<any | null> {
         try {
-            const { users, total } = await this.userRepository.fetchUsers(page, pageSize) as any;
+            const { users, total } = await this.userRepository.fetchUsers(page, pageSize,search) as any;
             return {
                 users,
                 total

@@ -30,10 +30,22 @@ export class UserRepository implements IUserRepository {
         await Auth.findByIdAndUpdate(user.id, user);
     }
 
-    async fetchUsers(page: number, pageSize: number): Promise<{ users: User[]; total: number; } | null> {
+    async fetchUsers(page: number, pageSize: number, search?: string): Promise<{ users: User[]; total: number; } | null> {
         const skip = (page - 1) * pageSize;
+        //need incluede this query all condition so 
+        let query: any = { role: { $ne: 'admin' } };
+        //if search is there create a query fo that
+        if (search) {
+            query = {
+                ...query,
+                $or: [
+                    { name: { $regex: search, $options: 'i' } },
+                    { email: { $regex: search, $options: 'i' } }
+                ]
+            };
+        }
         const [users, total] = await Promise.all([
-            Auth.find({ role: { $ne: 'admin' } })
+            Auth.find(query)
                 .skip(skip)
                 .limit(pageSize)
                 .sort({ createdAt: -1 }),
