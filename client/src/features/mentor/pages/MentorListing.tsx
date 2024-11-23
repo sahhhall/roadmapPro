@@ -45,7 +45,6 @@ const MentorListing = () => {
   useEffect(() => {
     refetch();
   }, [filters]);
-  console.log(mentors, "mentords");
   const handleNavigateToMentorProfile = (mentorId: string) => {
     navigate(`/mentor-profile/${mentorId}`);
   };
