@@ -10,7 +10,7 @@ export interface IUserRepository {
     create(user: User): Promise<User>;
     findById(id: string): Promise<User | null>;
     update(user: User): Promise<void>;
-    fetchUsers(page:number,pageSize:number): Promise<User[] | null>
+    fetchUsers(page: number, pageSize: number):  Promise<{users: User[];total: number;} | null>;
     partialUpdate(email: string, password: string): Promise<boolean>
     genericUpdate(userId: string, updateData: Partial<User>): Promise<User | null>
 }

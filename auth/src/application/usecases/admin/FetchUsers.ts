@@ -10,8 +10,11 @@ export class FetchUsers {
 
     async execute(page: number, pageSize: number): Promise<any | null> {
         try {
-            const users = await this.userRepository.fetchUsers(page,pageSize);
-            return { users }
+            const { users, total } = await this.userRepository.fetchUsers(page, pageSize) as any;
+            return {
+                users,
+                total
+            };
         } catch (error) {
             console.log(error)
         }

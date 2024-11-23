@@ -1,20 +1,20 @@
 import { apiSlice } from "@/redux/slices/apiSlice";
 import { adminEndpoints } from "@/features/admin/services/endpoints";
-import { IUserData } from "@/types/database";
 import { Blockdata } from '@/features/admin/types/admin';
+import { IFetchUserData } from "@/types/database";
 
 const adminApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        fetchusers: builder.query<IUserData, any>({
-            query: () => ({
-                url: adminEndpoints.getUsers,
+        fetchusers: builder.query<IFetchUserData, { page: number; pageSize: number }>({
+            query: (params) => ({
+                url: `${adminEndpoints.getUsers}?page=${params.page}&pageSize=${params.pageSize}`,
                 method: 'get'
             }),
             providesTags: ["Users"]
         }),
         blockuser: builder.mutation<Blockdata, any>({
             query: (data) => ({
-                url: adminEndpoints.blockunblok,    
+                url: adminEndpoints.blockunblok,
                 method: 'post',
                 body: data
             }),

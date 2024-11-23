@@ -23,3 +23,23 @@ export interface IUserData {
         id: string;
     }]
 }
+
+
+export interface IFetchUserData {
+    users: [{
+        name: string;
+        email: string;
+        role: string;
+        avatar: string;
+        isAdmin: boolean;
+        isActive: boolean;
+        isGoogle: boolean;
+        isBlocked: boolean;
+        createdAt: string;
+        updatedAt: string;
+        id: string;
+    }];
+    total: number;
+    currentPage: number;
+    totalPages: number;
+}

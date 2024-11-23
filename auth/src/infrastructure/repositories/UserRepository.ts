@@ -4,7 +4,6 @@ import { Auth } from "../database";
 import { Password } from "../../application/services/PasswordHash";
 
 
-
 export class UserRepository implements IUserRepository {
     async findByEmail(email: string): Promise<User | null> {
         return await Auth.findOne({ email })
@@ -31,9 +30,20 @@ export class UserRepository implements IUserRepository {
         await Auth.findByIdAndUpdate(user.id, user);
     }
 
-    async fetchUsers(page: number, pageSize: number): Promise<User[] | null> {
+    async fetchUsers(page: number, pageSize: number): Promise<{ users: User[]; total: number; } | null> {
         const skip = (page - 1) * pageSize;
-        return await Auth.find({ role: { $ne: 'admin' } }).skip(skip).limit(pageSize).sort({createdAt: -1})
+        const [users, total] = await Promise.all([
+            Auth.find({ role: { $ne: 'admin' } })
+                .skip(skip)
+                .limit(pageSize)
+                .sort({ createdAt: -1 }),
+            Auth.countDocuments({ role: { $ne: 'admin' } })
+        ]);
+
+        return {
+            users,
+            total
+        };
     }
 
     async login(email: string, password: string): Promise<User | null> {
