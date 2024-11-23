@@ -15,15 +15,15 @@ interface FilterOptions {
 export class GetMentorsBySkillUseCase implements IGetMentorsBySkillUseCase {
     constructor(private mentorRepositary: IMentorRepository) { }
     async execute(skill: string, userId?: string | undefined, search?: string | undefined, filters?: FilterOptions, page?: number, pageSize?: number): Promise<Mentor[] | null> {
-        const mentors = await this.mentorRepositary.getMentorsBySkill(skill, userId, search, filters, page, pageSize);
+        const mentors = await this.mentorRepositary.getMentorsBySkill(skill, userId, search, filters, page, pageSize) as any;
         if (!mentors) {
             throw new NotFoundError()
         }
         for (const mentor of mentors) {
-            if (mentor && mentor.userId.avatar) {
+            if (mentor && mentor.userProfile[0].avatar) {
                 try {
-                    const avatarUrl = await s3Operation.getImageFromBucket(mentor.userId.avatar);
-                    mentor.userId.avatar = avatarUrl;
+                    const avatarUrl = await s3Operation.getImageFromBucket(mentor.userProfile[0].avatar);
+                    mentor.userProfile[0].avatar = avatarUrl;
                 } catch (error) {
                     console.error(`Error fetching avatar for mentor`, error);
                 }

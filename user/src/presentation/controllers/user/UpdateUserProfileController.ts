@@ -10,8 +10,6 @@ export class UpdateUserProfileController {
     async update(req: Request, res: Response, next: NextFunction) {
         try {
             const { userId } = req.body;
-            console.log(req.user?.email, "user email", userId);
-
             let updatedUser;
 
             if (req.file) {
@@ -21,13 +19,16 @@ export class UpdateUserProfileController {
                 }
                 // for randomm image name suppose two user upload same s3 will overide old image 
                 const fileKey = `${userId}/${crypto.randomBytes(16).toString('hex')}-${req.file.originalname}`;
-
-                const uploadResult = await s3Operation.uploadImageToBucket(
-                    req.file.buffer,
-                    req.file.mimetype,
-                    fileKey
-                );
-                console.log(uploadResult)
+                let uploadResult;
+                try {
+                    uploadResult = await s3Operation.uploadImageToBucket(
+                        req.file.buffer,
+                        req.file.mimetype,
+                        fileKey
+                    );
+                } catch (error) {
+                    console.log(error,"err with s2")
+                }
 
                 // update user profile with the avatar URL
                 updatedUser = await this.updateUseCase.execute(userId, { avatar: fileKey });
