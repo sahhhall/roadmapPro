@@ -5,9 +5,9 @@ import { GetMentorsResponse, ICreateBookingRequest, ICreatePaymentRequest, IGetM
 
 const mentorApi = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        getMentorsBySkill: builder.query<GetMentorsResponse[], { skill: string, userId: string }>({
-            query: ({ skill, userId }) => ({
-                url: MentorEndpoints.getMentorsBySkill(skill, userId),
+        getMentorsBySkill: builder.query<GetMentorsResponse[], { skill: string, userId: string, companies?: any, expirience?: number, languages?: string }>({
+            query: ({ skill, userId, companies, expirience, languages }) => ({
+                url: `${MentorEndpoints.getMentorsBySkill(skill, userId)}&companies=${companies}&expirience=${expirience}&languages=${languages}`,
                 method: 'get',
             })
         }),

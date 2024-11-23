@@ -12,9 +12,16 @@ import { Button } from "@/components/ui/button";
 import { useGetMentorsBySkillQuery } from "@/features/mentor/services/api/mentorApi";
 import { useLocation, useNavigate } from "react-router-dom";
 import { usegetUser } from "@/hooks/usegetUser";
+import FiltersPanel from "../components/mentor/FilterPanel";
 
 const MentorListing = () => {
   const [isFilterOpen, setIsFilterOpen] = useState(false);
+  const [filters, setFilters] = useState({
+    companies: "",
+    expirience: 0,
+    languages:""
+  });
+
   const user = usegetUser();
   const userId = user?.id || "";
   const location = useLocation();
@@ -24,13 +31,28 @@ const MentorListing = () => {
     data: mentors,
     isLoading,
     refetch,
-  } = useGetMentorsBySkillQuery({ skill, userId });
+  } = useGetMentorsBySkillQuery({
+    skill,
+    userId,
+    companies: filters.companies,
+    expirience: filters.expirience,
+    languages: filters.languages
+  });
   useEffect(() => {
     refetch();
-  }, []);
+  }, [filters]);
   const handleNavigateToMentorProfile = (mentorId: string) => {
     navigate(`/mentor-profile/${mentorId}`);
   };
+
+  const handleFilterChange = (newFilters: any) => {
+    console.log(filters);
+    setFilters((prev) => ({
+      ...prev,
+      ...newFilters,
+    }));
+  };
+
   if (isLoading) {
     return (
       <>
@@ -38,10 +60,11 @@ const MentorListing = () => {
       </>
     );
   }
+
   return (
     <div className="flex flex-col md:flex-row w-full gap-6 p-4">
       <div className="hidden md:block w-[20rem] ">
-        <FiltersPanel />
+        <FiltersPanel onFilterChange={handleFilterChange} />
       </div>
 
       <div className="flex-1">
@@ -60,7 +83,7 @@ const MentorListing = () => {
               <SheetHeader>
                 <SheetTitle>Filters</SheetTitle>
               </SheetHeader>
-              <FiltersPanel />
+              <FiltersPanel onFilterChange={handleFilterChange} />
             </SheetContent>
           </Sheet>
         </div>
@@ -154,10 +177,6 @@ const MentorListing = () => {
       </div>
     </div>
   );
-};
-
-const FiltersPanel = () => {
-  return <div className="space-y-6">here filter comes huhuh</div>;
 };
 
 export default MentorListing;

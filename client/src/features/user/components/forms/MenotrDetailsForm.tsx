@@ -27,6 +27,7 @@ import { CircleCheck, Github, Linkedin, LoaderCircle } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import { usegetUser } from "@/hooks/usegetUser";
+import { languages } from "@/features/shared/constants/languageOptions";
 
 const formSchema = z.object({
   stackId: z
@@ -79,15 +80,7 @@ const experienceOptions = [
   { value: "10", label: "10+ years" },
 ];
 
-const languageOptions = [
-  { value: "english" },
-  { value: "hindi" },
-  { value: "malayalam" },
-  { value: "tamil" },
-  { value: "spanish" },
-  { value: "french" },
-  { value: "german" },
-];
+const languageOptions = languages;
 
 export const MentorDetailsSubmissionForm = () => {
   const user = usegetUser();
