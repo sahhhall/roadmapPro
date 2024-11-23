@@ -7,6 +7,21 @@ export interface UserId {
     id: string;
 }
 
+
+export interface IGetMentorResopnse {
+    userId: UserId;
+    assessedSkills: string[];
+    headline: string;
+    bio: string;
+    languages: string[];
+    githubUrl: string;
+    linkedinUrl: string;
+    expirience: string;
+    sessionPrice: number;
+    totalMeetings: number;
+    createdAt: string;
+    id: string;
+}
 export interface GetMentorsResponse {
     userProfile: any;
     assessedSkills: string[];

@@ -1,6 +1,6 @@
 import { apiSlice } from "@/redux/slices/apiSlice";
 import { MentorEndpoints } from "@/features/mentor/services/endPoints";
-import { GetMentorsResponse, ICreateBookingRequest, ICreatePaymentRequest, IGetMenotrsBookingsResponse, MentorAvailabilityResponse, UpdateMentorAvailbilityRequest } from "@/features/mentor/types/mentor";
+import { GetMentorsResponse, ICreateBookingRequest, ICreatePaymentRequest, IGetMenotrsBookingsResponse, IGetMentorResopnse, MentorAvailabilityResponse, UpdateMentorAvailbilityRequest } from "@/features/mentor/types/mentor";
 
 
 const mentorApi = apiSlice.injectEndpoints({
@@ -11,7 +11,7 @@ const mentorApi = apiSlice.injectEndpoints({
                 method: 'get',
             })
         }),
-        getMentorDetails: builder.query<GetMentorsResponse, string>({
+        getMentorDetails: builder.query<IGetMentorResopnse, string>({
             query: (mentorId) => ({
                 url: MentorEndpoints.getMentorDetails(mentorId),
                 method: 'get',
