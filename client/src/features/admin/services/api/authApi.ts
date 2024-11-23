@@ -5,9 +5,9 @@ import { IFetchUserData } from "@/types/database";
 
 const adminApiSlice = apiSlice.injectEndpoints({
     endpoints: (builder) => ({
-        fetchusers: builder.query<IFetchUserData, { page: number; pageSize: number }>({
+        fetchusers: builder.query<IFetchUserData, { page: number; pageSize: number, search?: string }>({
             query: (params) => ({
-                url: `${adminEndpoints.getUsers}?page=${params.page}&pageSize=${params.pageSize}`,
+                url: `${adminEndpoints.getUsers}?page=${params.page}&pageSize=${params.pageSize}&search=${params.search}`,
                 method: 'get'
             }),
             providesTags: ["Users"]

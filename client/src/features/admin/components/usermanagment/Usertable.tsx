@@ -20,12 +20,14 @@ import { AvatarFallback } from "@radix-ui/react-avatar";
 
 const UserTable = () => {
   const [page, setPage] = useState(1);
+  const [search, setSearch] = useState("");
   const pageSize = 2;
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { data, refetch, isLoading } = useFetchusersQuery({
     page,
     pageSize,
+    search,
   });
 
   useEffect(() => {
@@ -33,14 +35,23 @@ const UserTable = () => {
       inputRef.current.focus();
     }
     refetch();
-  }, [page]);
+  }, [page, search]);
 
   const totalPages = Math.ceil((data?.total || 0) / pageSize);
+  const handleSearch = (value: string) => {
+    setSearch(value);
+    setPage(1);
+  };
 
   return (
     <Container className="justify-center">
       <div className="flex justify-center mt-4">
-        <Input ref={inputRef} placeholder="Search..." className="w-[300px]" />
+        <Input
+          ref={inputRef}
+          placeholder="Search by name or email..."
+          className="w-[300px]"
+          onChange={(e) => handleSearch(e.target.value)}
+        />
       </div>
 
       <Table className="mt-5">
