@@ -31,8 +31,9 @@ export class UserRepository implements IUserRepository {
         await Auth.findByIdAndUpdate(user.id, user);
     }
 
-    async fetchUsers(): Promise<User[] | null> {
-        return await Auth.find({ role: { $ne: 'admin' } })
+    async fetchUsers(page: number, pageSize: number): Promise<User[] | null> {
+        const skip = (page - 1) * pageSize;
+        return await Auth.find({ role: { $ne: 'admin' } }).skip(skip).limit(pageSize).sort({createdAt: -1})
     }
 
     async login(email: string, password: string): Promise<User | null> {

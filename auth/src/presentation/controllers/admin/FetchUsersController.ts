@@ -10,8 +10,8 @@ export class FetchUsersController {
     private getAllUsers = DIContainer.getAllUsersUseCase();
     async fetchUsers(req: AuthenticatedRequest, res: Response) {
         try {
-            console.log(req?.admin, "req admin")
-            const users = await this.getAllUsers.execute()
+            const { page = 1, pageSize = 5 } = req.query;
+            const users = await this.getAllUsers.execute(parseInt(page as string), parseInt(pageSize as string));
             res.json(users)
         } catch (error) {
             console.log(error)
