@@ -64,7 +64,7 @@ export class MentorRepositary implements IMentorRepository {
                 // }
                 //adding a query to find lanuges base mentor
                 if (filters.languages) {
-                    basepipline['$and'].push({ languages: { $all: filters.languages } })
+                    basepipline['$and'].push({ languages: { $in: filters.languages } })
                 }
                 // companie based mentors it just for dummy if they add any company into headline  that will get I
                 if (filters.companies) {
