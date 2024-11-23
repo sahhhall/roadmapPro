@@ -23,12 +23,12 @@ const FiltersPanel = ({ onFilterChange }: { onFilterChange: any }) => {
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [expirience, setExpirience] = useState([0]);
 
-
-
   const handleCompanySelect = (value: string) => {
     setSelectedCompanies((prev) => {
       //look for selected company already there if there just remove and if not thre spread
-      const newCompanies = prev.includes(value) ? prev.filter((company) => company !== value) : [...prev, value];
+      const newCompanies = prev.includes(value)
+        ? prev.filter((company) => company !== value)
+        : [...prev, value];
       const queryString = newCompanies.join(",");
       onFilterChange({ companies: queryString, expirience: expirience[0] });
       return newCompanies;
@@ -37,14 +37,15 @@ const FiltersPanel = ({ onFilterChange }: { onFilterChange: any }) => {
 
   const handleExpirienceChange = (value: number[]) => {
     setExpirience(value);
-    onFilterChange({ expirience: value[0]});
+    onFilterChange({ expirience: value[0] });
   };
-
 
   //when new langugage select this will trigger
   const handleLanguageSelect = (value: string) => {
     setSelectedLanguages((prev) => {
-      const newLanguages = prev.includes(value)? prev.filter((lang) => lang !== value) : [...prev, value];
+      const newLanguages = prev.includes(value)
+        ? prev.filter((lang) => lang !== value)
+        : [...prev, value];
       onFilterChange({
         companies: selectedCompanies.join(","),
         expirience: expirience[0],
@@ -54,10 +55,40 @@ const FiltersPanel = ({ onFilterChange }: { onFilterChange: any }) => {
       return newLanguages;
     });
   };
+
+  const handleReset = () => {
+    setSelectedCompanies([]);
+    setSelectedLanguages([]);
+    setExpirience([0]);
+    onFilterChange({
+      companies: "",
+      expirience: 0,
+      languages: [],
+      search: "",
+    });
+  };
+
+  const hasActiveFilters =
+    selectedCompanies.length > 0 ||
+    selectedLanguages.length > 0 ||
+    expirience[0] > 0;
+
   return (
     <div className="space-y-6 p-4">
-      <div>
-        <h3 className="text-sm font-medium mb-2">Filter By</h3>
+      <div className="flex ">
+        <div className="flex w-full items-center justify-between">
+          <div className="text-lg font-semibold">Filter By</div>
+          <div>
+            {hasActiveFilters && (
+              <button
+                onClick={handleReset}
+                className="text-xs font-normal gap-2 items-center flex border border-red-500 px-3 p-1 rounded-2xl "
+              >
+                <X className="w-3 h-3  text-red-600" /> Clear Filters
+              </button>
+            )}
+          </div>
+        </div>
       </div>
       {/* for company  */}
       <div className="space-y-4">

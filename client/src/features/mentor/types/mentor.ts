@@ -8,7 +8,7 @@ export interface UserId {
 }
 
 export interface GetMentorsResponse {
-    userId: UserId;
+    userProfile: any;
     assessedSkills: string[];
     headline: string;
     bio: string;
@@ -81,18 +81,18 @@ export interface ICreateBookingRequest {
 
 
 
- 
-export  interface IGetMenotrsBookingsResponse {
+
+export interface IGetMenotrsBookingsResponse {
     menteeId: string;
     mentorId: string;
     date: string;
-    status: 'created' | 'scheduled' | 'cancelled' | 'completed'; 
-    paymentStatus: "pending" | "completed"; 
-    expiresAt: string; 
+    status: 'created' | 'scheduled' | 'cancelled' | 'completed';
+    paymentStatus: "pending" | "completed";
+    expiresAt: string;
     videoCallLink: string;
     roomId: string;
-    createdAt: string; 
-    updatedAt: string; 
+    createdAt: string;
+    updatedAt: string;
     id: string;
 }
 
@@ -112,4 +112,17 @@ export interface ICreatePaymentRequest {
     bookingId: string;
     userId: string;
     bookingDate: any
+}
+
+
+
+
+
+
+
+export interface IFilterMentorList {
+    companies: string,
+    expirience: number,
+    languages: string,
+    search: string,
 }
