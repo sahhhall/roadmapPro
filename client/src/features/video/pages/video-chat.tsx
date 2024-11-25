@@ -24,19 +24,20 @@ const VideoChat = () => {
   const [messages, setMessages] = useState<Message[]>([]);
 
   const { roomId } = useParams();
+
   const userVideo = useRef<HTMLVideoElement | null>(null);
   const partnerVideo = useRef<HTMLVideoElement | null>(null);
   const peerRef = useRef<RTCPeerConnection | null>(null);
   const socketRef = useRef<any>(null);
   const otherUser = useRef<string | null>(null);
   const userStream = useRef<MediaStream | null>(null);
-
   const sendChannel = useRef<RTCDataChannel | null>(null);
 
+  //for fetch user details and toast for notifications(its a custom hook that fetch data from  r store)
   const user = usegetUser();
-
   const { toast } = useToast();
 
+  // toggles chat visibility
   const toggleChat = () => {
     setShowChat(!showChat);
   };
@@ -62,12 +63,14 @@ const VideoChat = () => {
     navigator.mediaDevices
       .getUserMedia({ audio: true, video: true })
       .then((stream) => {
+        //if user video is there stream it to video element and rotation also need otherwise it will mirror
         if (userVideo.current) {
           userVideo.current.srcObject = stream;
           userVideo.current.style.transform = "scaleX(-1)";
         }
         userStream.current = stream;
 
+        //connecting to scoket server
         socketRef.current = io("http://localhost:3004", {
           transports: ["websocket"],
           reconnection: true,
@@ -103,6 +106,8 @@ const VideoChat = () => {
       });
   }, [roomId]);
 
+  
+  //creating RTCperrconncetion and event handlers
   const createPeer = (userID?: string) => {
     const peer = new RTCPeerConnection({
       iceServers: [
@@ -256,35 +261,34 @@ const VideoChat = () => {
     navigate("/profile/bookings");
   };
 
-  
   const handleReciveMessage = (e: MessageEvent) => {
     const data = JSON.parse(e.data);
-    setMessages((messages:any) => [
+    setMessages((messages: any) => [
       ...messages,
-      { 
+      {
         sender: data.sender,
         text: data.text,
-        yours: false 
-      }
+        yours: false,
+      },
     ]);
   };
 
   const handleSendMessage = (text: string) => {
     if (!sendChannel.current || !text.trim()) return;
-    
+
     const messageData = {
-      sender: user?.name || 'anonoymouus',
-      text: text.trim()
+      sender: user?.name || "anonoymouus",
+      text: text.trim(),
     };
-    
+
     sendChannel.current.send(JSON.stringify(messageData));
     setMessages((messages) => [
       ...messages,
-      { 
+      {
         sender: messageData.sender,
         text: messageData.text,
-        yours: true 
-      }
+        yours: true,
+      },
     ]);
   };
 
