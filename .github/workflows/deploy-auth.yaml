@@ -1,0 +1,32 @@
+name: deploy-auth
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'auth/**'
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      
+      - name: Build Docker image
+        run: cd auth && docker build -t sahhhall/auth .
+      
+      - name: Docker Login
+        run: docker login -u ${{ secrets.DOCKER_USERNAME }} -p ${{ secrets.DOCKER_PASSWORD }}
+      
+      - name: Push Docker image
+        run: docker push sahhhall/auth
+      
+      - name: Install doctl
+        uses: digitalocean/action-doctl@v2
+        with:
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+      
+      - name: Save Kubernetes config
+        run: doctl kubernetes cluster kubeconfig save roadmappro
+      
+      - name: Restart Kubernetes deployment
+        run: kubectl rollout restart deployment auth-depl
