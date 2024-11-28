@@ -10,7 +10,7 @@ WORKDIR /app
 COPY package.json pnpm-lock.yaml ./
 
 
-RUN pnpm install --only=prod
+RUN pnpm install 
 
 
 COPY . .

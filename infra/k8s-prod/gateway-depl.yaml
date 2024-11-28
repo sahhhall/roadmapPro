@@ -1,0 +1,65 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api-gateway-depl
+spec:
+  replicas: 2  
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: api-gateway
+  template:
+    metadata:
+      labels:
+        app: api-gateway
+    spec:
+      containers:
+        - name: api-gateway
+          image: sahhhall/api-gateway
+          env:
+            - name: PORT
+              value: "4001"
+            - name: AUTH_SERVICE_URL
+              value: "auth-srv:3000"
+            - name: ROADMAP_SERVICE_URL
+              value: "roadmap-srv:3001"
+            - name: ASSESSMENT_SERVICE_URL
+              value: "assessment-srv:3002"
+            - name: USER_SERVICE_URL
+              value: "user-srv:3003"
+            - name: MENTOR_SERVICE_URL
+              value: "mentor-srv:3004"
+            - name: PAYMENT_SERVICE_URL
+              value: "payment-srv:3005"
+            - name: NOTIFICATION_SERVICE_URL
+              value: "notification-srv:3006"
+            - name: JWT_ACCESS_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secret
+                  key: JWT_ACCESS_SECRET
+            - name: JWT_REFRESH_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secret
+                  key: JWT_REFRESH_SECRET
+            - name: FRONT_END_BASE_URL
+              value: "client-srv:5173"  
+          ports:
+            - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: api-gateway-srv
+spec:
+  selector:
+    app: api-gateway
+  ports:
+    - protocol: TCP
+      port: 4001
+      targetPort: 3000

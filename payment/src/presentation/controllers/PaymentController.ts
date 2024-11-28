@@ -11,8 +11,7 @@ export class PaymentController {
     async create(req: Request, res: Response, next: NextFunction) {
         try {
             const { mentorId, price, name, bookingId, userId, bookingDate } = req.body;
-            console.log("Received Data:", mentorId, price, name, bookingId, userId, bookingDate);
-
+        
             const customer = await stripe.customers.create({
                 name: 'sahal',
                 address: {
@@ -37,8 +36,8 @@ export class PaymentController {
             const session = await stripe.checkout.sessions.create({
                 payment_method_types: ['card'],
                 mode: 'payment',
-                success_url: `${process.env.CLIENT_SITE_URL}payment-success`,
-                cancel_url: `${process.env.CLIENT_SITE_URL}mentor-profile/${mentorId}`,
+                success_url: `${process.env.FRONT_END_BASE_URL}payment-success`,
+                cancel_url: `${process.env.FRONT_END_BASE_URL}mentor-profile/${mentorId}`,
                 client_reference_id: mentorId,
                 line_items: lineItems,
                 customer: customer.id,
@@ -51,7 +50,6 @@ export class PaymentController {
             });
             //meta data should be string
 
-            console.log("Success: Session created with ID:", session.id);
             res.status(HttpStatus.OK).json({ id: session.id });
         } catch (error) {
             console.error("Error in PaymentController:", error);

@@ -1,47 +1,57 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: roadmap-depl
+  name: notification-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: roadmap
+      app: notification
   template:
     metadata:
       labels:
-        app: roadmap
+        app: notification
     spec:
       containers:
-        - name: roadmap
-          image: sahhhall/roadmap
+        - name: notification
+          image: sahhhall/notification
           env:
             - name: PORT
-              value: "3001"
+              value: "3006"
             - name: KAFKA_CLIENT_ID
-              value: "roadmap-service"
+              value: "notification-service"
             - name: KAFKA_BROKERS
               value: "kafka-srv:9092"
             - name: KAFKA_CONNECTION_TIMEOUT
               value: "3000"
-            - name: REDIS_URL
-              value: "redis-srv:6379"
             - name: MONGODB_URI
               valueFrom:
                 secretKeyRef:
                   name: mongo-atlas-secret
                   key: MONGODB_URI
+            - name: EMAIL_USER
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secret
+                  key: EMAIL_USER
+            - name: EMAIL_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: auth-secret
+                  key: EMAIL_PASS
+            - name: FRONT_END_BASE_URL
+              value: "client-srv:5173"      
           ports:
             - containerPort: 3000
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: roadmap-srv
+  name: notification-srv
 spec:
   selector:
-    app: roadmap
+    app: notification
   ports:
     - protocol: TCP
-      port: 3001
+      port: 3006
       targetPort: 3000

@@ -11,7 +11,9 @@ import {
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { io } from "socket.io-client";
-import Chat from "../components/Chat";
+import Chat from "@/features/video/components/Chat";
+
+const bookingEndpointURL = import.meta.env.VITE_BOOKING_URL;
 interface Message {
   sender: string;
   text: string;
@@ -43,7 +45,6 @@ const VideoChat = () => {
   };
 
   const navigate = useNavigate();
-  console.log(user, "user");
 
   useEffect(() => {
     return () => {
@@ -71,7 +72,7 @@ const VideoChat = () => {
         userStream.current = stream;
 
         //connecting to scoket server
-        socketRef.current = io("http://localhost:3004", {
+        socketRef.current = io(bookingEndpointURL, {
           transports: ["websocket"],
           reconnection: true,
         });
@@ -90,7 +91,6 @@ const VideoChat = () => {
         socketRef.current.on(
           "user joined",
           (payload: { userId: string; name: string }) => {
-            console.log(payload, "payload from user");
             otherUser.current = payload.userId;
             toast({
               title: `${payload.name} has joined the meeting`,
@@ -106,7 +106,6 @@ const VideoChat = () => {
       });
   }, [roomId]);
 
-  
   //creating RTCperrconncetion and event handlers
   const createPeer = (userID?: string) => {
     const peer = new RTCPeerConnection({
@@ -229,7 +228,6 @@ const VideoChat = () => {
   const handleMuteMice = () => {
     if (userStream.current) {
       const isEnabled = userStream.current.getAudioTracks()[0].enabled;
-      console.log(isEnabled, "isenables");
       userStream.current.getAudioTracks().forEach((track) => {
         track.enabled = !isEnabled;
       });
@@ -240,7 +238,6 @@ const VideoChat = () => {
   const handleToggleVideo = () => {
     if (userStream.current) {
       const isEnabled = userStream.current.getVideoTracks()[0].enabled;
-      console.log(userStream.current.getAudioTracks(), "isenables");
       userStream.current.getVideoTracks().forEach((track) => {
         track.enabled = !isEnabled;
       });

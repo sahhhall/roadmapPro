@@ -14,7 +14,7 @@ const userProto = (grpc.loadPackageDefinition(packageDefinition) as any).user;
 
 
 export const client = new userProto.UserService(
-    'localhost:50051',
+    process.env.GRPC_SERVER || 'localhost:50051',
     grpc.credentials.createInsecure()
 );
 

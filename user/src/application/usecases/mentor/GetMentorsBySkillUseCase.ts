@@ -1,4 +1,4 @@
-import { NotFoundError } from "@sahhhallroadmappro/common";
+import { BadRequestError, NotFoundError } from "@sahhhallroadmappro/common";
 import { Mentor } from "../../../domain/entities/User";
 import { IMentorRepository } from "../../../domain/interfaces/IMentorRepositary";
 import { s3Operation } from "../../../infrastructure/service/S3-client";
@@ -19,16 +19,21 @@ export class GetMentorsBySkillUseCase implements IGetMentorsBySkillUseCase {
         if (!mentors) {
             throw new NotFoundError()
         }
-        for (const mentor of mentors) {
-            if (mentor && mentor.userProfile[0].avatar) {
-                try {
-                    const avatarUrl = await s3Operation.getImageFromBucket(mentor.userProfile[0].avatar);
-                    mentor.userProfile[0].avatar = avatarUrl;
-                } catch (error) {
-                    console.error(`Error fetching avatar for mentor`, error);
+        // the sake for more sercusred images it db stored just key now i have to fetch with help of key
+        // so  it have to loop over all user and it shouldl only go through 5 steps beacuse paginayion is there
+
+        await Promise.all(
+            mentors.map(async (mentor: any) => {
+                if (mentor && mentor.userProfile[0]?.avatar) {
+                    try {
+                        const avatarUrl = await s3Operation.getImageFromBucket(mentor.userProfile[0].avatar);
+                        mentor.userProfile[0].avatar = avatarUrl;
+                    } catch (error) {
+                        throw new BadRequestError('try again later haha')
+                    }
                 }
-            }
-        }
+            })
+        );
         return mentors
     }
 }

@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: client-depl
+spec:
+  replicas: 2
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 1
+  selector:
+    matchLabels:
+      app: client
+  template:
+    metadata:
+      labels:
+        app: client
+    spec:
+      containers:
+        - name: client
+          image: sahhhall/client
+          env:
+            - name: VITE_BASE_URL
+              value: "api-gateway-srv:4001"
+            - name: VITE_NOTIFICATION_URL
+              value: "notification-srv:3006"
+            - name: VITE_GOOGLE_CLIENT
+              valueFrom:
+                secretKeyRef:
+                  name: google-secrets
+                  key: VITE_GOOGLE_CLIENT          
+            - name: VITE_STRIPE_PUBLISHABLE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stripe-secrets
+                  key: STRIPE_PUBLISHABLE_KEY
+          ports:
+            - containerPort: 3000
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+            limits:
+              cpu: 250m
+              memory: 256Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: client-srv
+spec:
+  selector:
+    app: client
+  ports:
+    - protocol: TCP
+      port: 5173
+      targetPort: 3000

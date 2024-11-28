@@ -1,0 +1,71 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: user-depl
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: user
+  template:
+    metadata:
+      labels:
+        app: user
+    spec:
+      containers:
+        - name: user
+          image: sahhhall/user
+          env:
+            - name: PORT
+              value: "3003"
+            - name: GRPC_PORT
+              value: "50051"
+            - name: KAFKA_CLIENT_ID
+              value: "auth-service"
+            - name: KAFKA_BROKERS
+              value: "kafka-srv:9092"
+            - name: KAFKA_CONNECTION_TIMEOUT
+              value: "3000"  
+            - name: BUCKET_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: s3-credentials
+                  key: BUCKET_NAME
+            - name: BUCKET_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: s3-credentials
+                  key: BUCKET_REGION
+            - name: ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: s3-credentials
+                  key: ACCESS_KEY
+            - name: SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: s3-credentials
+                  key: SECRET_ACCESS_KEY  
+            - name: MONGODB_URI
+              valueFrom:
+                secretKeyRef:
+                  name: mongo-atlas-secret
+                  key: MONGODB_URI 
+          ports:
+            - containerPort: 3000  
+            - containerPort: 50051 
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: user-srv
+spec:
+  selector:
+    app: user
+  ports:
+    - name: http
+      port: 3003
+      targetPort: 3000
+    - name: grpc
+      port: 50051
+      targetPort: 50051
