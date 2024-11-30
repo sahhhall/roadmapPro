@@ -50,6 +50,10 @@ app.use(cookieParser());
 setupAuth(app, ROUTES);
 setupProxies(app, ROUTES);
 
-app.listen(port, () => {
-  console.log(`API-Gateway  running at http://localhost:${port}`);
-});
+try {
+  app.listen(port, () => {
+    console.log(`API-Gateway running at http://localhost:${port}`);
+  });
+} catch (error) {
+  console.error('Error starting server:', error);
+}

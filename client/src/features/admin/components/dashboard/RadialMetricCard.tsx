@@ -16,7 +16,23 @@ import {
   RadialBarChart,
 } from "recharts";
 
-export const RadialMetricCard = ({ title, data, config, period, growth, metric }) => {
+interface RadialMetricCardProps {
+  title: string;
+  data: any;
+  config: any;
+  period: string;
+  growth: number;
+  metric: any;
+}
+
+export const RadialMetricCard = ({
+  title,
+  data,
+  config,
+  period,
+  growth,
+  metric,
+}: RadialMetricCardProps) => {
   return (
     <Card className="flex flex-col">
       <CardHeader className="items-center pb-0">

@@ -21,13 +21,13 @@ spec:
             - name: KAFKA_CLIENT_ID
               value: "expiration-service"
             - name: KAFKA_BROKERS
-              value: "kafka-srv:9092"
+              value: kafka-srv:9092
             - name: KAFKA_CONNECTION_TIMEOUT
               value: "3000"
             - name: GRPC_SERVER
               value: "user-srv:50051"
             - name: REDIS_URL
-              value: "redis-srv:6379"
+              value: "redis://redis-srv:6379"
             - name: MONGODB_URI
               valueFrom:
                 secretKeyRef:

@@ -19,9 +19,9 @@ spec:
             - name: PORT
               value: "3005"
             - name: KAFKA_CLIENT_ID
-              value: "payment-service"
+              value: "http://payment-service"
             - name: KAFKA_BROKERS
-              value: "kafka-srv:9092"
+              value: kafka-srv:9092
             - name: KAFKA_CONNECTION_TIMEOUT
               value: "3000"
             # Database Configuration
@@ -62,7 +62,7 @@ spec:
             - name: FRONT_END_BASE_URL
               value: "client-srv:5173"     
           ports:
-            - containerPort: 3000
+            - containerPort: 3005
 ---
 apiVersion: v1
 kind: Service
@@ -74,4 +74,4 @@ spec:
   ports:
     - protocol: TCP
       port: 3005
-      targetPort: 3000
+      targetPort: 3005

@@ -1,29 +1,18 @@
-import { useState } from "react";
 import { Bell } from "lucide-react";
-
 import { formatDistanceToNow } from "date-fns";
 import { useGetNotificationsQuery } from "../services/api/mentorTestApi";
 import { usegetUser } from "@/hooks/usegetUser";
 
 const NotificationsPage = () => {
-  const [skip, setSkip] = useState(0);
   const user = usegetUser();
-
-  const {
-    data: notifications = [],
-    isLoading,
-    isFetching,
-  } = useGetNotificationsQuery({
+  const { data: notifications = [], isLoading } = useGetNotificationsQuery({
     email: user!.email,
-    skip,
+    skip: 0,
   });
 
-  
-
-//   const loadMore = () => {
-//     setSkip((prev) => prev + 10);
-//   };
-
+  //   const loadMore = () => {
+  //     setSkip((prev) => prev + 10);
+  //   };
 
   const formatTimestamp = (timestamp: string) => {
     return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
@@ -43,32 +32,34 @@ const NotificationsPage = () => {
       )}
 
       <div className="space-y-4">
-        {notifications && notifications.map((notification) => (
-          <div
-            key={notification.id}
-            className={`  transition-colors ${
-              notification.isRead ? "bg-white" : "bg-gray-200"
-            }`}
-          >
-            <div className="p-4">
-              <div className="flex items-start gap-4">
-                <div className="flex-1">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-semibold text-gray-900">
-                      {notification.type}
-                    </h3>
-                    <span className="text-xs text-gray-500">
-                      {formatTimestamp(notification.createdAt)}
-                    </span>
+        {notifications &&
+          notifications.map((notification) => (
+            <div
+              key={notification.id}
+              className={`  transition-colors ${
+                notification.isRead ? "bg-white" : "bg-gray-200"
+              }`}
+            >
+              <div className="p-4">
+                <div className="flex items-start gap-4">
+                  <div className="flex-1">
+                    <div className="flex items-center justify-between">
+                      <h3 className="font-semibold text-gray-900">
+                        {notification.type}
+                      </h3>
+                      <span className="text-xs text-gray-500">
+                        {formatTimestamp(notification.createdAt)}
+                      </span>
+                    </div>
+                    <p className=" text-xs text-gray-600 mt-1">
+                      {notification.message}
+                    </p>
                   </div>
-                  <p className=" text-xs text-gray-600 mt-1">{notification.message}</p>
                 </div>
               </div>
+              <hr />
             </div>
-            <hr />
-          </div>
-       
-        ))}
+          ))}
 
         {/* {notifications.length > 0 && (
           <button

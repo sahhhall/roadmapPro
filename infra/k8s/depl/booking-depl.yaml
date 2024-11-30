@@ -1,45 +1,49 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: assessment-depl
+  name: booking-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: assessment
+      app: booking
   template:
     metadata:
       labels:
-        app: assessment
+        app: booking
     spec:
       containers:
-        - name: assessment
-          image: sahhhall/assessment
+        - name: booking
+          image: sahhhall/booking
           env:
             - name: PORT
-              value: "3002"
+              value: "3004"
             - name: KAFKA_CLIENT_ID
-              value: "assessment-service"
+              value: "http://booking-service"
             - name: KAFKA_BROKERS
-              value: "kafka-srv:9092"
+              value: kafka-srv:9092
             - name: KAFKA_CONNECTION_TIMEOUT
               value: "3000"
+            - name: FRONT_END_BASE_URL
+              value: "http://client-srv:5173"
+            - name: GRPC_PORT
+              value: "50051"    
             - name: MONGODB_URI
               valueFrom:
                 secretKeyRef:
                   name: mongo-atlas-secret
                   key: MONGODB_URI
           ports:
-            - containerPort: 3000
+            - containerPort: 3004
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: assessment-srv
+  name: booking-srv
 spec:
   selector:
-    app: assessment
+    app: booking
   ports:
     - protocol: TCP
-      port: 3002
-      targetPort: 3000
+      port: 3004
+      targetPort: 3004

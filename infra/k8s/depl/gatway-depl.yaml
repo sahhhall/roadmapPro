@@ -19,19 +19,19 @@ spec:
             - name: PORT
               value: "4001"
             - name: AUTH_SERVICE_URL
-              value: "auth-srv:3000"
+              value: "http://auth-srv:3000"
             - name: ROADMAP_SERVICE_URL
-              value: "roadmap-srv:3001"
+              value: "http://roadmap-srv:3001"
             - name: ASSESSMENT_SERVICE_URL
-              value: "assessment-srv:3002"
+              value: "http://assessment-srv:3002"
             - name: USER_SERVICE_URL
-              value: "user-srv:3003"
+              value: "http://user-srv:3003"
             - name: MENTOR_SERVICE_URL
-              value: "mentor-srv:3004"
+              value: "http://mentor-srv:3004"
             - name: PAYMENT_SERVICE_URL
-              value: "payment-srv:3005"
+              value: "http://payment-srv:3005"
             - name: NOTIFICATION_SERVICE_URL
-              value: "notification-srv:3006"
+              value: "http://notification-srv:3006"
             - name: JWT_ACCESS_SECRET
               valueFrom:
                 secretKeyRef:
@@ -43,9 +43,9 @@ spec:
                   name: auth-secret
                   key: JWT_REFRESH_SECRET
             - name: FRONT_END_BASE_URL
-              value: "client-srv:5173"  
+              value: "http://client-srv:5173"  
           ports:
-            - containerPort: 3000
+            - containerPort: 4001
 ---
 apiVersion: v1
 kind: Service
@@ -54,7 +54,9 @@ metadata:
 spec:
   selector:
     app: api-gateway
+  type: LoadBalancer  
   ports:
     - protocol: TCP
       port: 4001
-      targetPort: 3000
+      targetPort: 4001
+    

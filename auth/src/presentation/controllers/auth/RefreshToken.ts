@@ -13,13 +13,9 @@ export class RefreshTokenUser {
 
                 res.cookie(`user_accessToken`, result.accessToken, {
                     httpOnly: true,
-                    secure: process.env.NODE_ENV !== "development",
-                    sameSite: "none",
                 });
                 res.cookie(`user_refreshToken`, result.refreshToken, {
                     httpOnly: true,
-                    secure: process.env.NODE_ENV !== "development",
-                    sameSite: "none",
                 });
 
                 return res.status(200).json({ message: "Tokens refreshed successfully." });

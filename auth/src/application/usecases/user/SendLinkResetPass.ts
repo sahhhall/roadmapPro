@@ -13,7 +13,7 @@ export class SendLinkResetPassword {
         try {
             const subject = "Reset Your Password";
             const encodedEmail = input.email;
-            const resetPasswordUrl = `http://localhost:5173/reset-password?code=${input.token}&email=${encodedEmail}`;
+            const resetPasswordUrl = `http://${process.env.FRONT_END_BASE_URL}/reset-password?code=${input.token}&email=${encodedEmail}`;
             
             const body = `Hi ${input.name},\n\n` +
                 `Please click the link below to reset your password:\n\n` +

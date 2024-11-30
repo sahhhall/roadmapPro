@@ -21,11 +21,11 @@ spec:
             - name: GRPC_PORT
               value: "50051"
             - name: KAFKA_CLIENT_ID
-              value: "auth-service"
+              value: "http://auth-service"
             - name: KAFKA_BROKERS
-              value: "kafka-srv:9092"
+              value: kafka-srv:9092
             - name: KAFKA_CONNECTION_TIMEOUT
-              value: "3000"  
+              value: "3003"  
             - name: BUCKET_NAME
               valueFrom:
                 secretKeyRef:
@@ -52,7 +52,7 @@ spec:
                   name: mongo-atlas-secret
                   key: MONGODB_URI 
           ports:
-            - containerPort: 3000  
+            - containerPort: 3003  
             - containerPort: 50051 
 ---
 apiVersion: v1
@@ -65,7 +65,7 @@ spec:
   ports:
     - name: http
       port: 3003
-      targetPort: 3000
+      targetPort: 3003
     - name: grpc
       port: 50051
       targetPort: 50051

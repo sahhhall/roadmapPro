@@ -1,33 +1,29 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: auth-depl
+  name: notification-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: auth
+      app: notification
   template:
     metadata:
       labels:
-        app: auth
+        app: notification
     spec:
       containers:
-        - name: auth
-          image: sahhhall/auth
+        - name: notification
+          image: sahhhall/notification
           env:
             - name: PORT
-              value: "3000"
+              value: "3006"
             - name: KAFKA_CLIENT_ID
-              value: "auth-service"
+              value: "http://notification-service"
             - name: KAFKA_BROKERS
-              value: "kafka-srv:9092"
+              value: kafka-srv:9092
             - name: KAFKA_CONNECTION_TIMEOUT
               value: "3000"
-            - name: GRPC_SERVER
-              value: "user-srv:50051"
-            - name: REDIS_URL
-              value: "redis-srv:6379"
             - name: MONGODB_URI
               valueFrom:
                 secretKeyRef:
@@ -43,27 +39,19 @@ spec:
                 secretKeyRef:
                   name: auth-secret
                   key: EMAIL_PASS
-            - name: JWT_ACCESS_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: auth-secret
-                  key: JWT_ACCESS_SECRET
-            - name: JWT_REFRESH_SECRET
-              valueFrom:
-                secretKeyRef:
-                  name: auth-secret
-                  key: JWT_REFRESH_SECRET
+            - name: FRONT_END_BASE_URL
+              value: "http://client-srv:5173"      
           ports:
-            - containerPort: 3000
+            - containerPort: 3006
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: auth-srv
+  name: notification-srv
 spec:
   selector:
-    app: auth
+    app: notification
   ports:
     - protocol: TCP
-      port: 3000
-      targetPort: 3000
+      port: 3006
+      targetPort: 3006

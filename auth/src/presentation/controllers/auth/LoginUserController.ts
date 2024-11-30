@@ -33,13 +33,9 @@ export class LoginController {
             req!.logger.info("user auth createing :)")
             res.cookie(`user_accessToken`, user.accessToken, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV !== "development",
-                sameSite: "none",
             });
             res.cookie(`user_refreshToken`, user.refreshToken, {
                 httpOnly: true,
-                secure: process.env.NODE_ENV !== "development",
-                sameSite: "none",
             });
             res.json({
                 user: user?.user

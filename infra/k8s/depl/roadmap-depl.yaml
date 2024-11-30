@@ -1,49 +1,47 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: booking-depl
+  name: roadmap-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: booking
+      app: roadmap
   template:
     metadata:
       labels:
-        app: booking
+        app: roadmap
     spec:
       containers:
-        - name: booking
-          image: sahhhall/booking
+        - name: roadmap
+          image: sahhhall/roadmap
           env:
             - name: PORT
-              value: "3004"
+              value: "3001"
             - name: KAFKA_CLIENT_ID
-              value: "booking-service"
+              value: "roadmap-service"
             - name: KAFKA_BROKERS
-              value: "kafka-srv:9092"
+              value: kafka-srv:9092
             - name: KAFKA_CONNECTION_TIMEOUT
               value: "3000"
-            - name: FRONT_END_BASE_URL
-              value: "client-srv:5173"
-            - name: GRPC_PORT
-              value: "50051"    
+            - name: REDIS_URL
+              value: "redis://redis-srv:6379"
             - name: MONGODB_URI
               valueFrom:
                 secretKeyRef:
                   name: mongo-atlas-secret
                   key: MONGODB_URI
           ports:
-            - containerPort: 3000
+            - containerPort: 3001
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: booking-srv
+  name: roadmap-srv
 spec:
   selector:
-    app: booking
+    app: roadmap
   ports:
     - protocol: TCP
-      port: 3004
-      targetPort: 3000
+      port: 3001
+      targetPort: 3001

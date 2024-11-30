@@ -16,7 +16,7 @@ RUN pnpm install
 COPY . .
 
 
-EXPOSE 3000 50051
+EXPOSE 3003 50051
 
 
 CMD ["npm", "start"]
