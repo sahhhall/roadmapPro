@@ -10,10 +10,17 @@ spec:
     - host: roadmappro.site
       http:
         paths:
-          - path:  /api/
+          - path: /api
             pathType: Prefix
             backend:
               service:
                 name: api-gateway-srv
                 port:
                   number: 4001
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: client-srv
+                port:
+                  number: 5173  

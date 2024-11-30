@@ -43,7 +43,7 @@ spec:
                   name: auth-secret
                   key: JWT_REFRESH_SECRET
             - name: FRONT_END_BASE_URL
-              value: "http://client-srv:5173"  
+              value: "https://roadmappro.vercel.app/"  
           ports:
             - containerPort: 4001
 ---
@@ -54,7 +54,6 @@ metadata:
 spec:
   selector:
     app: api-gateway
-  type: LoadBalancer  
   ports:
     - protocol: TCP
       port: 4001
