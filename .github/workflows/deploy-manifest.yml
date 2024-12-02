@@ -4,20 +4,20 @@ on:
     branches:
       - main
     paths:
-      - 'infra/**'
+      - "infra/**"
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: Install doctl
         uses: digitalocean/action-doctl@v2
         with:
           token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      
+
       - name: Save Kubernetes config
         run: doctl kubernetes cluster kubeconfig save roadmappro
-      
+
       - name: Restart Kubernetes deployment
-        run: kubectl apply -f infra/k8s  && kubectl apply -f infra/k8s-prod
+        run: kubectl apply -f infra/k8s/depl && kubectl apply -f infra/k8s/config &&  kubectl apply -f infra/k8s/secrets  && kubectl apply -f infra/k8s-prod
