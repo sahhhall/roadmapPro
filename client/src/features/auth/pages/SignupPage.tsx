@@ -11,7 +11,7 @@ const SignupPage = () => {
     email: "",
   });
   return (
-    <div className="min-h-96   flex items-center justify-center ">
+    <div className="min-h-96 my-[20%] sm:my-0 flex items-center justify-center ">
       <div className="flex mt-7  items-center   lg:space-y-0 lg:space-x-12 lg:justify-between">
         {/* <div className="dark:hidden lg:w-[550px]  lg:block hidden  ">
           <img

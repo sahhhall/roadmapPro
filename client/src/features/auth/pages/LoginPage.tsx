@@ -6,7 +6,7 @@ const LoginPage = () => {
   const { handleSuccess, handleError } = useGoogleLogin();
 
   return (
-    <div className="min-h-96  flex items-center justify-center ">
+    <div className="min-h-96 my-[25%] sm:my-0  flex items-center justify-center ">
       <div className="w-25% mt-7 flex flex-col ">
         <h1 className="text-3xl text-center font-extrabold">Login</h1>
         <p className=" text-center mt-1   text-xs text-gray-500">Welcome back! Let's take you to your account.</p>

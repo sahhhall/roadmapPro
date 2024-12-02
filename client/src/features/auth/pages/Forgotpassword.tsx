@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 
 const Forgotpassword = () => {
   return (
-    <Container className="min-h-96 flex items-center justify-center ">
+    <Container className="min-h-96 my-[25%] sm:my-0   flex items-center justify-center ">
       <div className=" mt-7 flex flex-col max-w-80 w-full h-auto ">
         <h1 className="text-3xl w-full text-center font-extrabold">
           Forgot Password?
