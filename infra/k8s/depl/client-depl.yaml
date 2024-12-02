@@ -17,16 +17,18 @@ spec:
           image: sahhhall/client
           env:
             - name: VITE_BASE_URL
-              value: "http://roadmappro.site" 
-            - name: VITE_NOTIFICATION_URL
-              value: "http://roadmappro.site/notification"
-            - name: VITE_BOOKING_URL
-              value: "http://roadmappro.site/mentor" 
+              value: "https://roadmappro.site"
+            # - name: VITE_NOTIFICATION_URL
+            #   value: "https://roadmappro.site/notification"
+            # - name: VITE_BOOKING_URL
+            #   value: "https://roadmappro.site/mentor"
+            - name: VITE_BASE_CLIENT_URL
+              value: "https://roadmappro.site"
             - name: VITE_GOOGLE_CLIENT
               valueFrom:
                 secretKeyRef:
                   name: google-secrets
-                  key: VITE_GOOGLE_CLIENT          
+                  key: VITE_GOOGLE_CLIENT
             - name: VITE_STRIPE_PUBLISHABLE_KEY
               valueFrom:
                 secretKeyRef:

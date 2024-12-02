@@ -27,7 +27,7 @@ spec:
             - name: USER_SERVICE_URL
               value: "http://user-srv:3003"
             - name: MENTOR_SERVICE_URL
-              value: "http://mentor-srv:3004"
+              value: "http://booking-srv:3004"
             - name: PAYMENT_SERVICE_URL
               value: "http://payment-srv:3005"
             - name: NOTIFICATION_SERVICE_URL

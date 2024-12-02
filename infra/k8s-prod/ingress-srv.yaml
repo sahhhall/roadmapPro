@@ -3,24 +3,55 @@ kind: Ingress
 metadata:
   name: ingress-srv
   annotations:
-      nginx.ingress.kubernetes.io/use-regex: "true"
+    cert-manager.io/issuer: letsencrypt-nginx
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    kubernetes.io/ingress.class: nginx
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+    nginx.ingress.kubernetes.io/proxy-buffer-size: "16k"
+    nginx.ingress.kubernetes.io/proxy-buffers: "4 16k"
+    nginx.ingress.kubernetes.io/proxy-busy-buffers-size: "16k"
+    nginx.ingress.kubernetes.io/websocket-services: "booking-srv,notification-srv"
 spec:
-  ingressClassName: nginx
+  tls:
+    - hosts:
+      - roadmappro.site
+      secretName: letsencrypt-nginx
   rules:
     - host: roadmappro.site
       http:
         paths:
-          - path: /api
-            pathType: Prefix
+          - path: /api/payments/webhook
+            pathType: Prefix  
+            backend:
+              service:
+                name: payment-srv
+                port:
+                  number: 3005 
+          - path: /api/?(.*) 
+            pathType: Prefix  
             backend:
               service:
                 name: api-gateway-srv
                 port:
                   number: 4001
-          - path: /
+          - path: /booking-socket/?(.*) 
             pathType: Prefix
             backend:
               service:
-                name: client-srv
+                name: booking-srv
                 port:
-                  number: 5173  
+                  number: 3004     
+          - path: /notification-socket/?(.*)  
+            pathType: Prefix
+            backend:
+              service:
+                name: notification-srv
+                port:
+                  number: 3006
+          - path: / 
+            pathType: Prefix
+            backend:
+              service:
+                name: client-srv 
+                port:
+                  number: 5173

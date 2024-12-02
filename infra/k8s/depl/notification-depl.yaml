@@ -24,6 +24,8 @@ spec:
               value: kafka-srv:9092
             - name: KAFKA_CONNECTION_TIMEOUT
               value: "3000"
+            - name: S
+              value: "sd"
             - name: MONGODB_URI
               valueFrom:
                 secretKeyRef:

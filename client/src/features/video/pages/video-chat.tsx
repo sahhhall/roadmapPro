@@ -13,7 +13,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import Chat from "@/features/video/components/Chat";
 
-const bookingEndpointURL = import.meta.env.VITE_BOOKING_URL;
+const clinetBaseUrl = import.meta.env.VITE_BASE_CLIENT_URL;
 interface Message {
   sender: string;
   text: string;
@@ -72,9 +72,8 @@ const VideoChat = () => {
         userStream.current = stream;
 
         //connecting to scoket server
-        socketRef.current = io(bookingEndpointURL, {
-          transports: ["websocket"],
-          reconnection: true,
+        socketRef.current = io(clinetBaseUrl, {
+          path: '/booking-socket/socket.io' 
         });
         // for other party i mean already user name
         const payload = {

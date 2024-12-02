@@ -21,7 +21,8 @@ export class ExpressWebServer implements IServerInterface {
             cors: {
                 origin: process.env.FRONT_END_BASE_URL,
                 methods: ["*"]
-            }
+            },
+            path: '/notification-socket/socket.io'
         });
 
         this.setupSocketHandlers();

@@ -14,16 +14,18 @@ spec:
     spec:
       containers:
         - name: payment
-          image: sahhhall/payment
+          image: sahhhall/payment 
           env:
             - name: PORT
               value: "3005"
             - name: KAFKA_CLIENT_ID
               value: "http://payment-service"
             - name: KAFKA_BROKERS
-              value: kafka-srv:9092
+              value: kafka-srv:9092 
             - name: KAFKA_CONNECTION_TIMEOUT
               value: "3000"
+            - name: DOMAIN_BASE_URL
+              value: "https://roadmappro.site"    
             # Database Configuration
             - name: DB_HOST
               value: "postgres-srv"

@@ -21,8 +21,9 @@ export class ExpressWebServer implements IServerInterface {
         this.io = new Server(this.server, {
             cors: {
                 origin: process.env.FRONT_END_BASE_URL,
-                methods: ["*"]
-            }
+                methods: ["*"],
+            },
+            path: '/booking-socket/socket.io'
         });
 
         this.rooms = new Map();

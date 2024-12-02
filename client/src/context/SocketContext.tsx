@@ -8,7 +8,7 @@ import React, {
 import { io, Socket } from "socket.io-client";
 import { usegetUser } from "@/hooks/usegetUser";
 import { useToast } from "@/hooks/use-toast";
-const notificationBaseURL = import.meta.env.VITE_NOTIFICATION_URL;
+const clinetBaseUrl = import.meta.env.VITE_BASE_CLIENT_URL;
 
 const SocketContext = createContext<Socket | null>(null);
 
@@ -21,9 +21,8 @@ export const SocketProvider: React.FC<{ children: React.ReactNode }> = ({
   const { toast } = useToast();
   useEffect(() => {
     if (userEmail) {
-      const newSocket = io(notificationBaseURL, {
-        transports: ["websocket"],
-        reconnection: true,
+      const newSocket = io(clinetBaseUrl, {
+        path: '/notification-socket/socket.io' 
       });
       newSocket.on(`user:${userEmail.email}`, handleUserEvent);
 

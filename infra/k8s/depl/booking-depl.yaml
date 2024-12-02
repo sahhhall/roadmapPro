@@ -25,9 +25,9 @@ spec:
             - name: KAFKA_CONNECTION_TIMEOUT
               value: "3000"
             - name: FRONT_END_BASE_URL
-              value: "http://client-srv:5173"
+              value: "https://client-srv:5173"
             - name: GRPC_PORT
-              value: "50051"    
+              value: "50051"   
             - name: MONGODB_URI
               valueFrom:
                 secretKeyRef:

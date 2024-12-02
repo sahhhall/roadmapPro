@@ -11,13 +11,13 @@ export class PaymentController {
     async create(req: Request, res: Response, next: NextFunction) {
         try {
             const { mentorId, price, name, bookingId, userId, bookingDate } = req.body;
-        
+
             const customer = await stripe.customers.create({
                 name: 'sahal',
                 address: {
                     "line1": "123 Street Name",
                     "city": "City Name",
-                    "country": "AE", 
+                    "country": "AE",
                     "postal_code": "12345"
                 },
             });
@@ -36,8 +36,8 @@ export class PaymentController {
             const session = await stripe.checkout.sessions.create({
                 payment_method_types: ['card'],
                 mode: 'payment',
-                success_url: `${process.env.FRONT_END_BASE_URL}payment-success`,
-                cancel_url: `${process.env.FRONT_END_BASE_URL}mentor-profile/${mentorId}`,
+                success_url: `${process.env.DOMAIN_BASE_URL}/payment-success`,
+                cancel_url: `${process.env.DOMAIN_BASE_URL}/mentor-profile/${mentorId}`,
                 client_reference_id: mentorId,
                 line_items: lineItems,
                 customer: customer.id,
