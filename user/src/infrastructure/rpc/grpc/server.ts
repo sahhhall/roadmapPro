@@ -33,13 +33,27 @@ class UserServiceGrpc {
                 callback: grpc.sendUnaryData<CreateUserProfileResponse>
             ) => {
                 const { userId, email, name, isGoogle } = call.request as any;
-                console.log(`Received request: userId=${userId}, email=${email} ${name}`);
                 const userRepo = new UserRepository();
                 try {
-                    const createdUser = await userRepo.create({
-                        userId, email, name, isGoogle
-                    });
-                    callback(null, { userId: createdUser.id, success: true });
+                    let existingUser = await userRepo.getUserDetails(userId);
+                    if (existingUser) {
+                        // update existing user instead of creating a new one
+                        const updatedUser = await userRepo.updateUserProfileData(userId, {
+                            name
+                        });
+                        callback(null, { 
+                            userId: updatedUser!.id, 
+                            success: true,
+                        });
+                    } else {
+                        const createdUser = await userRepo.create({
+                            userId, email, name, isGoogle
+                        });
+                        callback(null, { 
+                            userId: createdUser.id, 
+                            success: true,
+                        });
+                    }
                 } catch (error: any) {
                     console.error('Error creating user:', error.message);
                     callback({ code: grpc.status.INTERNAL, message: ' creation failed' }, null);
