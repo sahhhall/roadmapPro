@@ -98,6 +98,7 @@ export const RoadmapFlow: React.FC<{ roadmapData: RoadmapData }> = ({
         zoomOnScroll={false}
         panOnDrag={false}
         zoomOnPinch={false}
+        zoomOnDoubleClick={false}
       />
       <NodeDetailsSheet
         isOpen={isOpen}
