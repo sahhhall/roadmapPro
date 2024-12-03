@@ -73,7 +73,7 @@ const VideoChat = () => {
 
         //connecting to scoket server
         socketRef.current = io(clinetBaseUrl, {
-          path: "/booking-socket/socket.io",
+          path: '/booking-socket/socket.io' 
         });
         // for other party i mean already user name
         const payload = {
@@ -289,22 +289,20 @@ const VideoChat = () => {
   };
 
   return (
-    <div className="bg-gray-900 min-h-screen w-full overflow-hidden flex flex-col">
+    <div className="bg-gray-900 min-h-[100vh] overflow-hidden flex flex-col">
       <div
-        className="relative w-full h-screen flex items-center justify-center"
+        className="flex-1 sm:max-h-[100vh] relative"
         style={{ background: "#202124" }}
       >
-        {/* partner video */}
-        <video  
-          className="absolute  md:object-cover w-full h-full object-contain "
+        <video
+          className="w-full min-h-[100vh] object-cover"
           autoPlay
           playsInline
           ref={partnerVideo}
         />
-      {/* user video  */}
         <div
-          className="absolute min-w-[150px] aspect-video rounded-lg top-4 left-4 w-1/3 max-w-[250px]   overflow-hidden shadow-lg border border-white z-10"
           style={{ background: "#202124" }}
+          className="absolute top-4 w-[230px] left-4 aspect-video rounded-lg overflow-hidden shadow-lg border border-white"
         >
           <video
             ref={userVideo}
@@ -314,45 +312,43 @@ const VideoChat = () => {
             muted
           />
         </div>
-        {/* contorol buttons  */}
-        <div className="absolute bottom-6 left-1/2 transform -translate-x-1/2 flex gap-2 sm:gap-4">
+        <div className="flex absolute bottom-6 left-1/2 transform -translate-x-1/2 gap-4">
           <button
             onClick={handleMuteMice}
-            className="text-white p-3 sm:p-4 rounded-full"
+            className={` text-white p-4 rounded-full`}
             style={{ background: "#333537" }}
           >
             {!isMuted ? (
-              <Mic className="h-5 w-5 sm:h-6 sm:w-6" />
+              <Mic className="h-6 w-6" />
             ) : (
-              <MicOff className="h-5 w-5 sm:h-6 sm:w-6" />
+              <MicOff className="h-6 w-6" />
             )}
           </button>
           <button
             onClick={handleToggleVideo}
-            className="text-white p-3 sm:p-4 rounded-full"
+            className=" text-white p-4 rounded-full"
             style={{ background: "#333537" }}
           >
             {videoMuted ? (
-              <Video className="h-5 w-5 sm:h-6 sm:w-6" />
+              <Video className="h-6 w-6" />
             ) : (
-              <VideoOff className="h-5 w-5 sm:h-6 sm:w-6" />
+              <VideoOff className="h-6 w-6" />
             )}
           </button>
           <button
             onClick={handleHangupCall}
-            className="bg-red-500 text-white p-3 sm:p-4 rounded-full"
+            className="bg-red-500 text-white p-4 rounded-full"
           >
-            <PhoneOff className="h-5 w-5 sm:h-6 sm:w-6" />
+            <PhoneOff className="h-6 w-6" />
           </button>
           <button
             style={{ background: "#333537" }}
-            className="text-white p-3 sm:p-4 rounded-full"
+            className=" text-white p-4 rounded-full"
             onClick={toggleChat}
           >
-            <MessageSquareText className="h-5 w-5 sm:h-6 sm:w-6" />
+            <MessageSquareText className="h-6 w-6" />
           </button>
         </div>
-
         {showChat && (
           <Chat
             messages={messages}
