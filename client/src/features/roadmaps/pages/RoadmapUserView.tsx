@@ -67,14 +67,13 @@ const RoadmapUserView: React.FC = () => {
               <p className="text-xs text-gray-400 dark:text-gray-400 mt-1">
                 Get guidance and support from experienced professionals in your
                 field.
-                <button
-                  onClick={handleConnectWithMentor}
-                  className="hover:text-blue-500 hover:underline"
-                >
-                  {" "}
-                  for available mentors, click here.
-                </button>
               </p>
+              <button
+                onClick={handleConnectWithMentor}
+                className="hover:text-blue-500 text-xs text-gray-400 dark:text-gray-400  hover:underline"
+              >
+                for available mentors, click here.
+              </button>
             </div>
             {/* <Button
               onClick={handleConnectWithMentor}

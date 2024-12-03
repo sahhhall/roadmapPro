@@ -74,7 +74,7 @@ const FiltersPanel = ({ onFilterChange }: { onFilterChange: any }) => {
     expirience[0] > 0;
 
   return (
-    <div className="space-y-6 p-4">
+    <div className="space-y-6 p-4 border-r min-h-full ">
       <div className="flex ">
         <div className="flex w-full items-center justify-between">
           <div className="text-lg font-semibold">Filter By</div>
