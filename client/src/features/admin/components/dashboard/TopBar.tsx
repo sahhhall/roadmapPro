@@ -1,6 +1,6 @@
 const TopBar = () => {
   return (
-    <div className="border-b mb-4 px-4 mt-2 pb-4 border-stone-200">
+    <div className="border-b mb-4 px-4 mt-2 pb-4 dark:border-gray-800 border-stone-200">
       <div className="flex  items-center justify-between">
         <div>
           <span className="text-xs font-bold block">

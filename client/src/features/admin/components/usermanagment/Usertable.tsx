@@ -21,7 +21,7 @@ import { AvatarFallback } from "@radix-ui/react-avatar";
 const UserTable = () => {
   const [page, setPage] = useState(1);
   const [search, setSearch] = useState("");
-  const pageSize = 2;
+  const pageSize = 10;
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { data, refetch, isLoading } = useFetchusersQuery({
@@ -49,7 +49,7 @@ const UserTable = () => {
         <Input
           ref={inputRef}
           placeholder="Search by name or email..."
-          className="w-[300px]"
+          className="w-[300px] focus:ring-border-gray-800 focus:border-gray-800"
           onChange={(e) => handleSearch(e.target.value)}
         />
       </div>
