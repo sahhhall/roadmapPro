@@ -4,6 +4,9 @@ import { useState } from "react";
 import CreateRoadmap from "@/components/modals/CreateRoadmap";
 import { useAppSelector } from "@/hooks/useAppStore";
 import { RoadmapsListed } from "@/features/roadmaps/components/listing/RoadmapsCards";
+import SignUpSection from "@/components/landing/SignupAction";
+import Footer from "@/components/footer/Footer";
+import CommonQuestion from "@/components/landing/Faq";
 
 const Home = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -11,10 +14,8 @@ const Home = () => {
   const isDarkMode = useAppSelector((state) => state.theme.isDarkMode);
   const combinedText = "roadmapPro is a community effort to create roadmaps, guides and other educational content to help guide developers in picking up a path and guide their learnings.";
   return (
-    <div className={`min-h-full flex flex-col `}>
-      <div
-        className={`w-full min-h-screen flex  pt-24  ${ isDarkMode ? "" : "bg-gradient-to-b from-white to-purple-500"} `}
-         >
+    <div className={`max-h-[90%] flex flex-col `}>
+      <div className={`w-full min-h-full flex  pt-24  ${isDarkMode ? "" : ""} `}>
         <div className="ms-[12%] sm:mt-0  mt-[10%] max-w-[80%] sm:max-w-[50%] ">
           <p className="text-5xl sm:text-6xl font-extrabold text-black dark:text-white">
             Developer
@@ -50,8 +51,15 @@ const Home = () => {
         </div>
       </div>
       <CreateRoadmap dialogOpen={dialogOpen} setDialogOpen={setDialogOpen} />
-      {isDarkMode&& <hr/>}
       <RoadmapsListed />
+      <hr className="text-gray-900 mt-7 mb-7 h-px"/>
+      <CommonQuestion/>
+      <div className="flex mt-10 mb-10 justify-center items-center w-full">
+        <SignUpSection />
+      </div>
+      <div className="w-full">
+        <Footer />
+      </div>
     </div>
   );
 };
