@@ -35,21 +35,20 @@ const RoadmapUserView: React.FC = () => {
                   className=" text-gray-400 cursor-pointer"
                   size={20}
                 />
-                {/* <span className="text-xs text-gray-400 font-semibold">Back to Home</span> */}
+                <span className="text-xs text-gray-400 font-semibold">Back to Home</span>
               </div>
-              <div className=" flex items-center space-x-2">
+              <div className=" flex items-center">
                 {/* <Bookmark size={20} className="text-gray-400 cursor-pointer" /> */}
-                <Button className="bg-indigo-600 text-white rounded-md px-7    text-xs font-medium flex items-center space-x-1">
+                <Button className=" text-black rounded-md text-xs font-medium flex items-center space-x-1">
                   <Share2 size={16} />
-                  <span>Share</span>
                 </Button>
               </div>
             </div>
-            <div className="ms-3 mt-4">
+            <div className="ms-3 mt-2">
               <h1 className="mb-2 text-xl  sm:text-3xl font-bold ">
                 {roadmapData?.title}
               </h1>
-              <p className="text-sm  dark:text-gray-400  text-gray-600 mb-6">
+              <p className="sm:text-sm text-xs dark:text-gray-400  text-gray-600 mb-6">
                 {roadmapData?.description}
               </p>
             </div>
@@ -61,7 +60,7 @@ const RoadmapUserView: React.FC = () => {
                 Connect with Mentor
                 <span className="  bg-green-500 h-2  rounded-full w-2 ml-2"></span>
               </span>
-              <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
+              <p className="text-xs text-gray-400 dark:text-gray-400 mt-1">
                 Get guidance and support from experienced professionals in your
                 field.
               </p>
@@ -79,13 +78,13 @@ const RoadmapUserView: React.FC = () => {
               <span className="bg-yellow-400 text-black rounded-full px-2 py-0.5 text-xs font-medium">
                 0% Done
               </span>
-              <span>0 of {roadmapData?.nodes?.length} Done</span>
+              <span className="text-xs">0 of {roadmapData?.nodes?.length} Done</span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="flex-grow mt-8">
+      <div className="flex-grow -mt-24 md:mt-8">
         <ReactFlowProvider>
           <Container className="w-full h-[600px]">
             <RoadmapFlow roadmapData={roadmapData as RoadmapData} />

@@ -24,10 +24,8 @@ interface INodeDetailsProps {
 
 const NodeDetailsSheet: React.FC<INodeDetailsProps> = React.memo(
   ({ closeSheet, isOpen, nodeDetails, isLoading }) => {
-    console.log("nodedetails", nodeDetails);
     // for avoid render
     if (!isOpen) return null;
-    console.log("hi");
     return (
       <Sheet open={isOpen} onOpenChange={(open) => !open && closeSheet()}>
         <SheetContent>
@@ -40,20 +38,20 @@ const NodeDetailsSheet: React.FC<INodeDetailsProps> = React.memo(
           ) : (
             <></>
           )}
-          <SheetHeader className="p-4 flex justify-between  flex-col">
-            <div className="flex  justify-between items-center">
-              <div>
-                <Button className="text-gray-600   text-xs items-center me-2 border ">
+          <SheetHeader className="p-4 flex  items-start   flex-col">
+          <div className="flex justify-between items-center w-full">
+              <div className="flex items-center space-x-2">
+                <Button className="text-gray-600 text-xs items-center me-2 border">
                   done
-                  <span className="ml-2 inline-block  h-3 w-3 bg-green-500 rounded-full"></span>
+                  <span className="ml-2 inline-block h-3 w-3 bg-green-500 rounded-full"></span>
                 </Button>
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button
                       variant="outline"
-                      className=" text-xs text-gray-500 max-w-xl sm:w-fit"
+                      className="text-xs text-gray-500 max-w-xl sm:w-fit"
                     >
-                      update status <ChevronDown />{" "}
+                      update status <ChevronDown />
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent className="w-16 justify-center text-center items-center">
@@ -61,35 +59,35 @@ const NodeDetailsSheet: React.FC<INodeDetailsProps> = React.memo(
                     <DropdownMenuCheckboxItem disabled>
                       Activity Bar
                     </DropdownMenuCheckboxItem>
-                    <DropdownMenuCheckboxItem>
-                      completed
-                    </DropdownMenuCheckboxItem>
+                    <DropdownMenuCheckboxItem>completed</DropdownMenuCheckboxItem>
                   </DropdownMenuContent>
                 </DropdownMenu>
               </div>
-              <div>
-                <X
-                  className="cursor-pointer transition-colors duration-500 hover:text-gray-500"
-                  onClick={closeSheet}
-                />
-              </div>
+
+              <X
+                className="cursor-pointer w-5 h-5 text-gray-500 hover:text-gray-700 transition-colors duration-500"
+                onClick={closeSheet}
+                style={{
+                  position: "absolute",
+                  top: "21px",
+                  right: "10px",
+                }}
+              />
             </div>
-            <div >
+            <div className="">
               <SheetTitle className="mt-6">
-                <span className=" font-extrabold text-2xl ">
+                <span className="font-extrabold text-sm sm:text-2xl ">
                   {nodeDetails?.title}
                 </span>
               </SheetTitle>
             </div>
-            <SheetDescription>
-              <span className="text-xs tracking-wide ">
-                {nodeDetails?.description}
-              </span>
+            <SheetDescription className="text-left items-start justify-start">
+              <span className="text-xs">{nodeDetails?.description}</span>
             </SheetDescription>
           </SheetHeader>
-          {/* <h5 className="text-sm p-4 font-medium text-gray-700 mb-2">
-            You can learn more about {nodeDetails?.title} from the links below:
-          </h5> */}
+          <h5 className="text-xs p-4 font-medium text-gray-600 mb-2">
+            📖 Learn more about {nodeDetails?.title} from the links below:
+          </h5>
 
           <div className="flex items-center  space-x-2">
             <span className="w-2 h-[.5px] bg-gray-400"></span>
@@ -98,15 +96,16 @@ const NodeDetailsSheet: React.FC<INodeDetailsProps> = React.memo(
             </span>
             <span className="flex-grow h-[.5px] bg-gray-400" />
           </div>
-          <div className="p-4 flex flex-col ">
+          <div className="p-4 flex flex-col space-y-2">
             {nodeDetails?.links?.map((item) => (
               <a
-                target="_blank"
                 key={item.title}
                 href={item.url}
-                className="text-blue-600  hover:underline text-sm"
+                target="_blank"
+                className="text-blue-600 hover:underline text-sm flex items-center space-x-2"
               >
-                {item.title}
+                <span>🔗</span>
+                <span>{item.title}</span>
               </a>
             ))}
           </div>
