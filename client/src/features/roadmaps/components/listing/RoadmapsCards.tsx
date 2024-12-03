@@ -16,7 +16,7 @@ export const RoadmapsListed = () => {
     navigate(`/roadmap/${id}`);
   };
   return (
-    <div className="mb-10 mt-[5rem] md:mt-[8rem] min-w-full ">
+    <div className="mb-10 mt-[6rem] md:mt-[7rem] min-w-full ">
       <div className="flex flex-col sm:ms-[0%] max-w-[100%] justify-center  space-y-1 items-center ">
         <div className="flex items-center w-full  my-1">
           <div className="flex-grow  h-px bg-gray-300 dark:bg-gray-900"></div>

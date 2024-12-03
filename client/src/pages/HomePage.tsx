@@ -15,7 +15,7 @@ const Home = () => {
   const combinedText = "roadmapPro is a community effort to create roadmaps, guides and other educational content to help guide developers in picking up a path and guide their learnings.";
   return (
     <div className={`max-h-[90%] flex flex-col `}>
-      <div className={`w-full min-h-full flex  pt-24  ${isDarkMode ? "" : ""} `}>
+      <div className={`w-full min-h-full flex  pt-16  ${isDarkMode ? "" : ""} `}>
         <div className="ms-[12%] sm:mt-0  mt-[10%] max-w-[80%] sm:max-w-[50%] ">
           <p className="text-5xl sm:text-6xl font-extrabold text-black dark:text-white">
             Developer
