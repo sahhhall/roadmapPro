@@ -66,7 +66,7 @@ const RoadmapsPage = () => {
             >
               <div className="flex justify-between items-start">
                 <div className="flex gap-4">
-                  <div className="w-12 h-12 dark:bg-transparent bg-gray-100 rounded-lg flex items-center justify-center">
+                  <div className="w-12 hidden  h-12 dark:bg-transparent bg-gray-100 rounded-lg sm:flex items-center justify-center">
                     <svg
                       className="w-6 h-6 text-gray-400"
                       fill="none"

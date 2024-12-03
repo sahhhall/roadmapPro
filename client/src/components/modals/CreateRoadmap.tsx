@@ -25,6 +25,7 @@ import { useNavigate } from "react-router-dom";
 import { useToast } from "@/hooks/use-toast";
 import { CircleCheck, LoaderCircle } from "lucide-react";
 import { ToastAction } from "@radix-ui/react-toast";
+import { useEffect, useState } from "react";
 
 interface CreateRoadmapProps {
   dialogOpen: boolean;
@@ -57,6 +58,8 @@ const CreateRoadmap: React.FC<CreateRoadmapProps> = ({
   dialogOpen,
   setDialogOpen,
 }) => {
+  const [isMobile, setIsMobile] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -74,14 +77,45 @@ const CreateRoadmap: React.FC<CreateRoadmapProps> = ({
   const userData = usegetUser();
   const [createRoadmap, { isLoading }] = useCreateRoadmapMutation({});
 
+  useEffect(() => {
+    const checkMobileScreen = () => {
+      if (window.innerWidth <= 768) {
+        setIsMobile(true);
+      } else {
+        setIsMobile(false);
+      }
+    };
+
+    checkMobileScreen();
+    window.addEventListener("resize", checkMobileScreen);
+    return () => window.removeEventListener("resize", checkMobileScreen);
+  }, []);
+
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    if (isMobile) {
+      toast({
+        title: "Better Experience on Laptop",
+        description: "For a better experience, we recommend using a laptop and try to do with laptop.",
+        action: (
+          <ToastAction altText="Ok" onClick={() => {closeDialog()}}>
+            Ok
+          </ToastAction>
+        ),
+        variant: "default",
+      });
+      return
+    }
     if (!userData) {
       toast({
         title: "Uh oh! You are not logged in.",
         description: "Login to continue.",
-        action: <ToastAction altText="Login" onClick={()=> navigate('/login')}>Login</ToastAction>,
+        action: (
+          <ToastAction altText="Login" onClick={() => navigate("/login")}>
+            Login
+          </ToastAction>
+        ),
       });
-      return
+      return;
     }
     const payload = {
       title: values.title,
