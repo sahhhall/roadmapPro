@@ -25,7 +25,7 @@ spec:
             - name: KAFKA_CONNECTION_TIMEOUT
               value: "3000"
             - name: GRPC_SERVER
-              value: "http://user-srv:50051"
+              value: "user-srv:50051"
             - name: REDIS_URL
               value: "redis://redis-srv:6379"
             - name: FRONT_END_BASE_URL

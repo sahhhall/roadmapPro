@@ -25,7 +25,6 @@ export class GoogleLogin {
 
         if (user) {
             user.name = name;
-            user.avatar = avatar;
             user.isGoogle = true;
             await this.userRepository.update(user);
         } else {
