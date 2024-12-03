@@ -12,14 +12,14 @@ const SignUpSection = () => {
   const SignUpHeading = () => (
     <>
       <h1 className="text-3xl sm:text-4xl font-bold tracking-tighter">
-        Join 45M+ users today
+        Become Part of 32 Million Users
       </h1>
       <p className="mt-1 text-xs sm:text-md text-white text-opacity-60">
         Start for free — upgrade anytime.
       </p>
       <p className="mt-1 px-2 sm:text-md text-xs text-white text-opacity-60">
-        Our platform connects learners with experts, empowering you to master
-        your goals.
+        Our platform connects learners with experts to help you reach your
+        goals.
       </p>
     </>
   );

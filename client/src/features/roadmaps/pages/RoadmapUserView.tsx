@@ -20,7 +20,9 @@ const RoadmapUserView: React.FC = () => {
   console.log(roadmapData, "data");
   const navigate = useNavigate();
   const handleConnectWithMentor = () => {
-    navigate("/explore-mentors", { state: { skill: roadmapData?.title.toLowerCase() } });
+    navigate("/explore-mentors", {
+      state: { skill: roadmapData?.title.toLowerCase() },
+    });
   };
 
   return (
@@ -35,7 +37,9 @@ const RoadmapUserView: React.FC = () => {
                   className=" text-gray-400 cursor-pointer"
                   size={20}
                 />
-                <span className="text-xs text-gray-400 font-semibold">Back to Home</span>
+                <span className="text-xs text-gray-400 font-semibold">
+                  Back to Home
+                </span>
               </div>
               <div className=" flex items-center">
                 {/* <Bookmark size={20} className="text-gray-400 cursor-pointer" /> */}
@@ -63,14 +67,21 @@ const RoadmapUserView: React.FC = () => {
               <p className="text-xs text-gray-400 dark:text-gray-400 mt-1">
                 Get guidance and support from experienced professionals in your
                 field.
+                <span
+                  onClick={handleConnectWithMentor}
+                  className="hover:text-blue-500 hover:underline"
+                >
+                  {" "}
+                  for available mentors, click here.
+                </span>
               </p>
             </div>
-            <Button
+            {/* <Button
               onClick={handleConnectWithMentor}
               className=" text-white bg-indigo-600 rounded-md px-3 py-1 text-sm"
             >
               Connect
-            </Button>
+            </Button> */}
           </div>
 
           <div className="bg-white rounded-lg p-3 dark:bg-gray-800 ">
@@ -78,7 +89,9 @@ const RoadmapUserView: React.FC = () => {
               <span className="bg-yellow-400 text-black rounded-full px-2 py-0.5 text-xs font-medium">
                 0% Done
               </span>
-              <span className="text-xs">0 of {roadmapData?.nodes?.length} Done</span>
+              <span className="text-xs">
+                0 of {roadmapData?.nodes?.length} Done
+              </span>
             </div>
           </div>
         </div>
