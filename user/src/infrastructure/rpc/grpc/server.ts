@@ -36,16 +36,19 @@ class UserServiceGrpc {
                 const userRepo = new UserRepository();
                 try {
                     let existingUser = await userRepo.getUserDetails(userId);
+                    console.log(existingUser,"exosting")
                     if (existingUser) {
                         // update existing user instead of creating a new one
                         const updatedUser = await userRepo.updateUserProfileData(userId, {
                             name
                         });
+                        console.log(updatedUser,"updatedUser")
                         callback(null, { 
                             userId: updatedUser!.id, 
                             success: true,
                         });
                     } else {
+                        console.log("newone")
                         const createdUser = await userRepo.create({
                             userId, email, name, isGoogle
                         });

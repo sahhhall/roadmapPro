@@ -114,7 +114,7 @@ const Navbar = () => {
             </div>
           </div>
         ) : (
-          <div className="me-[1rem] sm:me-[8em]">
+          <div className="me-[1rem] sm:me-[8em] items-center flex">
             <Link to={"/login"}>
               <Button
                 className=" text-[12px] sm:text-xs pe-4 tracking-widest"
@@ -133,8 +133,8 @@ const Navbar = () => {
                 Get started
               </Button>
             </Link>
-            <button onClick={handleToggle}>
-              <Moon />
+            <button onClick={handleToggle} className="ps-3 " >
+              <Moon  className="w-4 h-4"/>
             </button>
           </div>
         )}
