@@ -1,4 +1,4 @@
-# 🚀 Roadmap App with Mentor Integration
+# Roadmap App with Mentor Support
 
 ### **Overview**
 This project bridges the gap between academic knowledge and industry requirements by providing users with tailored roadmaps for differnet tech skills and access to mentors for 1:1 sessions. Users can explore learning paths, connect with industry-experienced mentors, and even create roadmaps for peer learners. 
@@ -27,35 +27,32 @@ Mentors must undergo assessments to validate their skill,It ensures high-quality
 
 ## **🔧 Technologies Used**
 
-### **Client-Side**
-- <img src="https://github.com/devicons/devicon/blob/master/icons/react/react-original.svg" alt="React" width="40" height="40"/> **React** (Vite, RTK Query)
-- <img src="https://github.com/devicons/devicon/blob/v2.16.0/icons/redux/redux-original.svg" alt="Redux" width="40" height="40"/> **Redux**
-- <img src="https://github.com/devicons/devicon/blob/v2.16.0/icons/pnpm/pnpm-original.svg" alt="PNPM" width="40" height="40"/> **PNPM**
-- <img src="https://github.com/devicons/devicon/blob/master/icons/css3/css3-original.svg" alt="Shadcn" width="40" height="40"/> **Shadcn** (UI Components)
-- <img src="https://github.com/devicons/devicon/blob/master/icons/webrtc/webrtc-original.svg" alt="WebRTC" width="40" height="40"/> **WebRTC**
-- <img src="https://github.com/devicons/devicon/blob/v2.16.0/icons/tailwindcss/tailwindcss-original-wordmark.svg" alt="Tailwind" width="40" height="40"/> **Tailwind**
-- <img src="https://github.com/devicons/devicon/blob/master/icons/typescript/typescript-original.svg" alt="TS" width="40" height="40"/> **TypeScript**
-- <img src="https://github.com/devicons/devicon/blob/v2.16.0/icons/eslint/eslint-line-wordmark.svg" alt="eslint" width="40" height="40"/> **Eslint**
+## **Technologies Used**
 
+### **Client-Side**
+<img src="https://github.com/devicons/devicon/blob/master/icons/react/react-original.svg" alt="React" width="40" height="40"/> 
+<img src="https://github.com/devicons/devicon/blob/master/icons/javascript/javascript-original.svg" alt="ReactFlow" width="40" height="40"/> 
+<img src="https://github.com/devicons/devicon/blob/master/icons/css3/css3-original.svg" alt="Shadcn" width="40" height="40"/> 
+<img src="https://github.com/devicons/devicon/blob/master/icons/webrtc/webrtc-original.svg" alt="WebRTC" width="40" height="40"/>
 
 ### **Backend Services**
-- <img src="https://github.com/devicons/devicon/blob/master/icons/nodejs/nodejs-original.svg" alt="Node.js" width="40" height="40"/> **Node.js**
-- <img src="https://github.com/devicons/devicon/blob/master/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" width="40" height="40"/> **PostgreSQL**
-- <img src="https://github.com/devicons/devicon/blob/master/icons/mongodb/mongodb-original.svg" alt="MongoDB" width="40" height="40"/> **MongoDB**
-- <img src="https://github.com/devicons/devicon/blob/master/icons/redis/redis-original.svg" alt="Redis" width="40" height="40"/> **Redis** with Bull Queue
-- <img src="https://github.com/devicons/devicon/blob/master/icons/nginx/nginx-original.svg" alt="Nginx" width="40" height="40"/> **Nginx**
-- <img src="https://github.com/devicons/devicon/blob/master/icons/typescript/typescript-original.svg" alt="TypeORM" width="40" height="40"/> **TypeORM** (with TypeScript)
-- <img src="https://github.com/devicons/devicon/blob/master/icons/socketio/socketio-original.svg" alt="Socket.IO" width="40" height="40"/> **Socket.IO**
-- <img src="https://github.com/devicons/devicon/blob/master/icons/elasticsearch/elasticsearch-original.svg" alt="Elasticsearch" width="40" height="40"/> **Elasticsearch**
-- <img src="https://github.com/devicons/devicon/blob/master/icons/logstash/logstash-original.svg" alt="Logstash" width="40" height="40"/> **Logstash**
-- <img src="https://github.com/devicons/devicon/blob/master/icons/kibana/kibana-original.svg" alt="Kibana" width="40" height="40"/> **Kibana**
-
+<img src="https://github.com/devicons/devicon/blob/master/icons/nodejs/nodejs-original.svg" alt="Node.js" width="40" height="40"/> 
+<img src="https://github.com/devicons/devicon/blob/master/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" width="40" height="40"/> 
+<img src="https://github.com/devicons/devicon/blob/master/icons/mongodb/mongodb-original.svg" alt="MongoDB" width="40" height="40"/> 
+<img src="https://github.com/devicons/devicon/blob/master/icons/redis/redis-original.svg" alt="Redis" width="40" height="40"/> 
+<img src="https://github.com/devicons/devicon/blob/master/icons/nginx/nginx-original.svg" alt="Nginx" width="40" height="40"/> 
+<img src="https://github.com/devicons/devicon/blob/master/icons/typescript/typescript-original.svg" alt="TypeORM" width="40" height="40"/> 
+<img src="https://github.com/devicons/devicon/blob/master/icons/socketio/socketio-original.svg" alt="Socket.IO" width="40" height="40"/> 
+<img src="https://github.com/devicons/devicon/blob/master/icons/elasticsearch/elasticsearch-original.svg" alt="Elasticsearch" width="40" height="40"/> 
+<img src="https://github.com/devicons/devicon/blob/master/icons/logstash/logstash-original.svg" alt="Logstash" width="40" height="40"/> 
+<img src="https://github.com/devicons/devicon/blob/master/icons/kibana/kibana-original.svg" alt="Kibana" width="40" height="40"/> 
+<img src="https://github.com/devicons/devicon/blob/master/icons/stripe/stripe-original.svg" alt="Stripe" width="40" height="40"/>
 
 ### **Infrastructure and Deployment**
-- <img src="https://github.com/devicons/devicon/blob/master/icons/docker/docker-original.svg" alt="Docker" width="40" height="40"/> **Docker** - for scalable and portable development and deployment.
-- <img src="https://github.com/devicons/devicon/blob/v2.16.0/icons/docker/docker-original-wordmark.svg" alt="K8" width="40" height="40"/> **Kubernetes** - for contanirazation
-- <img src="https://github.com/devicons/devicon/blob/master/icons/digitalocean/digitalocean-original.svg" alt="DigitalOcean" width="40" height="40"/> **DigitalOcean** - Cloud hosting and infrastructure management for scalable applications.
-- <img src="https://github.com/devicons/devicon/blob/master/icons/amazonwebservices/amazonwebservices-line-wordmark.svg" alt="AWS S3" width="40" height="40"/> **AWS S3** - Cloud storage for file handling and media storage.
+<img src="https://github.com/devicons/devicon/blob/master/icons/docker/docker-original.svg" alt="Docker" width="40" height="40"/> 
+<img src="https://github.com/devicons/devicon/blob/master/icons/digitalocean/digitalocean-original.svg" alt="DigitalOcean" width="40" height="40"/> 
+<img src="https://github.com/devicons/devicon/blob/master/icons/amazonwebservices/amazonwebservices-original.svg" alt="AWS S3" width="40" height="40"/>
+
 
 ---
 
