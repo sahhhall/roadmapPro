@@ -28,24 +28,34 @@ Mentors must undergo assessments to validate their skill,It ensures high-quality
 ## **🔧 Technologies Used**
 
 ### **Client-Side**
-- ![React](https://github.com/devicons/devicon/blob/master/icons/react/react-original.svg) **React** (Vite, RTK Query)
-- ![Shadcn](https://github.com/devicons/devicon/blob/master/icons/css3/css3-original.svg) **Shadcn** (UI Components)
-- ![WebRTC](https://github.com/devicons/devicon/blob/master/icons/webrtc/webrtc-original.svg) 
-**WebRTC**
-- ![Stripe](https://github.com/devicons/devicon/blob/master/icons/stripe/stripe-original.svg) **Stripe**
+- <img src="https://github.com/devicons/devicon/blob/master/icons/react/react-original.svg" alt="React" width="40" height="40"/> **React** (Vite, RTK Query)
+- <img src="https://github.com/devicons/devicon/blob/v2.16.0/icons/redux/redux-original.svg" alt="Redux" width="40" height="40"/> **Redux**
+- <img src="https://github.com/devicons/devicon/blob/v2.16.0/icons/pnpm/pnpm-original.svg" alt="PNPM" width="40" height="40"/> **PNPM**
+- <img src="https://github.com/devicons/devicon/blob/master/icons/css3/css3-original.svg" alt="Shadcn" width="40" height="40"/> **Shadcn** (UI Components)
+- <img src="https://github.com/devicons/devicon/blob/master/icons/webrtc/webrtc-original.svg" alt="WebRTC" width="40" height="40"/> **WebRTC**
+- <img src="https://github.com/devicons/devicon/blob/v2.16.0/icons/tailwindcss/tailwindcss-original-wordmark.svg" alt="Tailwind" width="40" height="40"/> **Tailwind**
+- <img src="https://github.com/devicons/devicon/blob/master/icons/typescript/typescript-original.svg" alt="TS" width="40" height="40"/> **TypeScript**
+- <img src="https://github.com/devicons/devicon/blob/v2.16.0/icons/eslint/eslint-line-wordmark.svg" alt="eslint" width="40" height="40"/> **Eslint**
+
 
 ### **Backend Services**
-- ![Node.js](https://github.com/devicons/devicon/blob/master/icons/nodejs/nodejs-original.svg) **Node.js**
-- ![PostgreSQL](https://github.com/devicons/devicon/blob/master/icons/postgresql/postgresql-original.svg) **PostgreSQL**
-- ![MongoDB](https://github.com/devicons/devicon/blob/master/icons/mongodb/mongodb-original.svg) **MongoDB**
-- ![Redis](https://github.com/devicons/devicon/blob/master/icons/redis/redis-original.svg) **Redis** with Bull Queue
-- ![Nginx](https://github.com/devicons/devicon/blob/master/icons/nginx/nginx-original.svg) **Nginx**
-- ![TypeORM](https://github.com/devicons/devicon/blob/master/icons/typescript/typescript-original.svg) **TypeORM** (with TypeScript)
-- ![Socket.IO](https://github.com/devicons/devicon/blob/master/icons/socketio/socketio-original.svg) **Socket.IO**
-- ![ElasticSearch](https://github.com/devicons/devicon/blob/master/icons/elasticsearch/elasticsearch-original.svg) **Elasticsearch**
-- ![Logstash](https://github.com/devicons/devicon/blob/master/icons/logstash/logstash-original.svg) **Logstash**
-- ![Kibana](https://github.com/devicons/devicon/blob/master/icons/kibana/kibana-original.svg) **Kibana**
-- ![Stripe](https://github.com/devicons/devicon/blob/master/icons/stripe/stripe-original.svg) **Stripe**
+- <img src="https://github.com/devicons/devicon/blob/master/icons/nodejs/nodejs-original.svg" alt="Node.js" width="40" height="40"/> **Node.js**
+- <img src="https://github.com/devicons/devicon/blob/master/icons/postgresql/postgresql-original.svg" alt="PostgreSQL" width="40" height="40"/> **PostgreSQL**
+- <img src="https://github.com/devicons/devicon/blob/master/icons/mongodb/mongodb-original.svg" alt="MongoDB" width="40" height="40"/> **MongoDB**
+- <img src="https://github.com/devicons/devicon/blob/master/icons/redis/redis-original.svg" alt="Redis" width="40" height="40"/> **Redis** with Bull Queue
+- <img src="https://github.com/devicons/devicon/blob/master/icons/nginx/nginx-original.svg" alt="Nginx" width="40" height="40"/> **Nginx**
+- <img src="https://github.com/devicons/devicon/blob/master/icons/typescript/typescript-original.svg" alt="TypeORM" width="40" height="40"/> **TypeORM** (with TypeScript)
+- <img src="https://github.com/devicons/devicon/blob/master/icons/socketio/socketio-original.svg" alt="Socket.IO" width="40" height="40"/> **Socket.IO**
+- <img src="https://github.com/devicons/devicon/blob/master/icons/elasticsearch/elasticsearch-original.svg" alt="Elasticsearch" width="40" height="40"/> **Elasticsearch**
+- <img src="https://github.com/devicons/devicon/blob/master/icons/logstash/logstash-original.svg" alt="Logstash" width="40" height="40"/> **Logstash**
+- <img src="https://github.com/devicons/devicon/blob/master/icons/kibana/kibana-original.svg" alt="Kibana" width="40" height="40"/> **Kibana**
+
+
+### **Infrastructure and Deployment**
+- <img src="https://github.com/devicons/devicon/blob/master/icons/docker/docker-original.svg" alt="Docker" width="40" height="40"/> **Docker** - for scalable and portable development and deployment.
+- <img src="https://github.com/devicons/devicon/blob/v2.16.0/icons/docker/docker-original-wordmark.svg" alt="K8" width="40" height="40"/> **Kubernetes** - for contanirazation
+- <img src="https://github.com/devicons/devicon/blob/master/icons/digitalocean/digitalocean-original.svg" alt="DigitalOcean" width="40" height="40"/> **DigitalOcean** - Cloud hosting and infrastructure management for scalable applications.
+- <img src="https://github.com/devicons/devicon/blob/master/icons/amazonwebservices/amazonwebservices-line-wordmark.svg" alt="AWS S3" width="40" height="40"/> **AWS S3** - Cloud storage for file handling and media storage.
 
 ---
 
