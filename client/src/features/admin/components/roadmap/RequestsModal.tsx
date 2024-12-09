@@ -19,9 +19,12 @@ import {
   useUpdateRoadmapStatusMutation,
 } from "@/features/roadmaps/services/api/roadmapApi";
 import { Input } from "@/components/ui/input";
-
 import { z } from "zod";
 import { useToast } from "@/hooks/use-toast";
+
+
+const clinetBaseUrl = import.meta.env.VITE_BASE_CLIENT_URL;
+
 const feedbackSchema = z.object({
   feedback: z.string().min(5, "Feedback must be at least 5 characters."),
 });
@@ -49,7 +52,7 @@ const RequestsModal: React.FC<RoadMapReqModalProps> = ({
 
   const [error, setError] = useState<string | null>(null);
   const openRoadmapInNewTab = (id: string) => {
-    const url = `http://localhost:5173/roadmap/${id}`;
+    const url = `${clinetBaseUrl}/roadmap/${id}`;
     window.open(url, "_blank");
   };
   useEffect(() => {
