@@ -10,7 +10,7 @@ Mentors must undergo assessments to validate their skill,It ensures high-quality
 ![Architecture diagram](architecture_diagram.png) 
 
 
-## **📚 Features**
+## **Features**
 1. **Explore Roadmaps**: Users can follow pre-defined roadmaps or create custom ones.
 2. **Connect with Mentors**: Book 1:1 sessions with mentors based on their skills and availability.
 3. **Mentor Application Process**:
@@ -61,7 +61,7 @@ Mentors must undergo assessments to validate their skill,It ensures high-quality
 
 ---
 
-## **🏗️ Project Structure**
+## **Project Structure**
 ### **Services**
 1. **Api Gateway**: Entry point of micorservices .
 1. **Auth Service**: Handles user authentication and password changes(in feature it change to gateway).
@@ -75,7 +75,7 @@ Mentors must undergo assessments to validate their skill,It ensures high-quality
 
 ---
 
-## **🎯 Why Build This Project?**
+## **Why I Build This Project?**
 As a computer science student, I faced challenges bridging the gap between academic learning and industry needs. Although colleges provide a foundation, many learners struggle with practical, industry-relevant skills. 
 
 This app addresses these issues by offering:
@@ -87,14 +87,14 @@ The platform aims to empower learners to achieve their career goals effectively 
 
 ---
 
-## **🚀 Key Features to Expand**
+## **Key Features to Expand**
 - Push notifications for real-time updates.
 - Efficient fan-out mechanisms for large-scale notifications.
 - Enhanced admin dashboards for better roadmap and mentor evaluation.
 - Collabration on roadmaps 
 ---
 
-## **📖 Usage**
+## **Usage**
 ### **User Workflow**
 1. **Sign Up / Log In**.
 2. **Browse Roadmaps**: Select a roadmap to start learning.
@@ -108,11 +108,11 @@ The platform aims to empower learners to achieve their career goals effectively 
 
 ---
 
-## **📷 Screenshots**
+## **Screenshots**
 
 ---
 
-## **👨‍💻 Development Setup**
+## **Development Setup**
 
 ### **Client**
 ```bash
