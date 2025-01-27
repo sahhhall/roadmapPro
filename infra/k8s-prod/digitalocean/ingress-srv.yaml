@@ -28,21 +28,21 @@ spec:
                 port:
                   number: 3005 
           - path: /api/?(.*) 
-            pathType: Prefix  
+            pathType: ImplementationSpecific  
             backend:
               service:
                 name: api-gateway-srv
                 port:
                   number: 4001
           - path: /booking-socket/?(.*) 
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: booking-srv
                 port:
                   number: 3004     
           - path: /notification-socket/?(.*)  
-            pathType: Prefix
+            pathType: ImplementationSpecific
             backend:
               service:
                 name: notification-srv

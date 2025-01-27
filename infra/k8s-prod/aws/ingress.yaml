@@ -1,0 +1,52 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: microservices-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: "letsencrypt-prod" 
+    nginx.ingress.kubernetes.io/proxy-body-size: "20m"
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - "roadmappro.site"
+      secretName: roadmappro-site-tls  
+  rules:
+    - host: roadmappro.site
+      http:
+        paths:
+          - path: /api/payments/webhook
+            pathType: Prefix
+            backend:
+              service:
+                name: payment-srv
+                port:
+                  number: 3005
+          - path: /api/
+            pathType: Prefix
+            backend:
+              service:
+                name: api-gateway-srv
+                port:
+                  number: 4001
+          - path: /booking-socket
+            pathType: Prefix
+            backend:
+              service:
+                name: booking-srv
+                port:
+                  number: 3004
+          - path: /notification-socket
+            pathType: Prefix
+            backend:
+              service:
+                name: notification-srv
+                port:
+                  number: 3006
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: client-srv
+                port:
+                  number: 5173
